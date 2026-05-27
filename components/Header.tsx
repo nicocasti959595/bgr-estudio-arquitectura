@@ -36,7 +36,7 @@ export function Header() {
           onClick={() => setOpen(false)}
         >
           <span className="font-medium tracking-tight">BGR</span>{" "}
-          <span className="italic text-accent">Estudio Arquitectura</span>
+          <span className="italic text-accent">Arquitectura &amp; Construcción</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-10">

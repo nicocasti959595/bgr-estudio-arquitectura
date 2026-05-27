@@ -1,11 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getProyectosDestacados, getServicios } from "@/lib/datos";
+import { getProyectos } from "@/lib/datos";
 
 const datosClave = [
   { numero: "10+", rotulo: "Años de experiencia" },
-  { numero: "53", rotulo: "Obras entregadas en CABA" },
-  { numero: "124", rotulo: "Reformas realizadas" },
+  {
+    numero: "53",
+    rotulo: "Obras entregadas en CABA",
+    actualizacion: "13/04/2026",
+  },
+  {
+    numero: "124",
+    rotulo: "Reformas realizadas",
+    actualizacion: "15/05/2026",
+  },
   { numero: "100%", rotulo: "Plazos cumplidos" },
 ];
 
@@ -43,11 +51,32 @@ const garantias = [
   },
 ];
 
+// Datos de "tiempo / ambientes" derivados/simulados para la tabla.
+// El admin puede editar título/tipo/ubicación; estos son aprox.
+function duracionEstimada(tipo: string): string {
+  const t = tipo.toLowerCase();
+  if (t.includes("baño") || t.includes("toilette")) return "3 sem";
+  if (t.includes("cocina")) return "5 sem";
+  if (t.includes("reforma integral")) return "12 sem";
+  if (t.includes("obra nueva")) return "20 sem";
+  if (t.includes("remodelación")) return "4 sem";
+  return "6 sem";
+}
+function ambientesEstimados(tipo: string, titulo: string): string {
+  const txt = (titulo + " " + tipo).toLowerCase();
+  let n = 0;
+  if (txt.includes("cocina")) n++;
+  if (txt.includes("baño")) n++;
+  if (txt.includes("lavadero")) n++;
+  if (txt.includes("comedor")) n++;
+  if (txt.includes("living")) n++;
+  if (txt.includes("departamento") || txt.includes("integral")) return "4+";
+  return n > 0 ? `${n}` : "1";
+}
+
 export default async function Home() {
-  const [destacados, servicios] = await Promise.all([
-    getProyectosDestacados(),
-    getServicios(),
-  ]);
+  const proyectos = await getProyectos();
+  const recientes = proyectos.slice(0, 8);
 
   return (
     <>
@@ -83,7 +112,6 @@ export default async function Home() {
             dirección y obra llave en mano.
           </p>
 
-          {/* BADGE INSTAGRAM */}
           <a
             href="https://instagram.com/bgr.construcciones"
             target="_blank"
@@ -131,7 +159,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* STRIP DE DATOS CLAVE */}
+      {/* STRIP DE DATOS CLAVE con fecha de actualización */}
       <section className="bg-ink text-background border-y border-background/10">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12 grid grid-cols-2 md:grid-cols-4 divide-x divide-background/10">
           {datosClave.map((d, i) => (
@@ -147,8 +175,44 @@ export default async function Home() {
               <p className="mt-3 text-[10px] md:text-xs tracking-[0.22em] uppercase text-background/65 font-medium">
                 {d.rotulo}
               </p>
+              {d.actualizacion && (
+                <p className="mt-2 text-[10px] text-background/40 tracking-wider">
+                  Últ. actualización {d.actualizacion}
+                </p>
+              )}
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* SECCIÓN BUENOS AIRES — OBELISCO */}
+      <section className="relative h-[55vh] min-h-[420px] overflow-hidden border-b hairline">
+        <Image
+          src="https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=2400&q=85&auto=format&fit=crop"
+          alt="Obelisco de Buenos Aires"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          style={{ objectPosition: "center 50%" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/40 to-transparent" />
+        <div className="absolute inset-0 flex items-end">
+          <div className="w-full mx-auto max-w-[1400px] px-6 md:px-12 pb-12 md:pb-16 text-background">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-10 bg-accent" />
+              <p className="text-[10px] md:text-xs tracking-[0.25em] uppercase text-background/85 font-medium">
+                Buenos Aires
+              </p>
+            </div>
+            <h2 className="display text-4xl md:text-5xl lg:text-6xl mt-4 max-w-3xl leading-[1.05]">
+              Construimos en la ciudad que{" "}
+              <span className="italic text-accent">conocemos como nadie</span>.
+            </h2>
+            <p className="mt-4 max-w-xl text-base text-background/80 leading-relaxed">
+              Operamos en toda CABA y GBA. Conocemos los reglamentos de cada
+              comuna, los consorcios, los proveedores y los gremios locales.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -206,65 +270,115 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* PROYECTOS DESTACADOS */}
+      {/* OBRA RECIENTE — TABLA */}
       <section className="bg-paper border-t hairline py-20 md:py-28">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-14">
             <div>
               <div className="flex items-center gap-3">
                 <span className="h-px w-10 bg-accent" />
                 <p className="text-[10px] tracking-[0.25em] uppercase text-muted font-medium">
-                  Proyectos destacados
+                  Obra reciente
                 </p>
               </div>
               <h2 className="display text-4xl md:text-6xl mt-4 text-ink">
-                Obra reciente
+                Últimos proyectos entregados
               </h2>
             </div>
             <Link
               href="/proyectos"
               className="link-underline text-sm tracking-wider uppercase text-ink"
             >
-              Ver todos los proyectos →
+              Ver galería completa →
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-12 gap-8 md:gap-12">
-            {destacados.map((p, i) => (
+          {/* DESKTOP TABLE */}
+          <div className="hidden md:block border hairline overflow-hidden">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b hairline bg-background/60">
+                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
+                    /n°
+                  </th>
+                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
+                    Obra
+                  </th>
+                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
+                    Tipo
+                  </th>
+                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
+                    Ubicación
+                  </th>
+                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
+                    Duración
+                  </th>
+                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
+                    Ambientes
+                  </th>
+                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium text-right">
+                    Año
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {recientes.map((p, i) => (
+                  <tr
+                    key={p.id}
+                    className="border-t hairline hover:bg-background/40 transition-colors group"
+                  >
+                    <td className="px-5 py-4 text-xs text-muted">
+                      /{String(i + 1).padStart(2, "0")}
+                    </td>
+                    <td className="px-5 py-4">
+                      <Link
+                        href={`/proyectos/${p.slug}`}
+                        className="font-serif text-lg text-ink hover:text-accent transition-colors"
+                      >
+                        {p.titulo}
+                      </Link>
+                    </td>
+                    <td className="px-5 py-4 text-sm text-muted">
+                      {p.tipologia}
+                    </td>
+                    <td className="px-5 py-4 text-sm text-muted">
+                      {p.ubicacion}
+                    </td>
+                    <td className="px-5 py-4 text-sm text-accent">
+                      {duracionEstimada(p.tipologia)}
+                    </td>
+                    <td className="px-5 py-4 text-sm text-muted">
+                      {ambientesEstimados(p.tipologia, p.titulo)}
+                    </td>
+                    <td className="px-5 py-4 text-sm text-muted text-right">
+                      {p.anio}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* MOBILE LIST */}
+          <div className="md:hidden divide-y divide-line border hairline">
+            {recientes.map((p, i) => (
               <Link
                 key={p.id}
                 href={`/proyectos/${p.slug}`}
-                className={`group ${
-                  i === 0
-                    ? "md:col-span-7"
-                    : i === 1
-                    ? "md:col-span-5 md:mt-24"
-                    : "md:col-span-8 md:col-start-3"
-                }`}
+                className="block p-5 hover:bg-background/40 transition-colors"
               >
-                <div className="relative aspect-[4/5] overflow-hidden bg-line">
-                  <Image
-                    src={p.imagen_portada}
-                    alt={p.titulo}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute top-4 left-4 bg-background/95 px-3 py-1.5 text-[10px] tracking-[0.22em] uppercase text-ink font-medium">
-                    {p.tipologia}
-                  </div>
+                <div className="flex items-baseline justify-between gap-3 mb-1">
+                  <span className="text-[10px] tracking-[0.22em] uppercase text-muted">
+                    /{String(i + 1).padStart(2, "0")} · {p.tipologia}
+                  </span>
+                  <span className="text-xs text-muted">{p.anio}</span>
                 </div>
-                <div className="mt-6 flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
-                      {p.anio} · {p.ubicacion}
-                    </p>
-                    <h3 className="font-serif text-2xl md:text-3xl mt-2 text-ink">
-                      {p.titulo}
-                    </h3>
-                  </div>
-                  <span className="text-xs text-muted shrink-0 mt-1">
-                    /0{i + 1}
+                <h3 className="font-serif text-xl text-ink">{p.titulo}</h3>
+                <p className="text-sm text-muted mt-1">{p.ubicacion}</p>
+                <div className="flex gap-4 mt-3 text-xs">
+                  <span className="text-accent">
+                    {duracionEstimada(p.tipologia)} ·{" "}
+                    {ambientesEstimados(p.tipologia, p.titulo)} amb.
                   </span>
                 </div>
               </Link>
@@ -273,52 +387,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* SERVICIOS */}
-      <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-          <div className="grid md:grid-cols-12 gap-12 mb-14">
-            <div className="md:col-span-4">
-              <div className="flex items-center gap-3">
-                <span className="h-px w-10 bg-accent" />
-                <p className="text-[10px] tracking-[0.25em] uppercase text-muted font-medium">
-                  Lo que hacemos
-                </p>
-              </div>
-              <h2 className="display text-4xl md:text-5xl mt-4 text-ink">
-                Servicios
-              </h2>
-            </div>
-            <p className="md:col-span-7 md:col-start-6 text-lg text-muted leading-relaxed">
-              Tomamos a cargo la obra completa o intervenimos en la etapa que
-              necesites. Trabajamos con equipo propio y gremios de confianza en
-              toda CABA y GBA.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-px bg-line border hairline">
-            {servicios.map((s, i) => (
-              <div
-                key={s.id}
-                className="bg-background p-8 md:p-10 hover:bg-paper transition-colors group"
-              >
-                <div className="flex items-baseline justify-between mb-6">
-                  <span className="text-xs text-muted tracking-[0.2em] font-medium">
-                    0{i + 1}
-                  </span>
-                  <span className="h-px flex-1 mx-4 bg-line group-hover:bg-accent transition-colors" />
-                </div>
-                <h3 className="font-serif text-2xl text-ink">{s.titulo}</h3>
-                <p className="mt-4 text-muted leading-relaxed">
-                  {s.descripcion}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* GARANTÍAS / POR QUÉ ELEGIRNOS */}
-      <section className="bg-paper border-y hairline py-20 md:py-28">
+      <section className="py-20 md:py-28">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12">
           <div className="grid md:grid-cols-12 gap-10 mb-12 md:mb-16 items-end">
             <div className="md:col-span-6">
@@ -331,7 +401,9 @@ export default async function Home() {
               <h2 className="display text-4xl md:text-5xl lg:text-6xl mt-4 text-ink leading-[1.05]">
                 Estructura propia.
                 <br />
-                <span className="italic text-accent">Responsabilidad total.</span>
+                <span className="italic text-accent">
+                  Responsabilidad total.
+                </span>
               </h2>
             </div>
             <p className="md:col-span-5 md:col-start-8 text-base text-muted leading-relaxed">
@@ -346,9 +418,7 @@ export default async function Home() {
                 key={g.titulo}
                 className="bg-background p-7 md:p-9 hover:bg-paper transition-colors"
               >
-                <p className="display text-4xl text-accent">
-                  /0{i + 1}
-                </p>
+                <p className="display text-4xl text-accent">/0{i + 1}</p>
                 <h3 className="font-serif text-xl md:text-2xl mt-4 text-ink">
                   {g.titulo}
                 </h3>

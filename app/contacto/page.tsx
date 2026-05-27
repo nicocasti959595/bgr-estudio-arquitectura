@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FormularioContacto } from "@/components/FormularioContacto";
 
 export const metadata: Metadata = {
-  title: "Contacto — BGR Estudio Arquitectura",
+  title: "Contacto — BGR Arquitectura & Construcción",
   description:
-    "Contactá a BGR Estudio Arquitectura para iniciar un proyecto. Av. Libertador 2350, CABA. hola@bgrarquitectura.com.ar",
+    "Contactá a BGR Arquitectura & Construcción. Te abrimos WhatsApp con el mensaje listo. info@bgr.com.ar · CABA & GBA.",
 };
 
 export default function ContactoPage() {
@@ -16,12 +16,12 @@ export default function ContactoPage() {
             <p className="eyebrow">— Hablemos</p>
             <h1 className="display text-5xl md:text-7xl lg:text-8xl mt-6 text-ink">
               Iniciemos{" "}
-              <span className="italic">tu próximo proyecto</span>.
+              <span className="italic text-accent">tu próximo proyecto</span>.
             </h1>
           </div>
           <p className="md:col-span-4 md:pt-24 text-lg text-muted leading-relaxed">
-            Te respondemos en menos de 48 horas hábiles. Si preferís llamarnos,
-            atendemos de lunes a viernes de 9 a 18 hs.
+            Completá el formulario y te abrimos WhatsApp con el mensaje listo
+            para enviar. También podés escribirnos directo por mail.
           </p>
         </div>
       </section>
@@ -42,41 +42,58 @@ export default function ContactoPage() {
             <div>
               <p className="eyebrow">— Mail</p>
               <a
-                href="mailto:hola@bgrarquitectura.com.ar"
+                href="mailto:info@bgr.com.ar"
                 className="font-serif text-2xl mt-4 text-ink link-underline block"
               >
-                hola@bgrarquitectura.com.ar
+                info@bgr.com.ar
               </a>
             </div>
             <div>
-              <p className="eyebrow">— Teléfono</p>
+              <p className="eyebrow">— Teléfono / WhatsApp</p>
               <a
-                href="tel:+5491122506347"
+                href="https://wa.me/5491122506347"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="font-serif text-2xl mt-4 text-ink link-underline block"
               >
                 +54 9 11 2250-6347
               </a>
             </div>
+
+            {/* ICONO INSTAGRAM GRANDE — DISEÑO PROPIO */}
             <div>
-              <p className="eyebrow">— Redes</p>
-              <div className="mt-4 flex gap-6">
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-underline text-ink"
-                >
-                  Instagram
-                </a>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-underline text-ink"
-                >
-                  LinkedIn
-                </a>
-              </div>
+              <p className="eyebrow">— Seguinos en Instagram</p>
+              <a
+                href="https://instagram.com/bgr.construcciones"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram @bgr.construcciones"
+                className="mt-5 group block"
+              >
+                <div className="relative aspect-square w-full max-w-[280px] bg-ink overflow-hidden group-hover:bg-accent transition-colors duration-500">
+                  {/* Marco interno tipo cámara */}
+                  <div className="absolute inset-6 border-2 border-background flex items-center justify-center">
+                    <div className="w-1/2 aspect-square rounded-full border-2 border-background flex items-center justify-center">
+                      <div className="w-3 h-3 rounded-full bg-background absolute top-5 right-5" />
+                      <span className="display text-4xl text-background">
+                        BGR
+                      </span>
+                    </div>
+                  </div>
+                  {/* Etiqueta abajo */}
+                  <div className="absolute bottom-0 left-0 right-0 px-5 py-3 flex items-center justify-between text-background border-t border-background/30">
+                    <span className="text-[11px] tracking-[0.18em] uppercase">
+                      @bgr.construcciones
+                    </span>
+                    <span className="text-lg group-hover:translate-x-1 transition-transform">
+                      ↗
+                    </span>
+                  </div>
+                </div>
+                <p className="mt-3 text-sm text-muted">
+                  Fotos del proceso de cada obra, en vivo.
+                </p>
+              </a>
             </div>
           </div>
 

@@ -21,9 +21,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "BGR Estudio Arquitectura",
+  title: "BGR Arquitectura &amp; Construcción",
   description:
-    "BGR Estudio Arquitectura. Reformas integrales de departamentos en Buenos Aires. Proyecto, dirección y obra llave en mano.",
+    "BGR Arquitectura &amp; Construcción. Reformas integrales de departamentos en Buenos Aires. Proyecto, dirección y obra llave en mano.",
   keywords: [
     "BGR",
     "BGR arquitectura",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   ],
   metadataBase: new URL("https://bgr-estudio-arquitectura.vercel.app"),
   openGraph: {
-    title: "BGR Estudio Arquitectura",
+    title: "BGR Arquitectura &amp; Construcción",
     description:
       "Si lo podés imaginar, lo podemos construir. Reformas integrales de departamentos en Buenos Aires.",
     type: "website",

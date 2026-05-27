@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getServicios } from "@/lib/datos";
+import { SelectorServicios } from "@/components/SelectorServicios";
 
 export const metadata: Metadata = {
-  title: "Servicios — BGR Estudio Arquitectura",
+  title: "Servicios — BGR Arquitectura & Construcción",
   description:
-    "Servicios de arquitectura de BGR: obra nueva, reciclaje, interiorismo, dirección de obra, paisaje y consultoría.",
+    "Servicios de BGR: obra nueva, reciclaje, interiorismo, dirección de obra, paisaje y consultoría. Consultá por WhatsApp el servicio que necesitás.",
 };
 
 const proceso = [
@@ -40,43 +41,31 @@ export default async function ServiciosPage() {
 
   return (
     <>
-      <section className="pt-32 md:pt-44 pb-20 border-b hairline">
+      <section className="pt-32 md:pt-44 pb-16 border-b hairline">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12">
           <p className="eyebrow">— Práctica profesional</p>
           <h1 className="display text-5xl md:text-7xl lg:text-8xl mt-6 text-ink max-w-5xl">
             Servicios
           </h1>
-          <p className="mt-8 text-lg text-muted max-w-2xl leading-relaxed">
-            Acompañamos cada obra desde la primera conversación hasta la
-            entrega final. Nuestra escala de trabajo va desde la casa
-            unifamiliar hasta el edificio en altura.
+          <p className="mt-8 text-lg md:text-xl text-muted max-w-2xl leading-relaxed">
+            <strong className="text-ink font-medium">
+              Seleccioná el servicio por el que querés consultar
+            </strong>{" "}
+            y completá un formulario breve. Te abrimos WhatsApp con el mensaje
+            listo para enviar.
           </p>
         </div>
       </section>
 
-      <section className="py-20 md:py-28">
+      <section className="py-16 md:py-24">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-          <div className="grid md:grid-cols-2 gap-px bg-line border hairline">
-            {servicios.map((s, i) => (
-              <div
-                key={s.id}
-                className="bg-background p-10 md:p-12 hover:bg-paper transition-colors group"
-              >
-                <div className="flex items-baseline justify-between mb-6">
-                  <span className="font-mono text-xs text-muted tracking-wider">
-                    SERVICIO {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="h-px w-12 bg-line group-hover:bg-accent group-hover:w-24 transition-all duration-500" />
-                </div>
-                <h3 className="font-serif text-3xl md:text-4xl text-ink">
-                  {s.titulo}
-                </h3>
-                <p className="mt-6 text-muted leading-relaxed">
-                  {s.descripcion}
-                </p>
-              </div>
-            ))}
-          </div>
+          <SelectorServicios
+            servicios={servicios.map((s) => ({
+              id: s.id,
+              titulo: s.titulo,
+              descripcion: s.descripcion,
+            }))}
+          />
         </div>
       </section>
 
@@ -115,17 +104,20 @@ export default async function ServiciosPage() {
         <div className="mx-auto max-w-[1400px] px-6 md:px-12 grid md:grid-cols-12 gap-12 items-center">
           <div className="md:col-span-8">
             <h2 className="display text-4xl md:text-6xl">
-              Pedinos un{" "}
-              <span className="italic text-accent">presupuesto</span> sin
-              compromiso.
+              ¿Preferís{" "}
+              <span className="italic text-accent">otro canal</span>?
             </h2>
+            <p className="mt-4 text-base text-background/75 max-w-2xl">
+              Escribinos por mail o completá el formulario completo en
+              contacto.
+            </p>
           </div>
           <div className="md:col-span-4 md:text-right">
             <Link
               href="/contacto"
               className="inline-flex items-center justify-center px-10 py-5 bg-accent text-background text-sm tracking-wider uppercase hover:bg-background hover:text-ink transition-colors"
             >
-              Contactar →
+              Ir a contacto →
             </Link>
           </div>
         </div>
