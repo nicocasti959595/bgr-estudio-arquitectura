@@ -1,16 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { createSupabaseBrowser } from "@/lib/supabase-browser";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Limpiar cualquier sesión vieja al cargar la página de login.
+  // (Si quedó cacheado un user borrado/expirado, esto evita falsos negativos.)
+  useEffect(() => {
+    const supabase = createSupabaseBrowser();
+    supabase.auth.signOut().catch(() => {});
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -18,26 +23,39 @@ export default function LoginPage() {
     setError(null);
 
     const supabase = createSupabaseBrowser();
-    // Permitir "adminbgr" sin @ — autocompletamos al dominio interno.
     const valor = email.trim();
+    // Permitir "adminbgr" sin @ — autocompletamos al dominio interno.
     const emailFinal = valor.includes("@") ? valor : `${valor}@bgr.com.ar`;
-    const { error } = await supabase.auth.signInWithPassword({
+
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
       email: emailFinal,
       password,
     });
 
-    if (error) {
-      setError(
-        error.message === "Invalid login credentials"
-          ? "Credenciales inválidas. Verificá email y contraseña."
-          : error.message
-      );
+    if (loginError) {
+      console.error("[login] error:", loginError, "email enviado:", emailFinal);
+      const msg = loginError.message?.toLowerCase() ?? "";
+      let amigable = loginError.message;
+      if (msg.includes("invalid login")) {
+        amigable = `Credenciales inválidas (probaste con ${emailFinal}).`;
+      } else if (msg.includes("email not confirmed")) {
+        amigable = "Cuenta sin confirmar. Avisanos para confirmarla.";
+      } else if (msg.includes("too many")) {
+        amigable = "Demasiados intentos. Esperá un minuto y reintentá.";
+      }
+      setError(amigable);
       setLoading(false);
       return;
     }
 
-    router.push("/admin");
-    router.refresh();
+    if (!data?.session) {
+      setError("La sesión no se pudo crear. Reintentá.");
+      setLoading(false);
+      return;
+    }
+
+    // Hard redirect: garantiza que el server lea las cookies recién seteadas.
+    window.location.href = "/admin";
   }
 
   return (
@@ -83,6 +101,9 @@ export default function LoginPage() {
                 className="bgr-input"
                 autoFocus
                 autoComplete="username"
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck={false}
               />
             </div>
             <div>
@@ -100,6 +121,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="bgr-input"
+                autoComplete="current-password"
               />
             </div>
 
