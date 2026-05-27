@@ -1,44 +1,48 @@
 import type { Metadata } from "next";
-import { DM_Sans, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { BotonWhatsApp } from "@/components/BotonWhatsApp";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
   display: "swap",
 });
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "BGR | Arquitectura y Construcción",
+  title: "BGR Estudio Arquitectura",
   description:
-    "BGR Arquitectura y Construcción. Reformas integrales de departamentos en CABA. Proyecto, dirección de obra y llave en mano.",
+    "BGR Estudio Arquitectura. Estudio de arquitectura en Buenos Aires. Obras residenciales, comerciales e institucionales con enfoque en la materialidad y el contexto.",
   keywords: [
     "BGR",
-    "arquitectura",
-    "construcción",
-    "reformas integrales",
-    "departamentos",
-    "llave en mano",
-    "CABA",
-    "Buenos Aires",
+    "BGR arquitectura",
+    "BGR estudio arquitectura",
+    "estudio de arquitectura",
     "Argentina",
+    "Buenos Aires",
+    "obra nueva",
+    "remodelación",
+    "diseño",
   ],
   metadataBase: new URL("https://bgr-estudio-arquitectura.vercel.app"),
   openGraph: {
-    title: "BGR | Arquitectura y Construcción",
+    title: "BGR Estudio Arquitectura",
     description:
-      "Reformas integrales de departamentos en Buenos Aires. Proyecto, dirección y obra llave en mano.",
+      "Arquitectura argentina contemporánea con foco en la materialidad, el clima y el lugar.",
     type: "website",
     locale: "es_AR",
   },
@@ -52,12 +56,13 @@ export default function RootLayout({
   return (
     <html
       lang="es-AR"
-      className={`${dmSans.variable} ${playfair.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} ${jetbrains.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-ink text-foreground">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <BotonWhatsApp />
       </body>
     </html>
   );

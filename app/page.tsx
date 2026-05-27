@@ -1,369 +1,314 @@
-import { GaleriaProyectos } from "@/components/GaleriaProyectos";
-import { FormularioConTabs } from "@/components/FormularioConTabs";
+import Link from "next/link";
+import Image from "next/image";
+import { getProyectosDestacados, getServicios } from "@/lib/datos";
 
-const stats = [
-  { n: "10+", l: "Años de experiencia" },
-  { n: "100+", l: "Obras entregadas en CABA" },
-  { n: "100+", l: "Reformas realizadas" },
-  { n: "100%", l: "Plazos cumplidos" },
+const datosClave = [
+  { numero: "16", rotulo: "Años en obra" },
+  { numero: "84", rotulo: "Obras entregadas" },
+  { numero: "12", rotulo: "Provincias" },
+  { numero: "100%", rotulo: "Plazos cumplidos" },
 ];
 
-const equipo = [
-  {
-    inicial: "J",
-    nombre: "Javi",
-    rol: "Socio fundador · Construcción",
-    desc: "Más de diez años llevando obras adelante en CABA. Especializado en reformas integrales y dirección de obra. Cada proyecto con seguimiento propio de inicio a fin.",
-  },
-  {
-    inicial: "A",
-    nombre: "Alejandro",
-    rol: "Socio fundador · Arquitectura",
-    desc: "Arquitecto con foco en diseño y proyecto. Cada reforma parte de un concepto claro y termina con una ejecución precisa. Responsable del desarrollo técnico de cada obra.",
-  },
-];
+export default async function Home() {
+  const [destacados, servicios] = await Promise.all([
+    getProyectosDestacados(),
+    getServicios(),
+  ]);
 
-const servicios = [
-  {
-    pre: "Servicio principal",
-    titulo: "Obra Nueva",
-    desc: "Proyecto y dirección de obras residenciales, comerciales e institucionales. Desde la idea inicial hasta la entrega final.",
-  },
-  {
-    pre: "Servicio",
-    titulo: "Reciclaje y Remodelación",
-    desc: "Reformas integrales de departamentos — cocina, baños, pisos, aberturas — de punta a punta con el mismo equipo.",
-  },
-  {
-    pre: "Servicio",
-    titulo: "Interiorismo",
-    desc: "Diseño integral de interiores y mobiliario a medida. Curaduría de materiales, iluminación y equipamiento.",
-  },
-  {
-    pre: "Servicio",
-    titulo: "Asesoramiento Técnico",
-    desc: "Planos, renders y documentación técnica completa. Estudios de factibilidad y consultoría normativa con matrícula activa.",
-  },
-  {
-    pre: "Servicio",
-    titulo: "Dirección de Obra",
-    desc: "Coordinación de gremios, control de calidad y reportes semanales con fotos de avance en cada etapa.",
-  },
-  {
-    pre: "Servicio",
-    titulo: "Llave en Mano",
-    desc: "Plazo y precio fijo desde el inicio. Nos encargamos de todo hasta la entrega final.",
-  },
-];
-
-const garantias = [
-  {
-    titulo: "Matrícula habilitada",
-    desc: "Profesionales con matrícula activa. Documentación y planos aprobados en cada obra.",
-  },
-  {
-    titulo: "Equipo propio",
-    desc: "Red estable de contratistas verificados. El mismo equipo de inicio a fin en cada proyecto.",
-  },
-  {
-    titulo: "Presupuesto cerrado",
-    desc: "Plazo y precio fijo desde el inicio. Sin sorpresas al final de la obra.",
-  },
-  {
-    titulo: "Seguimiento semanal",
-    desc: "Fotos y reportes de avance todas las semanas. Acceso permanente al estado de la obra.",
-  },
-];
-
-export default function Home() {
   return (
-    <div id="top">
+    <>
       {/* HERO */}
-      <div className="border-b border-line">
-        <section className="max-w-[1400px] mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-12 md:pb-20 grid md:grid-cols-2 gap-12 md:gap-20 items-end">
-          <div className="fade-up">
-            <div className="eyebrow mb-7">
-              Arquitectura · Construcción · CABA
-            </div>
-            <h1 className="font-serif text-[44px] leading-[1.04] tracking-[-0.02em] text-white md:text-[64px] font-normal">
-              Si lo podés
-              <br />
-              imaginar,
-              <br />
-              lo podemos
-              <br />
-              <em className="italic text-accent2">construir.</em>
-            </h1>
-          </div>
-          <div className="fade-up">
-            <div className="flex items-center gap-2 mb-7">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent2" />
-              <span className="text-[10px] tracking-[1.5px] uppercase text-muted">
-                @bgr.construcciones · Cuenta verificada · 5.503 seguidores
-              </span>
-            </div>
-            <p className="text-[15px] text-soft leading-[1.8] font-light mb-10">
-              Reformas integrales de departamentos en Buenos Aires. Proyecto,
-              dirección y obra llave en mano — desde el primer plano hasta la
-              entrega de llaves.
-            </p>
-            <div className="flex flex-col">
-              <a
-                href="#contacto"
-                className="flex items-center justify-between text-[11px] tracking-[1.5px] uppercase text-white py-3.5 border-t border-line2 hover:text-accent2 transition-colors"
-              >
-                Solicitá tu presupuesto <span className="text-muted">→</span>
-              </a>
-              <a
-                href="https://instagram.com/bgr.construcciones"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between text-[11px] tracking-[1.5px] uppercase text-white py-3.5 border-t border-line2 hover:text-accent2 transition-colors"
-              >
-                Instagram @bgr.construcciones <span className="text-muted">↗</span>
-              </a>
-            </div>
-          </div>
-        </section>
-      </div>
+      <section className="relative h-[calc(100vh-5rem)] min-h-[560px] max-h-[820px] flex items-end overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=2400&q=85&auto=format&fit=crop"
+            alt="Obra de arquitectura moderna"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+            style={{ objectPosition: "center 35%" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-ink/15" />
+        </div>
 
-      {/* STATS */}
-      <div className="border-b border-line">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-2 md:grid-cols-4">
-          {stats.map((s, i) => (
-            <div
-              key={s.l}
-              className={`p-10 md:px-12 md:py-10 ${
-                i < 3 ? "md:border-r border-line" : ""
-              } ${i % 2 === 0 ? "border-r" : ""} ${
-                i < 2 ? "border-b md:border-b-0" : ""
-              } border-line`}
+        <div className="relative w-full mx-auto max-w-[1400px] px-6 md:px-12 pb-12 md:pb-16 text-background">
+          <div className="flex items-center gap-3 fade-up">
+            <span className="h-px w-10 bg-accent" />
+            <p className="font-mono text-[10px] md:text-xs tracking-[0.25em] uppercase text-background/85">
+              Arquitectura · Construcción · Argentina
+            </p>
+          </div>
+          <h1 className="display text-5xl md:text-7xl lg:text-[5.5rem] mt-5 max-w-5xl fade-up leading-[0.95]">
+            Sabemos de esto,
+            <br />
+            <span className="italic text-accent">vivimos de esto.</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-base md:text-lg text-background/85 leading-relaxed fade-up">
+            Diseñamos, calculamos y construimos obra propia. Acompañamos cada
+            proyecto con la misma firma del primer día hasta la entrega de
+            llaves.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:items-center fade-up">
+            <Link
+              href="/proyectos"
+              className="inline-flex items-center justify-center px-8 py-4 bg-background text-ink text-sm tracking-wider uppercase hover:bg-accent hover:text-background transition-colors"
             >
-              <div className="font-serif text-[42px] md:text-[52px] text-accent2 leading-none mb-2">
-                {s.n}
-              </div>
-              <div className="text-[10px] tracking-[1.8px] uppercase text-muted">
-                {s.l}
-              </div>
+              Ver obra construida
+            </Link>
+            <Link
+              href="/contacto"
+              className="inline-flex items-center justify-center px-8 py-4 border border-background/40 text-background text-sm tracking-wider uppercase hover:bg-background hover:text-ink transition-colors"
+            >
+              Solicitar presupuesto
+            </Link>
+          </div>
+        </div>
+
+        <div className="absolute bottom-5 right-5 md:right-12 hidden md:flex items-center gap-3 text-background/65 font-mono text-[10px] tracking-[0.25em] uppercase">
+          <span>Est. 2008</span>
+          <span className="h-px w-6 bg-background/40" />
+          <span>Mat. CPAU</span>
+        </div>
+      </section>
+
+      {/* STRIP DE DATOS CLAVE */}
+      <section className="bg-ink text-background border-y border-background/10">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12 grid grid-cols-2 md:grid-cols-4 divide-x divide-background/10">
+          {datosClave.map((d, i) => (
+            <div
+              key={d.rotulo}
+              className={`py-10 md:py-12 px-4 ${
+                i >= 2 ? "border-t md:border-t-0 border-background/10" : ""
+              }`}
+            >
+              <p className="display text-5xl md:text-6xl text-background">
+                {d.numero}
+              </p>
+              <p className="mt-3 font-mono text-[10px] md:text-xs tracking-[0.22em] uppercase text-background/65">
+                {d.rotulo}
+              </p>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* EQUIPO */}
-      <div className="border-b border-line" id="estudio">
-        <section className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-20">
-          <div className="grid md:grid-cols-2 gap-10 md:gap-16 mb-12 md:mb-14 items-end">
-            <div>
-              <div className="eyebrow mb-5">Quiénes somos</div>
-              <h2 className="font-serif text-[34px] md:text-[42px] leading-[1.15] text-white font-normal">
-                Un equipo,
-                <br />
-                una <em className="italic text-accent2">firma.</em>
-              </h2>
+      {/* QUIÉNES SOMOS / FRASE FUERTE */}
+      <section className="py-20 md:py-32">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12 grid md:grid-cols-12 gap-12">
+          <div className="md:col-span-4">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-10 bg-accent" />
+              <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-muted">
+                Quiénes somos
+              </p>
             </div>
-            <p className="text-[14px] text-muted leading-[1.8] font-light">
-              Cada obra es un compromiso. Diseñamos, calculamos y dirigimos
-              cada proyecto con la misma firma de inicio a fin. Nuestro nombre
-              va en cada metro construido.
+            <p className="mt-6 text-sm text-muted leading-relaxed">
+              Estudio de arquitectura fundado en Buenos Aires en 2008. Equipo
+              propio de doce profesionales y red de obra activa en toda
+              Argentina.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-px bg-line">
-            {equipo.map((m, i) => (
-              <div
-                key={m.nombre}
-                className="bg-ink p-8 md:p-10 grid grid-cols-[90px_1fr] gap-6 items-start"
-              >
-                <div className="w-[90px] h-[90px] bg-surface border border-line flex items-center justify-center font-serif text-[32px] text-accent2">
-                  {m.inicial}
-                </div>
-                <div>
-                  <div className="text-[10px] tracking-[1.5px] uppercase text-accent2 mb-1.5">
-                    /0{i + 1}
-                  </div>
-                  <h3 className="font-serif text-[24px] text-white mb-1 font-normal">
-                    {m.nombre}
-                  </h3>
-                  <div className="text-[10px] tracking-[1.5px] uppercase text-muted mb-2.5">
-                    {m.rol}
-                  </div>
-                  <p className="text-[13px] text-soft leading-[1.7] font-light">
-                    {m.desc}
-                  </p>
-                </div>
+          <div className="md:col-span-8">
+            <p className="font-serif text-3xl md:text-4xl lg:text-5xl leading-[1.15] text-ink">
+              Cada obra es un{" "}
+              <span className="italic text-accent">compromiso</span>.
+              Diseñamos, calculamos y dirigimos cada proyecto con la misma
+              firma. Nuestro nombre va en cada metro construido.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* PROYECTOS DESTACADOS */}
+      <section className="bg-paper border-t hairline py-20 md:py-28">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="h-px w-10 bg-accent" />
+                <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-muted">
+                  Proyectos destacados
+                </p>
               </div>
+              <h2 className="display text-4xl md:text-6xl mt-4 text-ink">
+                Obra reciente
+              </h2>
+            </div>
+            <Link
+              href="/proyectos"
+              className="link-underline text-sm tracking-wider uppercase text-ink"
+            >
+              Ver todos los proyectos →
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-12 gap-8 md:gap-12">
+            {destacados.map((p, i) => (
+              <Link
+                key={p.id}
+                href={`/proyectos/${p.slug}`}
+                className={`group ${
+                  i === 0
+                    ? "md:col-span-7"
+                    : i === 1
+                    ? "md:col-span-5 md:mt-24"
+                    : "md:col-span-8 md:col-start-3"
+                }`}
+              >
+                <div className="relative aspect-[4/5] overflow-hidden bg-line">
+                  <Image
+                    src={p.imagen_portada}
+                    alt={p.titulo}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute top-4 left-4 bg-background/95 px-3 py-1.5 font-mono text-[10px] tracking-[0.22em] uppercase text-ink">
+                    {p.tipologia}
+                  </div>
+                </div>
+                <div className="mt-6 flex items-start justify-between gap-4">
+                  <div>
+                    <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-muted">
+                      {p.anio} · {p.ubicacion}
+                    </p>
+                    <h3 className="font-serif text-2xl md:text-3xl mt-2 text-ink">
+                      {p.titulo}
+                    </h3>
+                  </div>
+                  <span className="font-mono text-xs text-muted shrink-0 mt-1">
+                    /0{i + 1}
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
       {/* SERVICIOS */}
-      <div className="border-b border-line" id="servicios">
-        <section className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-20">
-          <div className="grid md:grid-cols-2 gap-10 md:gap-16 mb-12 md:mb-14 items-end">
-            <div>
-              <div className="eyebrow mb-5">Práctica profesional</div>
-              <h2 className="font-serif text-[34px] md:text-[42px] leading-[1.15] text-white font-normal">
-                Lo que <em className="italic text-accent2">hacemos</em>
+      <section className="py-20 md:py-28">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12">
+          <div className="grid md:grid-cols-12 gap-12 mb-14">
+            <div className="md:col-span-4">
+              <div className="flex items-center gap-3">
+                <span className="h-px w-10 bg-accent" />
+                <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-muted">
+                  Lo que hacemos
+                </p>
+              </div>
+              <h2 className="display text-4xl md:text-5xl mt-4 text-ink">
+                Servicios
               </h2>
             </div>
-            <p className="text-[14px] text-muted leading-[1.8] font-light">
-              Acompañamos cada obra desde la primera conversación hasta la
-              entrega final. Trabajamos con equipo propio y gremios de
-              confianza en toda CABA.
+            <p className="md:col-span-7 md:col-start-6 text-lg text-muted leading-relaxed">
+              Tomamos a cargo la obra completa o intervenimos en la etapa que
+              necesites. Trabajamos con ingenieros estructurales,
+              instalaciones, paisajistas y un equipo propio de dirección de
+              obra.
             </p>
           </div>
-          <div className="grid md:grid-cols-2">
-            {servicios.map((s, i) => {
-              const isLastRow = i >= servicios.length - 2;
-              const isOdd = i % 2 === 1;
-              return (
-                <div
-                  key={s.titulo}
-                  className={`py-9 grid grid-cols-[3rem_1fr] gap-5 ${
-                    isOdd ? "md:pl-9" : "md:pr-9 md:border-r"
-                  } ${!isLastRow ? "border-b" : ""} border-line2`}
-                >
-                  <div className="font-serif text-[13px] text-accent2 pt-1">
-                    /0{i + 1}
-                  </div>
-                  <div>
-                    <div className="text-[9px] tracking-[2px] uppercase text-muted mb-2">
-                      {s.pre}
-                    </div>
-                    <div className="text-[16px] font-medium text-white mb-2">
-                      {s.titulo}
-                    </div>
-                    <p className="text-[13px] text-soft leading-[1.7] font-light">
-                      {s.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      </div>
 
-      {/* GALERIA / PROYECTOS */}
-      <div className="border-b border-line" id="proyectos">
-        <section className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-20">
-          <div className="grid md:grid-cols-2 gap-10 md:gap-16 mb-12 md:mb-14 items-end">
-            <div>
-              <div className="eyebrow mb-5">Últimas obras</div>
-              <h2 className="font-serif text-[34px] md:text-[42px] leading-[1.15] text-white font-normal">
-                Proyectos <em className="italic text-accent2">recientes</em>
-              </h2>
-            </div>
-            <p className="text-[14px] text-muted leading-[1.8] font-light">
-              Baños, cocinas y reformas integrales en toda CABA. Todos los
-              proyectos con fotos del proceso en{" "}
-              <strong className="text-accent2 font-medium">
-                @bgr.construcciones
-              </strong>
-            </p>
-          </div>
-          <GaleriaProyectos />
-        </section>
-      </div>
-
-      {/* GARANTIAS */}
-      <div className="border-b border-line">
-        <section className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-20">
-          <div className="grid md:grid-cols-2 gap-10 mb-12 md:mb-14 items-end">
-            <div>
-              <div className="eyebrow mb-5">Por qué elegirnos</div>
-              <h2 className="font-serif text-[34px] md:text-[42px] leading-[1.15] text-white font-normal">
-                Estructura propia.
-                <br />
-                <em className="italic text-accent2">Responsabilidad total.</em>
-              </h2>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4">
-            {garantias.map((g, i) => (
+          <div className="grid md:grid-cols-3 gap-px bg-line border hairline">
+            {servicios.map((s, i) => (
               <div
-                key={g.titulo}
-                className={`py-9 ${
-                  i < garantias.length - 1
-                    ? "md:pr-8 md:border-r border-line2"
-                    : ""
-                } ${i < garantias.length - 1 ? "border-b md:border-b-0" : ""} border-line2`}
+                key={s.id}
+                className="bg-background p-8 md:p-10 hover:bg-paper transition-colors group"
               >
-                <div className="text-[9px] tracking-[2px] uppercase text-accent2 mb-3">
-                  — 0{i + 1}
+                <div className="flex items-baseline justify-between mb-6">
+                  <span className="font-mono text-xs text-muted tracking-[0.2em]">
+                    0{i + 1}
+                  </span>
+                  <span className="h-px flex-1 mx-4 bg-line group-hover:bg-accent transition-colors" />
                 </div>
-                <div className="text-[15px] font-medium text-white mb-2">
-                  {g.titulo}
-                </div>
-                <p className="text-[13px] text-soft leading-[1.7] font-light">
-                  {g.desc}
+                <h3 className="font-serif text-2xl text-ink">{s.titulo}</h3>
+                <p className="mt-4 text-muted leading-relaxed">
+                  {s.descripcion}
                 </p>
               </div>
             ))}
           </div>
-        </section>
-      </div>
-
-      {/* CTA BAND */}
-      <div className="bg-accent border-b border-line">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-14 md:py-16 text-center">
-          <p className="font-serif text-[26px] md:text-[34px] text-white font-normal mb-7">
-            Pedinos un presupuesto{" "}
-            <em className="italic">sin compromiso.</em>
-          </p>
-          <a
-            href="#contacto"
-            className="inline-block border border-white/50 text-white px-10 py-3.5 text-[11px] tracking-[2px] uppercase hover:bg-white/15 transition-colors"
-          >
-            Contactar →
-          </a>
         </div>
-      </div>
+      </section>
 
-      {/* FORMULARIO */}
-      <div className="bg-paper border-b border-line" id="contacto">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-20 grid md:grid-cols-[1fr_1.6fr] gap-12 md:gap-24">
-          <div>
-            <div className="eyebrow mb-5">Presupuesto sin cargo</div>
-            <h2 className="font-serif text-[28px] md:text-[36px] text-white font-normal leading-tight">
-              Iniciemos tu <em className="italic text-accent2">proyecto.</em>
-            </h2>
-            <p className="text-[14px] text-muted leading-[1.8] font-light mt-4">
-              Contanos qué querés hacer y te respondemos en menos de 24 horas
-              hábiles. Si preferís, escribinos directamente por WhatsApp.
-            </p>
-            <div className="mt-10 border-t border-line2 pt-6 space-y-1.5">
-              <a
-                href="mailto:info@bgr.com.ar"
-                className="block text-[13px] text-muted hover:text-white transition-colors"
-              >
-                info@bgr.com.ar
-              </a>
-              <a
-                href="https://wa.me/5491122506347"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-[13px] text-muted hover:text-white transition-colors"
-              >
-                +54 9 11 2250-6347
-              </a>
-              <a
-                href="https://instagram.com/bgr.construcciones"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-[13px] text-accent2 hover:text-white transition-colors"
-              >
-                @bgr.construcciones
-              </a>
-              <p className="text-[11px] tracking-[1px] uppercase text-muted mt-2">
-                CABA, Argentina
+      {/* PROCESO / CONFIANZA */}
+      <section className="bg-paper border-y hairline py-20 md:py-28">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12 grid md:grid-cols-12 gap-12">
+          <div className="md:col-span-5">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-10 bg-accent" />
+              <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-muted">
+                Por qué elegirnos
               </p>
             </div>
+            <h2 className="display text-4xl md:text-5xl mt-4 text-ink leading-[1.1]">
+              Estructura propia.
+              <br />
+              Responsabilidad{" "}
+              <span className="italic text-accent">total</span>.
+            </h2>
           </div>
-          <FormularioConTabs />
+          <div className="md:col-span-7 grid sm:grid-cols-2 gap-x-10 gap-y-8 md:pt-4">
+            {[
+              {
+                t: "Matrícula habilitada",
+                d: "Profesionales con matrícula CPAU activa. Documentación municipal y planos aprobados en cada obra.",
+              },
+              {
+                t: "Equipo propio",
+                d: "Doce profesionales en planta y red estable de contratistas verificados en cada provincia donde operamos.",
+              },
+              {
+                t: "Presupuesto cerrado",
+                d: "Plazo y precio fijo desde el inicio. Ajustes solo por modificaciones de proyecto solicitadas por el cliente.",
+              },
+              {
+                t: "Seguimiento semanal",
+                d: "Reportes con fotografías, certificados de avance y estado de gremios. Acceso permanente a la documentación.",
+              },
+            ].map((b) => (
+              <div key={b.t} className="border-t hairline pt-5">
+                <h3 className="font-serif text-xl text-ink">{b.t}</h3>
+                <p className="mt-3 text-sm text-muted leading-relaxed">
+                  {b.d}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-ink text-background py-20 md:py-32">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12 grid md:grid-cols-12 gap-12 items-center">
+          <div className="md:col-span-8">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-10 bg-accent" />
+              <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-background/60">
+                Trabajemos juntos
+              </p>
+            </div>
+            <h2 className="display text-4xl md:text-6xl lg:text-7xl mt-6">
+              ¿Tenés un proyecto{" "}
+              <span className="italic text-accent">en mente</span>?
+            </h2>
+            <p className="mt-6 text-lg text-background/75 max-w-2xl leading-relaxed">
+              Contanos tu idea, el lugar y el momento en que querés
+              construirla. Respondemos en menos de 48 horas hábiles con una
+              primera evaluación.
+            </p>
+          </div>
+          <div className="md:col-span-4 md:text-right">
+            <Link
+              href="/contacto"
+              className="inline-flex items-center justify-center px-10 py-5 bg-accent text-background text-sm tracking-wider uppercase hover:bg-background hover:text-ink transition-colors"
+            >
+              Hablemos →
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
