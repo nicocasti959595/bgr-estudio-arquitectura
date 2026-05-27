@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Estudio Terreno — Sitio web
 
-## Getting Started
+Sitio del estudio de arquitectura **Estudio Terreno**. Estética profesional argentina inspirada en estudios como BGR.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 16** (App Router, Server Components)
+- **TypeScript**
+- **Tailwind CSS v4**
+- **Supabase** (Postgres + Row Level Security) para proyectos, servicios, equipo y mensajes de contacto
+- **Vercel** para deploy
+
+## Estructura
+
+```
+app/
+├─ page.tsx                  # Home
+├─ proyectos/
+│   ├─ page.tsx              # Listado
+│   └─ [slug]/page.tsx       # Detalle
+├─ estudio/page.tsx          # Sobre el estudio
+├─ servicios/page.tsx        # Servicios
+└─ contacto/
+    ├─ page.tsx
+    └─ actions.ts            # Server Action del formulario
+components/
+├─ Header.tsx
+├─ Footer.tsx
+└─ FormularioContacto.tsx
+lib/
+├─ supabase.ts               # Cliente y tipos
+├─ datos.ts                  # Capa de acceso a datos con fallback
+└─ datosFallback.ts          # Datos para desarrollo sin Supabase
+supabase/
+└─ schema.sql                # Esquema completo + datos semilla
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Desarrollo local
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+cp .env.example .env.local   # completar con las claves de Supabase
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Si Supabase no está configurado, el sitio carga los **datos fallback** definidos en `lib/datosFallback.ts`.
 
-## Learn More
+## Setup de Supabase
 
-To learn more about Next.js, take a look at the following resources:
+1. Crear o usar un proyecto en https://supabase.com
+2. Abrir el SQL Editor del proyecto
+3. Pegar y ejecutar el contenido de `supabase/schema.sql`
+4. Las tablas creadas son: `proyectos`, `servicios`, `miembros`, `mensajes`
+5. RLS habilitada: lectura pública, inserción pública sólo en `mensajes`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy en Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+vercel --prod
+```
 
-## Deploy on Vercel
+Variables de entorno a configurar en Vercel:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Descripción |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clave publishable de Supabase |
