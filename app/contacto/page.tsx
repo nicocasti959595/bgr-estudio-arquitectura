@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FormularioContacto } from "@/components/FormularioContacto";
 
 export const metadata: Metadata = {
-  title: "Contacto — Estudio Terreno",
+  title: "Contacto — BGR Estudio Arquitectura",
   description:
-    "Contactanos para iniciar un proyecto. Av. Libertador 2350, CABA. hola@estudioterreno.ar",
+    "Contactá a BGR Estudio Arquitectura para iniciar un proyecto. Av. Libertador 2350, CABA. hola@bgrarquitectura.com.ar",
 };
 
 export default function ContactoPage() {
@@ -42,10 +42,10 @@ export default function ContactoPage() {
             <div>
               <p className="eyebrow">— Mail</p>
               <a
-                href="mailto:hola@estudioterreno.ar"
+                href="mailto:hola@bgrarquitectura.com.ar"
                 className="font-serif text-2xl mt-4 text-ink link-underline block"
               >
-                hola@estudioterreno.ar
+                hola@bgrarquitectura.com.ar
               </a>
             </div>
             <div>

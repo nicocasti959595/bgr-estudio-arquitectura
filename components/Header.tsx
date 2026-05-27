@@ -36,8 +36,8 @@ export function Header() {
           className="font-serif text-xl md:text-2xl tracking-tight text-ink"
           onClick={() => setOpen(false)}
         >
-          <span className="font-medium">Estudio</span>{" "}
-          <span className="italic text-accent">Terreno</span>
+          <span className="font-medium tracking-tight">BGR</span>{" "}
+          <span className="italic text-accent">Estudio Arquitectura</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-10">

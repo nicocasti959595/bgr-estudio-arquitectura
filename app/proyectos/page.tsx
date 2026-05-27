@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import { getProyectos } from "@/lib/datos";
 
 export const metadata: Metadata = {
-  title: "Proyectos — Estudio Terreno",
+  title: "Proyectos — BGR Estudio Arquitectura",
   description:
-    "Obra construida por Estudio Terreno: arquitectura residencial, comercial, institucional e industrial en distintas regiones de Argentina.",
+    "Obra construida por BGR Estudio Arquitectura: arquitectura residencial, comercial, institucional e industrial en distintas regiones de Argentina.",
 };
 
 export default async function ProyectosPage() {

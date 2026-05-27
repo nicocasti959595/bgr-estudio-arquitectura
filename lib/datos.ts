@@ -15,7 +15,7 @@ function tieneSupabase() {
 export async function getProyectos(): Promise<Proyecto[]> {
   if (!tieneSupabase()) return proyectosFallback;
   const { data, error } = await supabase
-    .from("terreno_proyectos")
+    .from("bgr_proyectos")
     .select("*")
     .order("orden", { ascending: true });
   if (error || !data || data.length === 0) return proyectosFallback;
@@ -34,7 +34,7 @@ export async function getProyectoPorSlug(
     return proyectosFallback.find((p) => p.slug === slug) ?? null;
   }
   const { data, error } = await supabase
-    .from("terreno_proyectos")
+    .from("bgr_proyectos")
     .select("*")
     .eq("slug", slug)
     .maybeSingle();
@@ -47,7 +47,7 @@ export async function getProyectoPorSlug(
 export async function getServicios(): Promise<Servicio[]> {
   if (!tieneSupabase()) return serviciosFallback;
   const { data, error } = await supabase
-    .from("terreno_servicios")
+    .from("bgr_servicios")
     .select("*")
     .order("orden", { ascending: true });
   if (error || !data || data.length === 0) return serviciosFallback;
@@ -57,7 +57,7 @@ export async function getServicios(): Promise<Servicio[]> {
 export async function getMiembros(): Promise<Miembro[]> {
   if (!tieneSupabase()) return miembrosFallback;
   const { data, error } = await supabase
-    .from("terreno_miembros")
+    .from("bgr_miembros")
     .select("*")
     .order("orden", { ascending: true });
   if (error || !data || data.length === 0) return miembrosFallback;
@@ -75,7 +75,7 @@ export async function guardarMensaje(payload: {
     console.log("[contacto · sin supabase configurado]", payload);
     return { ok: true };
   }
-  const { error } = await supabase.from("terreno_mensajes").insert([payload]);
+  const { error } = await supabase.from("bgr_mensajes").insert([payload]);
   if (error) return { ok: false, error: error.message };
   return { ok: true };
 }

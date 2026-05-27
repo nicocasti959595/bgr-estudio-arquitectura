@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { getMiembros } from "@/lib/datos";
 
 export const metadata: Metadata = {
-  title: "Estudio — Estudio Terreno",
+  title: "Estudio — BGR Estudio Arquitectura",
   description:
     "Quiénes somos: un equipo de arquitectos y diseñadores con base en Buenos Aires, trabajando en proyectos en toda Argentina.",
 };

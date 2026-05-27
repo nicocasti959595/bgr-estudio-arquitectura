@@ -9,7 +9,7 @@ export function Footer() {
           <div className="md:col-span-5">
             <p className="eyebrow text-background/60">Estudio</p>
             <h3 className="font-serif text-4xl md:text-5xl mt-4 leading-tight">
-              Estudio <span className="italic text-accent">Terreno</span>
+              BGR <span className="italic text-accent">Estudio Arquitectura</span>
             </h3>
             <p className="mt-6 text-background/70 max-w-md leading-relaxed">
               Arquitectura argentina contemporánea. Diseñamos obras que
@@ -43,10 +43,10 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-background/90">
               <li>
                 <a
-                  href="mailto:hola@estudioterreno.ar"
+                  href="mailto:hola@bgrarquitectura.com.ar"
                   className="link-underline"
                 >
-                  hola@estudioterreno.ar
+                  hola@bgrarquitectura.com.ar
                 </a>
               </li>
               <li>
@@ -67,7 +67,7 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-background/15 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <p className="text-xs text-background/50 font-mono tracking-wider">
-            © {year} ESTUDIO TERRENO · TODOS LOS DERECHOS RESERVADOS
+            © {year} BGR ESTUDIO ARQUITECTURA · TODOS LOS DERECHOS RESERVADOS
           </p>
           <p className="text-xs text-background/50 font-mono tracking-wider">
             CUIT 30-71234567-8 · MAT. CPAU 12345

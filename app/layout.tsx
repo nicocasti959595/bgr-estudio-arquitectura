@@ -23,11 +23,13 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Estudio Terreno — Arquitectura",
+  title: "BGR Estudio Arquitectura",
   description:
-    "Estudio de arquitectura en Buenos Aires. Obras de arquitectura residencial, comercial e institucional con enfoque en la materialidad y el contexto.",
+    "BGR Estudio Arquitectura. Estudio de arquitectura en Buenos Aires. Obras residenciales, comerciales e institucionales con enfoque en la materialidad y el contexto.",
   keywords: [
-    "arquitectura",
+    "BGR",
+    "BGR arquitectura",
+    "BGR estudio arquitectura",
     "estudio de arquitectura",
     "Argentina",
     "Buenos Aires",
@@ -35,9 +37,9 @@ export const metadata: Metadata = {
     "remodelación",
     "diseño",
   ],
-  metadataBase: new URL("https://estudio-terreno.vercel.app"),
+  metadataBase: new URL("https://bgr-estudio-arquitectura.vercel.app"),
   openGraph: {
-    title: "Estudio Terreno — Arquitectura",
+    title: "BGR Estudio Arquitectura",
     description:
       "Arquitectura argentina contemporánea con foco en la materialidad, el clima y el lugar.",
     type: "website",

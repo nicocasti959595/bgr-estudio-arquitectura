@@ -3,9 +3,9 @@ import Link from "next/link";
 import { getServicios } from "@/lib/datos";
 
 export const metadata: Metadata = {
-  title: "Servicios — Estudio Terreno",
+  title: "Servicios — BGR Estudio Arquitectura",
   description:
-    "Servicios de arquitectura: obra nueva, reciclaje, interiorismo, dirección de obra, paisaje y consultoría.",
+    "Servicios de arquitectura de BGR: obra nueva, reciclaje, interiorismo, dirección de obra, paisaje y consultoría.",
 };
 
 const proceso = [

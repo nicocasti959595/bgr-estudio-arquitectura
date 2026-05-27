@@ -1,12 +1,12 @@
 -- =====================================================
--- Estudio Terreno - Esquema de base de datos
--- Tablas prefijadas con `terreno_` para no colisionar
+-- BGR Estudio Arquitectura - Esquema de base de datos
+-- Tablas prefijadas con `bgr_` para no colisionar
 -- con otros proyectos en la misma instancia Supabase
 -- Ejecutar en: SQL Editor de Supabase
 -- =====================================================
 
 -- 1. PROYECTOS ----------------------------------------
-create table if not exists public.terreno_proyectos (
+create table if not exists public.bgr_proyectos (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null,
   titulo text not null,
@@ -22,11 +22,11 @@ create table if not exists public.terreno_proyectos (
   created_at timestamptz default now()
 );
 
-create index if not exists idx_terreno_proyectos_orden on public.terreno_proyectos(orden);
-create index if not exists idx_terreno_proyectos_destacado on public.terreno_proyectos(destacado);
+create index if not exists idx_bgr_proyectos_orden on public.bgr_proyectos(orden);
+create index if not exists idx_bgr_proyectos_destacado on public.bgr_proyectos(destacado);
 
 -- 2. SERVICIOS ----------------------------------------
-create table if not exists public.terreno_servicios (
+create table if not exists public.bgr_servicios (
   id uuid primary key default gen_random_uuid(),
   titulo text not null,
   descripcion text not null,
@@ -35,7 +35,7 @@ create table if not exists public.terreno_servicios (
 );
 
 -- 3. MIEMBROS DEL EQUIPO ------------------------------
-create table if not exists public.terreno_miembros (
+create table if not exists public.bgr_miembros (
   id uuid primary key default gen_random_uuid(),
   nombre text not null,
   rol text not null,
@@ -46,7 +46,7 @@ create table if not exists public.terreno_miembros (
 );
 
 -- 4. MENSAJES DE CONTACTO -----------------------------
-create table if not exists public.terreno_mensajes (
+create table if not exists public.bgr_mensajes (
   id uuid primary key default gen_random_uuid(),
   nombre text not null,
   email text not null,
@@ -60,33 +60,33 @@ create table if not exists public.terreno_mensajes (
 -- =====================================================
 -- ROW LEVEL SECURITY
 -- =====================================================
-alter table public.terreno_proyectos enable row level security;
-alter table public.terreno_servicios enable row level security;
-alter table public.terreno_miembros  enable row level security;
-alter table public.terreno_mensajes  enable row level security;
+alter table public.bgr_proyectos enable row level security;
+alter table public.bgr_servicios enable row level security;
+alter table public.bgr_miembros  enable row level security;
+alter table public.bgr_mensajes  enable row level security;
 
 -- Lectura pública del catálogo
-drop policy if exists "lectura publica terreno_proyectos" on public.terreno_proyectos;
-create policy "lectura publica terreno_proyectos" on public.terreno_proyectos
+drop policy if exists "lectura publica bgr_proyectos" on public.bgr_proyectos;
+create policy "lectura publica bgr_proyectos" on public.bgr_proyectos
   for select using (true);
 
-drop policy if exists "lectura publica terreno_servicios" on public.terreno_servicios;
-create policy "lectura publica terreno_servicios" on public.terreno_servicios
+drop policy if exists "lectura publica bgr_servicios" on public.bgr_servicios;
+create policy "lectura publica bgr_servicios" on public.bgr_servicios
   for select using (true);
 
-drop policy if exists "lectura publica terreno_miembros" on public.terreno_miembros;
-create policy "lectura publica terreno_miembros" on public.terreno_miembros
+drop policy if exists "lectura publica bgr_miembros" on public.bgr_miembros;
+create policy "lectura publica bgr_miembros" on public.bgr_miembros
   for select using (true);
 
 -- Escritura pública sólo para el formulario de contacto
-drop policy if exists "insertar mensaje publico terreno" on public.terreno_mensajes;
-create policy "insertar mensaje publico terreno" on public.terreno_mensajes
+drop policy if exists "insertar mensaje publico bgr" on public.bgr_mensajes;
+create policy "insertar mensaje publico bgr" on public.bgr_mensajes
   for insert with check (true);
 
 -- =====================================================
 -- DATOS INICIALES
 -- =====================================================
-insert into public.terreno_proyectos (slug, titulo, ubicacion, anio, tipologia, superficie, descripcion, imagen_portada, imagenes, destacado, orden) values
+insert into public.bgr_proyectos (slug, titulo, ubicacion, anio, tipologia, superficie, descripcion, imagen_portada, imagenes, destacado, orden) values
 ('casa-pampa', 'Casa Pampa', 'Cañuelas, Buenos Aires', 2024, 'Residencial', '320 m²',
  'Vivienda unifamiliar emplazada en un lote de 1 hectárea sobre la llanura pampeana. La obra se organiza en una secuencia lineal de patios que median entre la vastedad del paisaje y la intimidad doméstica. Estructura de hormigón visto, carpinterías de madera de petiribí y muros de ladrillo aparente.',
  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80&auto=format&fit=crop',
@@ -117,7 +117,7 @@ insert into public.terreno_proyectos (slug, titulo, ubicacion, anio, tipologia, 
  null, false, 6)
 on conflict (slug) do nothing;
 
-insert into public.terreno_servicios (titulo, descripcion, orden) values
+insert into public.bgr_servicios (titulo, descripcion, orden) values
 ('Obra Nueva', 'Proyecto y dirección de obras residenciales, comerciales e institucionales. Desde la idea inicial hasta la entrega final.', 1),
 ('Reciclaje y Remodelación', 'Intervención sobre edificios existentes con foco en la puesta en valor del patrimonio y la mejora del confort.', 2),
 ('Interiorismo', 'Diseño integral de interiores y mobiliario a medida. Curaduría de materiales, iluminación y equipamiento.', 3),
@@ -125,7 +125,7 @@ insert into public.terreno_servicios (titulo, descripcion, orden) values
 ('Dirección de Obra', 'Coordinación de gremios, control de calidad, certificaciones y vínculo con organismos municipales.', 5),
 ('Diseño de Paisaje', 'Proyecto de jardines, patios y espacios exteriores con flora autóctona y manejo sustentable del agua.', 6);
 
-insert into public.terreno_miembros (nombre, rol, bio, orden) values
+insert into public.bgr_miembros (nombre, rol, bio, orden) values
 ('Inés Mariño', 'Arquitecta · Socia fundadora', 'FADU-UBA, 2008. Posgrado en Proyecto Sustentable en la UPC (Barcelona). Premio Arq Clarín Joven 2015.', 1),
 ('Tomás Vergara', 'Arquitecto · Socio fundador', 'FAU-UNLP, 2009. Investigador del CONICET en materialidad regional argentina. Docente titular FADU-UBA.', 2),
 ('Camila Funes', 'Arquitecta · Dirección de obra', 'FAUD-UNC, 2014. Especialista en hormigón visto y sistemas constructivos en seco.', 3),

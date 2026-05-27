@@ -1,6 +1,6 @@
-# Estudio Terreno — Sitio web
+# BGR Estudio Arquitectura — Sitio web
 
-Sitio del estudio de arquitectura **Estudio Terreno**. Estética profesional argentina inspirada en estudios como BGR.
+Sitio del estudio de arquitectura **BGR Estudio Arquitectura**. Estética profesional argentina, tipografía editorial, paleta tierra/hueso.
 
 ## Stack
 
@@ -50,8 +50,8 @@ Si Supabase no está configurado, el sitio carga los **datos fallback** definido
 1. Crear o usar un proyecto en https://supabase.com
 2. Abrir el SQL Editor del proyecto
 3. Pegar y ejecutar el contenido de `supabase/schema.sql`
-4. Las tablas creadas son: `proyectos`, `servicios`, `miembros`, `mensajes`
-5. RLS habilitada: lectura pública, inserción pública sólo en `mensajes`
+4. Las tablas creadas son: `bgr_proyectos`, `bgr_servicios`, `bgr_miembros`, `bgr_mensajes`
+5. RLS habilitada: lectura pública, inserción pública sólo en `bgr_mensajes`
 
 ## Deploy en Vercel
 
