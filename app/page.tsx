@@ -85,9 +85,9 @@ export default async function Home() {
       {/* HERO */}
       <section className="relative h-[calc(100vh-5rem)] min-h-[560px] max-h-[820px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <ImagenObelisco priority objectPosition="center 40%" />
-          {/* Sólo una franja oscura abajo para asegurar legibilidad de los CTAs */}
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/70 from-0% via-ink/0 via-50% to-transparent" />
+          <ImagenObelisco priority objectPosition="center 60%" />
+          {/* Gradient sutil: solo oscurece la mitad inferior para los CTAs */}
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-ink/5" />
         </div>
 
         <div className="relative w-full mx-auto max-w-[1400px] px-6 md:px-12 pb-12 md:pb-16 text-background">
