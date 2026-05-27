@@ -50,8 +50,8 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="tel:+541147778888" className="link-underline">
-                  +54 11 4777 8888
+                <a href="tel:+5491122506347" className="link-underline">
+                  +54 9 11 2250-6347
                 </a>
               </li>
               <li className="text-background/70 leading-relaxed">

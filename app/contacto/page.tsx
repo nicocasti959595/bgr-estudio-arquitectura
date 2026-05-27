@@ -51,10 +51,10 @@ export default function ContactoPage() {
             <div>
               <p className="eyebrow">— Teléfono</p>
               <a
-                href="tel:+541147778888"
+                href="tel:+5491122506347"
                 className="font-serif text-2xl mt-4 text-ink link-underline block"
               >
-                +54 11 4777 8888
+                +54 9 11 2250-6347
               </a>
             </div>
             <div>
