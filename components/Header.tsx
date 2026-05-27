@@ -24,10 +24,8 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/90 backdrop-blur-md border-b hairline"
-          : "bg-transparent"
+      className={`sticky top-0 z-50 transition-all duration-300 bg-background/95 backdrop-blur-md ${
+        scrolled ? "border-b hairline shadow-sm" : "border-b border-transparent"
       }`}
     >
       <div className="mx-auto max-w-[1400px] px-6 md:px-12 flex items-center justify-between h-16 md:h-20">
