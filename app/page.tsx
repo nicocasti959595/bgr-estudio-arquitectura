@@ -113,7 +113,7 @@ export default async function Home() {
           </p>
 
           <a
-            href="https://instagram.com/bgr.construcciones"
+            href="https://www.instagram.com/bgr.construcciones/"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 inline-flex items-center gap-3 fade-up group"

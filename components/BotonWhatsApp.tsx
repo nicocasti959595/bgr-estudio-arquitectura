@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const NUMERO = "5491122506347";
+const NUMERO = "5491136910077";
 
 export function BotonWhatsApp() {
   const [open, setOpen] = useState(false);

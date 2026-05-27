@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { enviarMensajeAction } from "@/app/contacto/actions";
 
-const NUMERO_WA = "5491122506347";
+const NUMERO_WA = "5491136910077";
 
 type Estado = "idle" | "enviando" | "ok" | "error";
 
