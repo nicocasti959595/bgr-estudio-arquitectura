@@ -1,9 +1,4 @@
-import { supabase, type Proyecto, type Servicio, type Miembro } from "./supabase";
-import {
-  proyectosFallback,
-  serviciosFallback,
-  miembrosFallback,
-} from "./datosFallback";
+import { supabase } from "./supabase";
 
 function tieneSupabase() {
   return (
@@ -12,70 +7,36 @@ function tieneSupabase() {
   );
 }
 
-export async function getProyectos(): Promise<Proyecto[]> {
-  if (!tieneSupabase()) return proyectosFallback;
-  const { data, error } = await supabase
-    .from("bgr_proyectos")
-    .select("*")
-    .order("orden", { ascending: true });
-  if (error || !data || data.length === 0) return proyectosFallback;
-  return data as Proyecto[];
-}
+export async function guardarConsulta(payload: Record<string, unknown>): Promise<{
+  ok: boolean;
+  error?: string;
+}> {
+  const nombre = String(payload.nombre ?? "").trim();
+  const email = String(payload.email ?? "").trim();
+  const whatsapp = String(payload.whatsapp ?? "").trim();
+  const tipo_form = String(payload.tipo_form ?? "general");
+  const mensaje = String(payload.mensaje ?? "");
 
-export async function getProyectosDestacados(): Promise<Proyecto[]> {
-  const todos = await getProyectos();
-  return todos.filter((p) => p.destacado).slice(0, 3);
-}
-
-export async function getProyectoPorSlug(
-  slug: string
-): Promise<Proyecto | null> {
-  if (!tieneSupabase()) {
-    return proyectosFallback.find((p) => p.slug === slug) ?? null;
+  if (!nombre || !email) {
+    return { ok: false, error: "Faltan datos obligatorios." };
   }
-  const { data, error } = await supabase
-    .from("bgr_proyectos")
-    .select("*")
-    .eq("slug", slug)
-    .maybeSingle();
-  if (error || !data) {
-    return proyectosFallback.find((p) => p.slug === slug) ?? null;
-  }
-  return data as Proyecto;
-}
 
-export async function getServicios(): Promise<Servicio[]> {
-  if (!tieneSupabase()) return serviciosFallback;
-  const { data, error } = await supabase
-    .from("bgr_servicios")
-    .select("*")
-    .order("orden", { ascending: true });
-  if (error || !data || data.length === 0) return serviciosFallback;
-  return data as Servicio[];
-}
+  const fila = {
+    nombre,
+    email,
+    telefono: whatsapp || null,
+    asunto: tipo_form,
+    mensaje: mensaje || JSON.stringify(payload),
+    tipo_form,
+    payload,
+  };
 
-export async function getMiembros(): Promise<Miembro[]> {
-  if (!tieneSupabase()) return miembrosFallback;
-  const { data, error } = await supabase
-    .from("bgr_miembros")
-    .select("*")
-    .order("orden", { ascending: true });
-  if (error || !data || data.length === 0) return miembrosFallback;
-  return data as Miembro[];
-}
-
-export async function guardarMensaje(payload: {
-  nombre: string;
-  email: string;
-  telefono?: string | null;
-  asunto?: string | null;
-  mensaje: string;
-}): Promise<{ ok: boolean; error?: string }> {
   if (!tieneSupabase()) {
-    console.log("[contacto · sin supabase configurado]", payload);
+    console.log("[consulta · sin supabase configurado]", fila);
     return { ok: true };
   }
-  const { error } = await supabase.from("bgr_mensajes").insert([payload]);
+
+  const { error } = await supabase.from("bgr_mensajes").insert([fila]);
   if (error) return { ok: false, error: error.message };
   return { ok: true };
 }

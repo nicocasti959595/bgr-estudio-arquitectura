@@ -1,78 +1,86 @@
-import Link from "next/link";
+const navLinks = [
+  { href: "#servicios", label: "Servicios" },
+  { href: "#proyectos", label: "Proyectos" },
+  { href: "#estudio", label: "Estudio" },
+  { href: "#contacto", label: "Contacto" },
+];
 
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="bg-ink text-background mt-32">
-      <div className="mx-auto max-w-[1400px] px-6 md:px-12 py-20">
-        <div className="grid md:grid-cols-12 gap-12 md:gap-8">
-          <div className="md:col-span-5">
-            <p className="eyebrow text-background/60">Estudio</p>
-            <h3 className="font-serif text-4xl md:text-5xl mt-4 leading-tight">
-              BGR <span className="italic text-accent">Estudio Arquitectura</span>
-            </h3>
-            <p className="mt-6 text-background/70 max-w-md leading-relaxed">
-              Arquitectura argentina contemporánea. Diseñamos obras que
-              dialogan con el lugar, el clima y los materiales de cada región.
-            </p>
+    <footer className="bg-[#060606] pt-16 px-6 md:px-12 pb-10">
+      <div className="max-w-[1400px] mx-auto grid md:grid-cols-[1.5fr_1fr_1fr] gap-10 md:gap-16 pb-10 border-b border-white/[0.06]">
+        <div>
+          <div className="flex items-baseline gap-1.5 mb-3">
+            <span className="font-bold text-[14px] text-white tracking-[0.12em]">
+              BGR
+            </span>
+            <span className="font-serif italic text-[13px] text-accent2">
+              Arquitectura y Construcción
+            </span>
           </div>
-
-          <div className="md:col-span-3">
-            <p className="eyebrow text-background/60">Navegación</p>
-            <ul className="mt-4 space-y-3">
-              {[
-                { href: "/proyectos", label: "Proyectos" },
-                { href: "/estudio", label: "Estudio" },
-                { href: "/servicios", label: "Servicios" },
-                { href: "/contacto", label: "Contacto" },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="link-underline text-background/90"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="md:col-span-4">
-            <p className="eyebrow text-background/60">Contacto</p>
-            <ul className="mt-4 space-y-3 text-background/90">
-              <li>
-                <a
-                  href="mailto:hola@bgrarquitectura.com.ar"
-                  className="link-underline"
-                >
-                  hola@bgrarquitectura.com.ar
-                </a>
-              </li>
-              <li>
-                <a href="tel:+5491122506347" className="link-underline">
-                  +54 9 11 2250-6347
-                </a>
-              </li>
-              <li className="text-background/70 leading-relaxed">
-                Av. Libertador 2350, Piso 4°
-                <br />
-                Ciudad Autónoma de Buenos Aires
-                <br />
-                Argentina
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-16 pt-8 border-t border-background/15 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <p className="text-xs text-background/50 font-mono tracking-wider">
-            © {year} BGR ESTUDIO ARQUITECTURA · TODOS LOS DERECHOS RESERVADOS
-          </p>
-          <p className="text-xs text-background/50 font-mono tracking-wider">
-            CUIT 30-71234567-8 · MAT. CPAU 12345
+          <p className="text-[13px] text-white/30 leading-[1.75] font-light">
+            Reformas integrales de departamentos en Buenos Aires.
+            <br />
+            Proyecto, dirección y obra llave en mano.
           </p>
         </div>
+
+        <div>
+          <p className="text-[9px] tracking-[2.5px] uppercase text-white/25 mb-5">
+            Navegación
+          </p>
+          {navLinks.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="block text-[13px] text-white/45 hover:text-white mb-1.5 transition-colors font-light"
+            >
+              {l.label}
+            </a>
+          ))}
+        </div>
+
+        <div>
+          <p className="text-[9px] tracking-[2.5px] uppercase text-white/25 mb-5">
+            Contacto
+          </p>
+          <a
+            href="mailto:info@bgr.com.ar"
+            className="block text-[13px] text-white/45 hover:text-white mb-1.5 transition-colors"
+          >
+            info@bgr.com.ar
+          </a>
+          <a
+            href="https://wa.me/5491122506347"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-[13px] text-white/45 hover:text-white mb-1.5 transition-colors"
+          >
+            +54 9 11 2250-6347
+          </a>
+          <a
+            href="https://instagram.com/bgr.construcciones"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-[13px] text-white/45 hover:text-white mb-1.5 transition-colors"
+          >
+            @bgr.construcciones
+          </a>
+          <span className="block text-[13px] text-white/45 font-light">
+            CABA, Argentina
+          </span>
+        </div>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between pt-7 gap-2">
+        <p className="text-[9px] tracking-[1.5px] uppercase text-white/20">
+          © {year} BGR Arquitectura y Construcción · Todos los derechos
+          reservados
+        </p>
+        <p className="text-[9px] tracking-[1.5px] uppercase text-white/20">
+          CABA · Argentina
+        </p>
       </div>
     </footer>
   );

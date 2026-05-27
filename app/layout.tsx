@@ -1,48 +1,44 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { BotonWhatsApp } from "@/components/BotonWhatsApp";
 
-const inter = Inter({
-  variable: "--font-inter",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
   display: "swap",
 });
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
-  variable: "--font-jetbrains",
-  subsets: ["latin"],
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "BGR Estudio Arquitectura",
+  title: "BGR | Arquitectura y Construcción",
   description:
-    "BGR Estudio Arquitectura. Estudio de arquitectura en Buenos Aires. Obras residenciales, comerciales e institucionales con enfoque en la materialidad y el contexto.",
+    "BGR Arquitectura y Construcción. Reformas integrales de departamentos en CABA. Proyecto, dirección de obra y llave en mano.",
   keywords: [
     "BGR",
-    "BGR arquitectura",
-    "BGR estudio arquitectura",
-    "estudio de arquitectura",
-    "Argentina",
+    "arquitectura",
+    "construcción",
+    "reformas integrales",
+    "departamentos",
+    "llave en mano",
+    "CABA",
     "Buenos Aires",
-    "obra nueva",
-    "remodelación",
-    "diseño",
+    "Argentina",
   ],
   metadataBase: new URL("https://bgr-estudio-arquitectura.vercel.app"),
   openGraph: {
-    title: "BGR Estudio Arquitectura",
+    title: "BGR | Arquitectura y Construcción",
     description:
-      "Arquitectura argentina contemporánea con foco en la materialidad, el clima y el lugar.",
+      "Reformas integrales de departamentos en Buenos Aires. Proyecto, dirección y obra llave en mano.",
     type: "website",
     locale: "es_AR",
   },
@@ -56,13 +52,12 @@ export default function RootLayout({
   return (
     <html
       lang="es-AR"
-      className={`${inter.variable} ${playfair.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col bg-ink text-foreground">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        <BotonWhatsApp />
       </body>
     </html>
   );
