@@ -33,11 +33,13 @@ export function Header() {
       <div className="mx-auto max-w-[1400px] px-6 md:px-12 flex items-center justify-between h-16 md:h-20">
         <Link
           href="/"
-          className="flex items-center gap-3 text-ink"
+          className="flex items-center gap-3 text-ink group"
           onClick={() => setOpen(false)}
           aria-label="BGR Arquitectura y Construcción — Inicio"
         >
-          <Logo className="h-9 w-9 md:h-10 md:w-10 text-ink shrink-0" />
+          <span className="inline-flex items-center justify-center bg-ink p-2 group-hover:bg-accent transition-colors shrink-0">
+            <Logo className="h-7 w-7 md:h-8 md:w-8 text-background" />
+          </span>
           <span className="font-serif text-xl md:text-2xl tracking-tight leading-none">
             <span className="font-medium tracking-tight">BGR</span>{" "}
             <span className="italic text-accent hidden sm:inline">

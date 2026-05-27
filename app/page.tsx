@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getProyectos } from "@/lib/datos";
 import { FAQ } from "@/components/FAQ";
+import { ImagenObelisco } from "@/components/ImagenObelisco";
 
 const datosClave = [
   { numero: "10+", rotulo: "Años de experiencia" },
@@ -84,16 +85,8 @@ export default async function Home() {
       {/* HERO */}
       <section className="relative h-[calc(100vh-5rem)] min-h-[560px] max-h-[820px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=2400&q=85&auto=format&fit=crop"
-            alt="Obra de arquitectura moderna"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-            style={{ objectPosition: "center 35%" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-ink/15" />
+          <ImagenObelisco priority objectPosition="center 35%" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/20" />
         </div>
 
         <div className="relative w-full mx-auto max-w-[1400px] px-6 md:px-12 pb-12 md:pb-16 text-background">
@@ -186,16 +179,9 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* SECCIÓN BUENOS AIRES — OBELISCO */}
+      {/* SECCIÓN BUENOS AIRES — OBELISCO (muestra la imagen opuesta al hero) */}
       <section className="relative h-[55vh] min-h-[420px] overflow-hidden border-b hairline">
-        <Image
-          src="https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=2400&q=85&auto=format&fit=crop"
-          alt="Obelisco de Buenos Aires"
-          fill
-          sizes="100vw"
-          className="object-cover"
-          style={{ objectPosition: "center 50%" }}
-        />
+        <ImagenObelisco invertir objectPosition="center 50%" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/40 to-transparent" />
         <div className="absolute inset-0 flex items-end">
           <div className="w-full mx-auto max-w-[1400px] px-6 md:px-12 pb-12 md:pb-16 text-background">
