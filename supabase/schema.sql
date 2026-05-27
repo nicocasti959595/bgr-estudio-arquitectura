@@ -36,7 +36,7 @@ create policy "insertar consulta publica" on public.bgr_mensajes
 
 drop policy if exists "admin lee mensajes" on public.bgr_mensajes;
 create policy "admin lee mensajes" on public.bgr_mensajes
-  for select using ((auth.jwt() ->> 'email') = 'admin@bgr.com.ar');
+  for select using ((auth.jwt() ->> 'email') = 'adminbgr@bgr.com.ar');
 
 -- 2) TABLA DE PROYECTOS -------------------------------
 create table if not exists public.bgr_proyectos (
@@ -73,8 +73,8 @@ create policy "lectura publica bgr_proyectos" on public.bgr_proyectos
 drop policy if exists "admin escribe bgr_proyectos" on public.bgr_proyectos;
 create policy "admin escribe bgr_proyectos" on public.bgr_proyectos
   for all
-  using ((auth.jwt() ->> 'email') = 'admin@bgr.com.ar')
-  with check ((auth.jwt() ->> 'email') = 'admin@bgr.com.ar');
+  using ((auth.jwt() ->> 'email') = 'adminbgr@bgr.com.ar')
+  with check ((auth.jwt() ->> 'email') = 'adminbgr@bgr.com.ar');
 
 -- 3) STORAGE BUCKET DE IMÁGENES -----------------------
 insert into storage.buckets (id, name, public)
@@ -91,28 +91,28 @@ drop policy if exists "Admin sube bgr-proyectos" on storage.objects;
 create policy "Admin sube bgr-proyectos" on storage.objects
   for insert with check (
     bucket_id = 'bgr-proyectos'
-    and (auth.jwt() ->> 'email') = 'admin@bgr.com.ar'
+    and (auth.jwt() ->> 'email') = 'adminbgr@bgr.com.ar'
   );
 
 drop policy if exists "Admin actualiza bgr-proyectos" on storage.objects;
 create policy "Admin actualiza bgr-proyectos" on storage.objects
   for update using (
     bucket_id = 'bgr-proyectos'
-    and (auth.jwt() ->> 'email') = 'admin@bgr.com.ar'
+    and (auth.jwt() ->> 'email') = 'adminbgr@bgr.com.ar'
   );
 
 drop policy if exists "Admin borra bgr-proyectos" on storage.objects;
 create policy "Admin borra bgr-proyectos" on storage.objects
   for delete using (
     bucket_id = 'bgr-proyectos'
-    and (auth.jwt() ->> 'email') = 'admin@bgr.com.ar'
+    and (auth.jwt() ->> 'email') = 'adminbgr@bgr.com.ar'
   );
 
 -- =====================================================
 -- USUARIO ADMIN
 -- =====================================================
 -- Usuario ya creado vía API:
---   email:    admin@bgr.com.ar
+--   email:    adminbgr@bgr.com.ar
 --   password: BGRconstruimos2026!
 --   user_id:  8cd4fcbd-d44f-4070-9b24-d41b311a180d
 --

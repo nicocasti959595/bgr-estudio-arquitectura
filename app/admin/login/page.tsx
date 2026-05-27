@@ -18,8 +18,11 @@ export default function LoginPage() {
     setError(null);
 
     const supabase = createSupabaseBrowser();
+    // Permitir "adminbgr" sin @ — autocompletamos al dominio interno.
+    const valor = email.trim();
+    const emailFinal = valor.includes("@") ? valor : `${valor}@bgr.com.ar`;
     const { error } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
+      email: emailFinal,
       password,
     });
 
@@ -68,17 +71,18 @@ export default function LoginPage() {
                 htmlFor="email"
                 className="block text-[9px] tracking-[2px] uppercase text-muted mb-2"
               >
-                Email
+                Usuario
               </label>
               <input
                 id="email"
-                type="email"
+                type="text"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="info@bgr.com.ar"
+                placeholder="adminbgr"
                 className="bgr-input"
                 autoFocus
+                autoComplete="username"
               />
             </div>
             <div>

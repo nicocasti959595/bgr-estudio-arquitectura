@@ -1,12 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 const links = [
-  { href: "#servicios", label: "Servicios" },
-  { href: "#proyectos", label: "Proyectos" },
-  { href: "#estudio", label: "Estudio" },
-  { href: "#contacto", label: "Contacto" },
+  { href: "#servicios", label: "Servicios", external: false },
+  { href: "#proyectos", label: "Proyectos", external: false },
+  { href: "#estudio", label: "Estudio", external: false },
+  { href: "#contacto", label: "Contacto", external: false },
+  { href: "/admin/login", label: "Admin", external: true },
 ];
 
 export function Header() {
@@ -25,15 +27,25 @@ export function Header() {
         </a>
 
         <nav className="hidden md:flex gap-8">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-white transition-colors"
-            >
-              {l.label}
-            </a>
-          ))}
+          {links.map((l) =>
+            l.external ? (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-accent2 transition-colors"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-white transition-colors"
+              >
+                {l.label}
+              </a>
+            )
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -81,16 +93,27 @@ export function Header() {
       {open && (
         <div className="md:hidden border-t border-line bg-ink">
           <nav className="flex flex-col px-6 py-4">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="font-serif text-lg text-white py-3 border-b border-line2"
-              >
-                {l.label}
-              </a>
-            ))}
+            {links.map((l) =>
+              l.external ? (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="font-serif text-lg text-accent2 py-3 border-b border-line2"
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="font-serif text-lg text-white py-3 border-b border-line2"
+                >
+                  {l.label}
+                </a>
+              )
+            )}
             <a
               href="https://wa.me/5491122506347"
               target="_blank"
