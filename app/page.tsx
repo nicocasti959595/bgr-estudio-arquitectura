@@ -4,8 +4,8 @@ import { getProyectosDestacados, getServicios } from "@/lib/datos";
 
 const datosClave = [
   { numero: "10+", rotulo: "Años de experiencia" },
-  { numero: "100+", rotulo: "Obras entregadas en CABA" },
-  { numero: "100+", rotulo: "Reformas realizadas" },
+  { numero: "53", rotulo: "Obras entregadas en CABA" },
+  { numero: "153", rotulo: "Reformas realizadas" },
   { numero: "100%", rotulo: "Plazos cumplidos" },
 ];
 
