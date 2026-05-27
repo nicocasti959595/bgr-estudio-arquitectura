@@ -28,10 +28,9 @@ export default async function Home() {
             Estudio de Arquitectura · Buenos Aires · 2008
           </p>
           <h1 className="display text-5xl md:text-7xl lg:text-8xl mt-6 max-w-5xl fade-up">
-            Construimos obras{" "}
-            <span className="italic">que pertenecen</span>
+            Sabemos de esto,
             <br />
-            al lugar en que viven.
+            <span className="italic text-accent">vivimos de esto.</span>
           </h1>
           <div className="mt-12 flex flex-col sm:flex-row gap-4 sm:items-center fade-up">
             <Link
