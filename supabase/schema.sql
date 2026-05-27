@@ -36,7 +36,7 @@ create policy "insertar consulta publica" on public.bgr_mensajes
 
 drop policy if exists "admin lee mensajes" on public.bgr_mensajes;
 create policy "admin lee mensajes" on public.bgr_mensajes
-  for select using (auth.role() = 'authenticated');
+  for select using ((auth.jwt() ->> 'email') = 'admin@bgr.com.ar');
 
 -- 2) TABLA DE PROYECTOS -------------------------------
 create table if not exists public.bgr_proyectos (
@@ -68,12 +68,13 @@ drop policy if exists "lectura publica bgr_proyectos" on public.bgr_proyectos;
 create policy "lectura publica bgr_proyectos" on public.bgr_proyectos
   for select using (true);
 
--- Escritura solo para usuarios autenticados (admin)
+-- Escritura solo para el admin específico (whitelist por email).
+-- Si querés agregar otro admin, sumá su email en el OR.
 drop policy if exists "admin escribe bgr_proyectos" on public.bgr_proyectos;
 create policy "admin escribe bgr_proyectos" on public.bgr_proyectos
   for all
-  using (auth.role() = 'authenticated')
-  with check (auth.role() = 'authenticated');
+  using ((auth.jwt() ->> 'email') = 'admin@bgr.com.ar')
+  with check ((auth.jwt() ->> 'email') = 'admin@bgr.com.ar');
 
 -- 3) STORAGE BUCKET DE IMÁGENES -----------------------
 insert into storage.buckets (id, name, public)
@@ -85,32 +86,42 @@ drop policy if exists "Lectura publica bgr-proyectos" on storage.objects;
 create policy "Lectura publica bgr-proyectos" on storage.objects
   for select using (bucket_id = 'bgr-proyectos');
 
--- Subir solo admin autenticado
+-- Subir, actualizar y borrar solo el admin específico (whitelist por email)
 drop policy if exists "Admin sube bgr-proyectos" on storage.objects;
 create policy "Admin sube bgr-proyectos" on storage.objects
   for insert with check (
-    bucket_id = 'bgr-proyectos' and auth.role() = 'authenticated'
+    bucket_id = 'bgr-proyectos'
+    and (auth.jwt() ->> 'email') = 'admin@bgr.com.ar'
   );
 
 drop policy if exists "Admin actualiza bgr-proyectos" on storage.objects;
 create policy "Admin actualiza bgr-proyectos" on storage.objects
   for update using (
-    bucket_id = 'bgr-proyectos' and auth.role() = 'authenticated'
+    bucket_id = 'bgr-proyectos'
+    and (auth.jwt() ->> 'email') = 'admin@bgr.com.ar'
   );
 
 drop policy if exists "Admin borra bgr-proyectos" on storage.objects;
 create policy "Admin borra bgr-proyectos" on storage.objects
   for delete using (
-    bucket_id = 'bgr-proyectos' and auth.role() = 'authenticated'
+    bucket_id = 'bgr-proyectos'
+    and (auth.jwt() ->> 'email') = 'admin@bgr.com.ar'
   );
 
 -- =====================================================
--- CÓMO CREAR EL USUARIO ADMIN
+-- USUARIO ADMIN
 -- =====================================================
--- En el dashboard de Supabase:
---   Authentication -> Users -> Add user
---   Email:    el del dueño (ej. info@bgr.com.ar)
---   Password: una segura (no se ve después, anotala)
---   "Auto Confirm User": SÍ (sino habrá que confirmar el email)
--- Después se loguea en /admin/login con esos datos.
+-- Usuario ya creado vía API:
+--   email:    admin@bgr.com.ar
+--   password: BGRconstruimos2026!
+--   user_id:  8cd4fcbd-d44f-4070-9b24-d41b311a180d
+--
+-- Las policies de arriba aceptan SOLO este email.
+-- Si querés sumar otro admin, modificá las policies y
+-- creá el segundo user desde Authentication -> Users.
+--
+-- (Opcional para máxima seguridad)
+-- Authentication -> Providers -> Email -> desactivar
+-- "Enable signup" para que nadie más pueda crearse cuenta
+-- aunque conozca la URL del endpoint.
 -- =====================================================
