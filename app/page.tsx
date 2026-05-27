@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getProyectos } from "@/lib/datos";
+import { FAQ } from "@/components/FAQ";
 
 const datosClave = [
   { numero: "10+", rotulo: "Años de experiencia" },
@@ -399,14 +400,14 @@ export default async function Home() {
                 </p>
               </div>
               <h2 className="display text-4xl md:text-5xl lg:text-6xl mt-4 text-ink leading-[1.05]">
-                Estructura propia.
-                <br />
+                Tu tranquilidad{" "}
                 <span className="italic text-accent">
-                  Responsabilidad total.
-                </span>
+                  es nuestra organización
+                </span>.
               </h2>
             </div>
             <p className="md:col-span-5 md:col-start-8 text-base text-muted leading-relaxed">
+              Procesos claros, equipo propio y compromiso firme en cada etapa.
               Cuatro razones por las que cientos de propietarios en Buenos
               Aires nos confían su obra.
             </p>
@@ -428,6 +429,32 @@ export default async function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* FAQ — PREGUNTAS FRECUENTES */}
+      <section className="bg-paper border-y hairline py-20 md:py-28">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12">
+          <div className="grid md:grid-cols-12 gap-10 mb-10 md:mb-14 items-end">
+            <div className="md:col-span-6">
+              <div className="flex items-center gap-3">
+                <span className="h-px w-10 bg-accent" />
+                <p className="text-[10px] tracking-[0.25em] uppercase text-muted font-medium">
+                  Preguntas frecuentes
+                </p>
+              </div>
+              <h2 className="display text-4xl md:text-5xl lg:text-6xl mt-4 text-ink leading-[1.05]">
+                Lo que más nos{" "}
+                <span className="italic text-accent">consultan</span>.
+              </h2>
+            </div>
+            <p className="md:col-span-5 md:col-start-8 text-base text-muted leading-relaxed">
+              Si tenés otra duda, escribinos por WhatsApp y la resolvemos al
+              instante.
+            </p>
+          </div>
+
+          <FAQ />
         </div>
       </section>
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "./Logo";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -7,13 +8,15 @@ export function Footer() {
       <div className="mx-auto max-w-[1400px] px-6 md:px-12 py-20">
         <div className="grid md:grid-cols-12 gap-12 md:gap-8">
           <div className="md:col-span-4">
-            <p className="eyebrow text-background/60">Estudio</p>
-            <h3 className="font-serif text-4xl md:text-5xl mt-4 leading-tight">
-              BGR{" "}
-              <span className="italic text-accent">
-                Arquitectura &amp; Construcción
-              </span>
-            </h3>
+            <div className="flex items-center gap-4 mb-4">
+              <Logo className="h-14 w-14 text-background shrink-0" />
+              <h3 className="font-serif text-3xl md:text-4xl leading-tight">
+                BGR{" "}
+                <span className="italic text-accent">
+                  Arquitectura &amp; Construcción
+                </span>
+              </h3>
+            </div>
             <p className="mt-6 text-background/70 max-w-md leading-relaxed">
               Reformas integrales de departamentos en Buenos Aires. Proyecto,
               dirección y obra llave en mano.

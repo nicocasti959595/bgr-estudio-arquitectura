@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Logo } from "./Logo";
 
 const links = [
   { href: "/", label: "Inicio" },
@@ -32,11 +33,17 @@ export function Header() {
       <div className="mx-auto max-w-[1400px] px-6 md:px-12 flex items-center justify-between h-16 md:h-20">
         <Link
           href="/"
-          className="font-serif text-xl md:text-2xl tracking-tight text-ink"
+          className="flex items-center gap-3 text-ink"
           onClick={() => setOpen(false)}
+          aria-label="BGR Arquitectura y Construcción — Inicio"
         >
-          <span className="font-medium tracking-tight">BGR</span>{" "}
-          <span className="italic text-accent">Arquitectura &amp; Construcción</span>
+          <Logo className="h-9 w-9 md:h-10 md:w-10 text-ink shrink-0" />
+          <span className="font-serif text-xl md:text-2xl tracking-tight leading-none">
+            <span className="font-medium tracking-tight">BGR</span>{" "}
+            <span className="italic text-accent hidden sm:inline">
+              Arquitectura &amp; Construcción
+            </span>
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-10">

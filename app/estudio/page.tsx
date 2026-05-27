@@ -59,11 +59,29 @@ export default function EstudioPage() {
               <span className="italic text-accent">firma</span>.
             </h1>
           </div>
-          <p className="md:col-span-5 md:pt-32 text-lg text-muted leading-relaxed">
-            Cada obra es un compromiso. Diseñamos, calculamos y dirigimos cada
-            proyecto con la misma firma de inicio a fin. Nuestro nombre va en
-            cada metro construido.
-          </p>
+          <div className="md:col-span-5 md:pt-32 space-y-5 text-base md:text-lg text-muted leading-relaxed">
+            <p>
+              Somos{" "}
+              <strong className="text-ink font-medium">
+                BGR Construcciones SRL
+              </strong>
+              , un grupo de Arquitectos y profesionales afines dedicados al
+              proyecto, dirección y construcción de obras civiles de la más
+              alta calidad con una arquitectura de primer nivel.
+            </p>
+            <p>
+              Gracias a la confianza de nuestros clientes estamos cumpliendo
+              en el rubro <strong className="text-ink font-medium">10 años</strong>,
+              realizando proyectos integrales de remodelación y de obras a
+              estrenar, haciendo énfasis en la armonía y funcionalidad de los
+              espacios, la relación con el entorno y en mejorar la calidad de
+              vida de nuestros clientes.
+            </p>
+            <p className="font-serif text-xl md:text-2xl text-ink leading-snug italic">
+              Si lo podés imaginar,{" "}
+              <span className="text-accent">lo podemos construir.</span>
+            </p>
+          </div>
         </div>
       </section>
 
