@@ -13,9 +13,9 @@ import { useEffect, useState } from "react";
  *   2) Cambiá las URLs de abajo por "/obelisco-dia.jpg" y "/obelisco-noche.jpg"
  */
 const IMAGEN_DIA =
-  "https://uzxhloolvpdzfduenkew.supabase.co/storage/v1/object/public/bgr-proyectos/obelisco-dia.jpg";
+  "https://uzxhloolvpdzfduenkew.supabase.co/storage/v1/object/public/bgr-proyectos/obelisco-dia.jpg?v=2";
 const IMAGEN_NOCHE =
-  "https://uzxhloolvpdzfduenkew.supabase.co/storage/v1/object/public/bgr-proyectos/obelisco-noche.jpg";
+  "https://uzxhloolvpdzfduenkew.supabase.co/storage/v1/object/public/bgr-proyectos/obelisco-noche.jpg?v=2";
 
 type Props = {
   alt?: string;
