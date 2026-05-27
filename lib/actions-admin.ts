@@ -74,3 +74,42 @@ export async function cerrarSesionAction() {
   await supabase.auth.signOut();
   redirect("/admin/login");
 }
+
+export async function loginAction(
+  _prev: { error: string | null } | null,
+  formData: FormData
+): Promise<{ error: string | null }> {
+  const usuarioRaw = String(formData.get("usuario") ?? "").trim();
+  const password = String(formData.get("password") ?? "");
+
+  if (!usuarioRaw || !password) {
+    return { error: "Completá usuario y contraseña." };
+  }
+
+  // Permitir "adminbgr" sin @ — autocompletamos al dominio interno.
+  const email = usuarioRaw.includes("@")
+    ? usuarioRaw
+    : `${usuarioRaw}@bgr.com.ar`;
+
+  const supabase = await createSupabaseServer();
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    const msg = error.message?.toLowerCase() ?? "";
+    if (msg.includes("invalid login")) {
+      return { error: `Credenciales inválidas (probaste con ${email}).` };
+    }
+    if (msg.includes("email not confirmed")) {
+      return { error: "Cuenta sin confirmar." };
+    }
+    if (msg.includes("too many")) {
+      return { error: "Demasiados intentos. Esperá un minuto." };
+    }
+    return { error: error.message };
+  }
+
+  redirect("/admin");
+}
