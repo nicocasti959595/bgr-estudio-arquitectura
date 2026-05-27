@@ -79,8 +79,17 @@ export async function loginAction(
   _prev: { error: string | null } | null,
   formData: FormData
 ): Promise<{ error: string | null }> {
-  const usuarioRaw = String(formData.get("usuario") ?? "").trim();
-  const password = String(formData.get("password") ?? "");
+  // Limpieza agresiva: BOM (U+FEFF), zero-width chars, control chars, espacios.
+  // Estos caracteres invisibles aparecen cuando se copia/pega desde Markdown,
+  // chat o ciertos navegadores y rompen las llamadas HTTP (headers ByteString).
+  const sanitizar = (s: string) =>
+    s
+      .replace(/[﻿​-‏‪-‮⁠-⁯]/g, "")
+      .replace(/[\x00-\x1F\x7F]/g, "")
+      .trim();
+
+  const usuarioRaw = sanitizar(String(formData.get("usuario") ?? ""));
+  const password = sanitizar(String(formData.get("password") ?? ""));
 
   if (!usuarioRaw || !password) {
     return { error: "Completá usuario y contraseña." };
