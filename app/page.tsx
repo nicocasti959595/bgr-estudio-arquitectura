@@ -85,8 +85,9 @@ export default async function Home() {
       {/* HERO */}
       <section className="relative h-[calc(100vh-5rem)] min-h-[560px] max-h-[820px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <ImagenObelisco priority objectPosition="center 35%" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/20" />
+          <ImagenObelisco priority objectPosition="center 55%" />
+          {/* Gradient más sutil para que la imagen del Obelisco se vea */}
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-ink/10" />
         </div>
 
         <div className="relative w-full mx-auto max-w-[1400px] px-6 md:px-12 pb-12 md:pb-16 text-background">
