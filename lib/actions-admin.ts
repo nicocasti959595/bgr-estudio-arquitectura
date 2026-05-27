@@ -79,14 +79,17 @@ export async function loginAction(
   _prev: { error: string | null } | null,
   formData: FormData
 ): Promise<{ error: string | null }> {
-  // Limpieza agresiva: BOM (U+FEFF), zero-width chars, control chars, espacios.
-  // Estos caracteres invisibles aparecen cuando se copia/pega desde Markdown,
-  // chat o ciertos navegadores y rompen las llamadas HTTP (headers ByteString).
-  const sanitizar = (s: string) =>
-    s
-      .replace(/[﻿​-‏‪-‮⁠-⁯]/g, "")
-      .replace(/[\x00-\x1F\x7F]/g, "")
-      .trim();
+  // Limpieza agresiva: nos quedamos SOLO con ASCII imprimible (codepoints 32-126).
+  // Esto elimina BOM (U+FEFF = 65279), zero-width chars, control chars, RTL/LTR
+  // marks y cualquier otro caracter invisible que rompa los headers HTTP.
+  const sanitizar = (s: string): string => {
+    let out = "";
+    for (let i = 0; i < s.length; i++) {
+      const code = s.charCodeAt(i);
+      if (code >= 32 && code < 127) out += s[i];
+    }
+    return out.trim();
+  };
 
   const usuarioRaw = sanitizar(String(formData.get("usuario") ?? ""));
   const password = sanitizar(String(formData.get("password") ?? ""));

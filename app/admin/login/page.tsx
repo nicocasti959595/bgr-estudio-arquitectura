@@ -1,16 +1,28 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import { loginAction } from "@/lib/actions-admin";
 
 const INITIAL_STATE: { error: string | null } = { error: null };
+
+// Mismo sanitizar que el server: solo deja ASCII imprimible.
+function sanitizarCliente(s: string): string {
+  let out = "";
+  for (let i = 0; i < s.length; i++) {
+    const code = s.charCodeAt(i);
+    if (code >= 32 && code < 127) out += s[i];
+  }
+  return out;
+}
 
 export default function LoginPage() {
   const [state, formAction, isPending] = useActionState(
     loginAction,
     INITIAL_STATE
   );
+  const [usuario, setUsuario] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-ink px-6 py-20">
@@ -57,6 +69,13 @@ export default function LoginPage() {
                 autoCapitalize="off"
                 autoCorrect="off"
                 spellCheck={false}
+                value={usuario}
+                onChange={(e) => setUsuario(sanitizarCliente(e.target.value))}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const texto = e.clipboardData.getData("text");
+                  setUsuario(sanitizarCliente(texto));
+                }}
               />
             </div>
             <div>
@@ -74,6 +93,13 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 className="bgr-input"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(sanitizarCliente(e.target.value))}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const texto = e.clipboardData.getData("text");
+                  setPassword(sanitizarCliente(texto));
+                }}
               />
             </div>
 
