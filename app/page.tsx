@@ -40,9 +40,9 @@ export default async function Home() {
             </p>
           </div>
           <h1 className="display text-5xl md:text-7xl lg:text-[5.5rem] mt-5 max-w-5xl fade-up leading-[0.95]">
-            Sabemos de esto,
+            Vos tenés la idea,
             <br />
-            <span className="italic text-accent">vivimos de esto.</span>
+            <span className="italic text-accent">nosotros la construimos.</span>
           </h1>
           <p className="mt-6 max-w-xl text-base md:text-lg text-background/85 leading-relaxed fade-up">
             Diseñamos, calculamos y construimos obra propia. Acompañamos cada
