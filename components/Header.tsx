@@ -6,11 +6,11 @@ import { Logo } from "./Logo";
 
 const links = [
   { href: "/", label: "Inicio" },
-  { href: "/proyectos", label: "Proyectos" },
-  { href: "/estudio", label: "Quiénes somos" },
   { href: "/servicios", label: "Servicios" },
+  { href: "/estudio", label: "Quiénes somos" },
+  { href: "/proyectos", label: "Proyectos" },
   { href: "/contacto", label: "Contacto" },
-  { href: "/admin/login", label: "Admin" },
+  { href: "/admin/login", label: "Login" },
 ];
 
 export function Header() {

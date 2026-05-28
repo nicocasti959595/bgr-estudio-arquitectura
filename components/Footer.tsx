@@ -27,9 +27,9 @@ export function Footer() {
             <p className="eyebrow text-background/60">Navegación</p>
             <ul className="mt-4 space-y-3">
               {[
-                { href: "/proyectos", label: "Proyectos" },
-                { href: "/estudio", label: "Quiénes somos" },
                 { href: "/servicios", label: "Servicios" },
+                { href: "/estudio", label: "Quiénes somos" },
+                { href: "/proyectos", label: "Proyectos" },
                 { href: "/contacto", label: "Contacto" },
               ].map((l) => (
                 <li key={l.href}>
