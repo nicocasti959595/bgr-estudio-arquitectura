@@ -23,6 +23,14 @@ const preguntas = [
     q: "¿Hacen arreglos o reparaciones parciales?",
     a: "Lamentablemente no. Únicamente nos abocamos a remodelaciones integrales. Por ejemplo, si solo desea cambiar un mueble o el revestimiento de un piso de un baño, no podemos ayudarlo. En cambio, si desea remodelar íntegramente un baño, una cocina, o un departamento / PH / casa de forma completa, podemos ayudarlo.",
   },
+  {
+    q: "¿Qué sería una remodelación / obra integral?",
+    a: "Hay varios tipos. Una remodelación integral de una casa, departamento o PH es aquella que incluye no solamente la parte estética, sino también la parte de instalaciones y estructura de la vivienda. En este tipo de remodelaciones se renuevan cañerías de agua fría y caliente, desagües pluviales y cloacales, tableros y cables eléctricos, cañerías de gas, modificaciones de morfología de la vivienda, modificaciones estructurales, ampliaciones de superficie, obra nueva, etc. También se considera remodelación integral una reforma de un local sanitario completo (por ejemplo un baño completo o cocina completa), con cambio de cañerías, aberturas, modificaciones morfológicas, diseño de mobiliario, etc. Por último, una obra nueva desde cero también se considera una obra integral.",
+  },
+  {
+    q: "¿Hacen obra nueva?",
+    a: "Sí, realizamos obra nueva en todo el AMBA. ¡No dudes en consultarnos!",
+  },
 ];
 
 export function FAQ() {
