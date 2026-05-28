@@ -2,23 +2,12 @@ import Link from "next/link";
 import { FAQ } from "@/components/FAQ";
 import { GarantiasExpandibles } from "@/components/GarantiasExpandibles";
 import { ImagenObelisco } from "@/components/ImagenObelisco";
+import { HeroCTA } from "@/components/HeroCTA";
+import { getStats } from "@/lib/stats";
 
-const datosClave = [
-  { numero: "10+", rotulo: "Años de experiencia" },
-  {
-    numero: "53",
-    rotulo: "Obras entregadas en CABA",
-    actualizacion: "13/04/2026",
-  },
-  {
-    numero: "124",
-    rotulo: "Reformas realizadas",
-    actualizacion: "15/05/2026",
-  },
-  { numero: "100%", rotulo: "Plazos cumplidos" },
-];
+export default async function Home() {
+  const datosClave = await getStats();
 
-export default function Home() {
   return (
     <>
       {/* HERO */}
@@ -46,44 +35,37 @@ export default function Home() {
             dirección y obra llave en mano.
           </p>
 
+          {/* Badge Instagram GRANDE */}
           <a
             href="https://www.instagram.com/bgr.construcciones/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-3 fade-up group"
+            className="mt-8 inline-flex items-center gap-3 fade-up group"
           >
-            <span className="inline-flex items-center gap-2 px-4 py-2 border border-background/30 hover:border-accent hover:bg-accent/10 transition-colors">
+            <span className="inline-flex items-center gap-3 px-6 py-4 bg-background/10 border border-background/40 hover:border-accent hover:bg-accent/20 backdrop-blur-sm transition-all">
               <svg
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="h-4 w-4 text-background"
+                className="h-7 w-7 text-background"
                 aria-hidden="true"
               >
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
               </svg>
-              <span className="text-[11px] tracking-[0.18em] uppercase text-background">
-                @bgr.construcciones
-              </span>
-              <span className="text-[10px] text-background/60 group-hover:text-accent transition-colors">
+              <div>
+                <p className="text-sm tracking-[0.15em] uppercase text-background font-medium">
+                  @bgr.construcciones
+                </p>
+                <p className="text-[10px] tracking-[0.18em] uppercase text-background/60 mt-0.5">
+                  Seguinos en Instagram
+                </p>
+              </div>
+              <span className="text-xl text-background/70 group-hover:text-accent group-hover:translate-x-1 transition-all">
                 ↗
               </span>
             </span>
           </a>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:items-center fade-up">
-            <Link
-              href="/proyectos"
-              className="inline-flex items-center justify-center px-8 py-4 bg-background text-ink text-sm tracking-wider uppercase hover:bg-accent hover:text-background transition-colors"
-            >
-              Ver obra construida
-            </Link>
-            <Link
-              href="/contacto"
-              className="inline-flex items-center justify-center px-8 py-4 border border-background/40 text-background text-sm tracking-wider uppercase hover:bg-background hover:text-ink transition-colors"
-            >
-              Asesoramiento sin compromiso
-            </Link>
-          </div>
+          <HeroCTA />
         </div>
 
         <div className="absolute bottom-5 right-5 md:right-12 hidden md:flex items-center gap-3 text-background/65 text-[10px] tracking-[0.25em] uppercase">

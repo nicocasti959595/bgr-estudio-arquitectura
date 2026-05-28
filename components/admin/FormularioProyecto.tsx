@@ -261,7 +261,7 @@ export function FormularioProyecto({ proyecto }: Props) {
       <div>
         <Label htmlFor="portada">Imagen de portada</Label>
         <div className="grid md:grid-cols-[200px_1fr] gap-6 mt-3">
-          <div className="relative aspect-[4/3] bg-surface border border-line overflow-hidden">
+          <div className="relative aspect-[4/3] bg-paper border border-line overflow-hidden">
             {imagenPortada ? (
               <Image
                 src={imagenPortada}
@@ -277,7 +277,7 @@ export function FormularioProyecto({ proyecto }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-3 justify-center">
-            <label className="inline-flex items-center justify-center bg-paper border border-line text-white px-5 py-3 text-[10px] tracking-[2px] uppercase hover:bg-surface transition-colors cursor-pointer w-fit">
+            <label className="inline-flex items-center justify-center bg-paper border border-line text-background px-5 py-3 text-[10px] tracking-[2px] uppercase hover:bg-paper transition-colors cursor-pointer w-fit">
               <input
                 type="file"
                 accept="image/*"
@@ -291,7 +291,7 @@ export function FormularioProyecto({ proyecto }: Props) {
               <button
                 type="button"
                 onClick={() => setImagenPortada("")}
-                className="text-[11px] text-muted hover:text-white text-left w-fit tracking-wider uppercase"
+                className="text-[11px] text-muted hover:text-background text-left w-fit tracking-wider uppercase"
               >
                 Quitar
               </button>
@@ -310,7 +310,7 @@ export function FormularioProyecto({ proyecto }: Props) {
           {imagenes.map((url) => (
             <div
               key={url}
-              className="relative aspect-square bg-surface border border-line overflow-hidden group"
+              className="relative aspect-square bg-paper border border-line overflow-hidden group"
             >
               <Image
                 src={url}
@@ -322,13 +322,13 @@ export function FormularioProyecto({ proyecto }: Props) {
               <button
                 type="button"
                 onClick={() => quitarImagenGaleria(url)}
-                className="absolute inset-0 bg-ink/80 text-white text-[10px] tracking-[2px] uppercase opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute inset-0 bg-ink/80 text-background text-[10px] tracking-[2px] uppercase opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 Quitar
               </button>
             </div>
           ))}
-          <label className="aspect-square bg-paper border border-dashed border-line flex items-center justify-center text-muted hover:text-white hover:border-accent2 transition-colors cursor-pointer text-[10px] tracking-[2px] uppercase text-center px-2">
+          <label className="aspect-square bg-paper border border-dashed border-line flex items-center justify-center text-muted hover:text-background hover:border-accent transition-colors cursor-pointer text-[10px] tracking-[2px] uppercase text-center px-2">
             <input
               type="file"
               accept="image/*"
@@ -343,7 +343,7 @@ export function FormularioProyecto({ proyecto }: Props) {
       </div>
 
       {subiendo && (
-        <div className="border border-accent2/40 bg-accent/10 px-5 py-3 text-[13px] text-accent2">
+        <div className="border border-accent/40 bg-accent/10 px-5 py-3 text-[13px] text-accent">
           Subiendo imagen al servidor…
         </div>
       )}
@@ -372,14 +372,14 @@ export function FormularioProyecto({ proyecto }: Props) {
           <button
             type="button"
             onClick={() => router.push("/admin")}
-            className="text-[11px] tracking-[1.5px] uppercase text-muted hover:text-white"
+            className="text-[11px] tracking-[1.5px] uppercase text-muted hover:text-background"
           >
             Cancelar
           </button>
           <button
             type="submit"
             disabled={isPending || subiendo}
-            className="bg-accent text-white px-9 py-3.5 text-[10px] tracking-[2px] uppercase hover:bg-accent2 transition-colors disabled:opacity-50"
+            className="bg-accent text-background px-9 py-3.5 text-[10px] tracking-[2px] uppercase hover:bg-accent transition-colors disabled:opacity-50"
           >
             {isPending
               ? "Guardando…"
@@ -408,7 +408,7 @@ function Label({
       className="block text-[9px] tracking-[2px] uppercase text-muted mb-2"
     >
       {children}
-      {required && <sup className="text-accent2"> *</sup>}
+      {required && <sup className="text-accent"> *</sup>}
     </label>
   );
 }

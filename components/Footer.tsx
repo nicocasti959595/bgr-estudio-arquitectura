@@ -28,6 +28,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {[
                 { href: "/servicios", label: "Servicios" },
+                { href: "/metodo-bgr", label: "Método BGR" },
                 { href: "/estudio", label: "Quiénes somos" },
                 { href: "/proyectos", label: "Proyectos" },
                 { href: "/contacto", label: "Contacto" },

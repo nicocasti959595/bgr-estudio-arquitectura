@@ -1,40 +1,49 @@
 type Props = {
   className?: string;
-  ariaLabel?: string;
 };
 
 /**
- * Logo BGR — círculo con dos casas y pico central.
- * Usa currentColor, así hereda el color del padre (oscuro sobre claro,
- * claro sobre oscuro). Reemplazá este SVG por un Image que apunte a
- * /public/logo.png si querés tu PNG exacto.
+ * Monograma BGR estilizado: cuadrado con techo decorativo + iniciales BGR
+ * en serif italic. Hereda color via currentColor.
  */
-export function Logo({ className = "h-9 w-9", ariaLabel = "BGR" }: Props) {
+export function Logo({ className = "h-8 w-8" }: Props) {
   return (
     <svg
-      viewBox="0 0 200 200"
+      viewBox="0 0 100 100"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label={ariaLabel}
-      role="img"
+      aria-label="BGR Logo"
     >
-      {/* Anillo exterior (círculo grueso) */}
-      <path
-        fill="currentColor"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M100 8c50.81 0 92 41.19 92 92s-41.19 92-92 92S8 150.81 8 100 49.19 8 100 8zm0 16c41.974 0 76 34.026 76 76s-34.026 76-76 76-76-34.026-76-76 34.026-76 76-76z"
+      <rect
+        x="6"
+        y="6"
+        width="88"
+        height="88"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
       />
-      {/* Casas izquierda + derecha (silueta con techos) */}
       <path
-        fill="currentColor"
-        d="M28 148 L72 95 L95 122 L100 117 L105 122 L128 95 L172 148 L172 160 L28 160 Z"
+        d="M 28 32 L 50 16 L 72 32"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
-      {/* Pico central (V invertida elevada — el "ave" del logo) */}
-      <path
+      <text
+        x="50"
+        y="73"
+        textAnchor="middle"
+        fontFamily="Playfair Display, Georgia, serif"
+        fontWeight="500"
+        fontStyle="italic"
+        fontSize="34"
         fill="currentColor"
-        d="M78 115 L100 78 L122 115 L114 122 L100 105 L86 122 Z"
-      />
+        style={{ letterSpacing: "-0.02em" }}
+      >
+        BGR
+      </text>
     </svg>
   );
 }

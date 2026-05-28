@@ -75,6 +75,26 @@ export async function cerrarSesionAction() {
   redirect("/admin/login");
 }
 
+export async function actualizarStatAction(
+  clave: string,
+  numero: string,
+  actualizacion: string | null
+) {
+  const supabase = await requireAdmin();
+  const { error } = await supabase
+    .from("bgr_stats")
+    .update({
+      numero: numero.trim(),
+      actualizacion: actualizacion?.trim() || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("clave", clave);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/");
+  revalidatePath("/admin/stats");
+  return { ok: true };
+}
+
 export async function loginAction(
   _prev: { error: string | null } | null,
   formData: FormData

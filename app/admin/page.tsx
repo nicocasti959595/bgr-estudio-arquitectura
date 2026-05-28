@@ -24,7 +24,7 @@ export default async function AdminDashboard() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
             <div className="eyebrow mb-3">Panel privado</div>
-            <h1 className="font-serif text-4xl md:text-5xl text-white">
+            <h1 className="font-serif text-4xl md:text-5xl text-ink">
               Proyectos
             </h1>
             <p className="text-[14px] text-muted mt-2 font-light">
@@ -35,7 +35,7 @@ export default async function AdminDashboard() {
           </div>
           <Link
             href="/admin/proyectos/nuevo"
-            className="inline-flex items-center justify-center bg-accent text-white px-7 py-3.5 text-[10px] tracking-[2px] uppercase hover:bg-accent2 transition-colors"
+            className="inline-flex items-center justify-center bg-accent text-ink px-7 py-3.5 text-[10px] tracking-[2px] uppercase hover:bg-ink transition-colors"
           >
             + Nueva obra
           </Link>
@@ -44,7 +44,7 @@ export default async function AdminDashboard() {
         {proyectos.length === 0 ? (
           <div className="border border-line bg-paper p-12 text-center">
             <p className="text-muted font-light text-[14px]">
-              No hay obras cargadas. Tocá <span className="text-accent2">"+ Nueva obra"</span> para crear la primera.
+              No hay obras cargadas. Tocá <span className="text-accent">"+ Nueva obra"</span> para crear la primera.
             </p>
           </div>
         ) : (
@@ -53,7 +53,7 @@ export default async function AdminDashboard() {
               <Link
                 key={p.id}
                 href={`/admin/proyectos/${p.id}`}
-                className="bg-ink p-6 hover:bg-paper transition-colors group flex flex-col"
+                className="bg-paper p-6 border hairline hover:bg-paper transition-colors group flex flex-col"
               >
                 <div className="relative aspect-[4/3] bg-surface mb-4 overflow-hidden">
                   {p.imagen_portada ? (
@@ -70,24 +70,24 @@ export default async function AdminDashboard() {
                     </div>
                   )}
                   {p.destacado && (
-                    <span className="absolute top-2 right-2 bg-accent text-white px-2 py-1 text-[9px] tracking-[1.5px] uppercase">
+                    <span className="absolute top-2 right-2 bg-accent text-ink px-2 py-1 text-[9px] tracking-[1.5px] uppercase">
                       Destacada
                     </span>
                   )}
                 </div>
                 <div className="flex items-start justify-between gap-2 flex-1">
                   <div className="min-w-0">
-                    <div className="text-[10px] tracking-[1.5px] uppercase text-accent2 truncate">
+                    <div className="text-[10px] tracking-[1.5px] uppercase text-accent truncate">
                       {p.tipo ?? "Sin tipo"}
                     </div>
-                    <h3 className="font-serif text-xl text-white mt-1 truncate">
+                    <h3 className="font-serif text-xl text-ink mt-1 truncate">
                       {p.titulo}
                     </h3>
                     <p className="text-[12px] text-muted mt-0.5 truncate">
                       {p.barrio ?? "—"}
                     </p>
                   </div>
-                  <span className="font-mono text-[10px] text-muted shrink-0 mt-1 group-hover:text-accent2 transition-colors">
+                  <span className="font-mono text-[10px] text-muted shrink-0 mt-1 group-hover:text-accent transition-colors">
                     →
                   </span>
                 </div>
