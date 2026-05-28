@@ -18,22 +18,6 @@ const datosClave = [
   { numero: "100%", rotulo: "Plazos cumplidos" },
 ];
 
-const equipo = [
-  {
-    inicial: "J",
-    nombre: "Javier",
-    rol: "Construcción · Socio fundador",
-    desc: "Más de diez años llevando obras adelante en CABA. Especializado en reformas integrales y dirección de obra. Cada proyecto con seguimiento propio de inicio a fin.",
-  },
-  {
-    inicial: "A",
-    nombre: "Alejandro",
-    rol: "Arquitectura · Socio fundador",
-    desc: "Arquitecto con foco en diseño y proyecto. Cada reforma parte de un concepto claro y termina con una ejecución precisa. Responsable del desarrollo técnico de cada obra.",
-  },
-];
-
-
 export default function Home() {
   return (
     <>
@@ -159,56 +143,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* QUIÉNES SOMOS / EQUIPO */}
-      <section className="py-20 md:py-32" id="estudio">
+      {/* CTA breve para conocer al equipo en /estudio */}
+      <section className="py-16 md:py-20" id="estudio">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-          <div className="grid md:grid-cols-12 gap-12 mb-14 items-end">
-            <div className="md:col-span-5">
+          <div className="grid md:grid-cols-12 gap-8 items-end border-y hairline py-10 md:py-12">
+            <div className="md:col-span-7">
               <div className="flex items-center gap-3">
                 <span className="h-px w-10 bg-accent" />
                 <p className="text-[10px] tracking-[0.25em] uppercase text-muted font-medium">
-                  Quiénes somos
+                  Un equipo, una firma
                 </p>
               </div>
-              <h2 className="display text-4xl md:text-5xl lg:text-6xl mt-4 text-ink leading-[1.05]">
-                Un equipo, una{" "}
-                <span className="italic text-accent">firma</span>.
-              </h2>
+              <p className="font-serif text-2xl md:text-3xl mt-4 text-ink leading-snug max-w-2xl">
+                Dos socios al frente de cada proyecto:{" "}
+                <span className="italic text-accent">Javier</span> en
+                construcción y{" "}
+                <span className="italic text-accent">Alejandro</span> en
+                arquitectura. Nuestro nombre va en cada metro construido.
+              </p>
             </div>
-            <p className="md:col-span-6 md:col-start-7 text-base md:text-lg text-muted leading-relaxed">
-              Cada obra es un compromiso. Diseñamos, calculamos y dirigimos
-              cada proyecto con la misma firma de inicio a fin. Nuestro nombre
-              va en cada metro construido.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-px bg-line border hairline">
-            {equipo.map((m, i) => (
-              <div
-                key={m.nombre}
-                className="bg-background p-8 md:p-10 hover:bg-paper transition-colors grid grid-cols-[100px_1fr] md:grid-cols-[120px_1fr] gap-6 md:gap-8 items-start"
+            <div className="md:col-span-5 md:text-right">
+              <Link
+                href="/estudio"
+                className="inline-flex items-center gap-2 text-sm tracking-[0.18em] uppercase text-ink link-underline"
               >
-                <div className="aspect-square bg-paper border hairline flex items-center justify-center">
-                  <span className="display text-6xl md:text-7xl text-accent">
-                    {m.inicial}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-[10px] tracking-[0.22em] uppercase text-accent font-medium">
-                    /0{i + 1}
-                  </p>
-                  <h3 className="font-serif text-2xl md:text-3xl mt-2 text-ink">
-                    {m.nombre}
-                  </h3>
-                  <p className="text-[11px] tracking-[0.18em] uppercase text-muted mt-1 font-medium">
-                    {m.rol}
-                  </p>
-                  <p className="mt-4 text-sm text-muted leading-relaxed">
-                    {m.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
+                Conocé al equipo →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
