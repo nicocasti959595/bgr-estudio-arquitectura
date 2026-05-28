@@ -68,10 +68,17 @@ export default async function Home() {
           <HeroCTA />
         </div>
 
-        <div className="absolute bottom-5 right-5 md:right-12 hidden md:flex items-center gap-3 text-background/65 text-[10px] tracking-[0.25em] uppercase">
-          <span>Est. 2008</span>
-          <span className="h-px w-6 bg-background/40" />
-          <span>Mat. CPAU</span>
+        <div className="absolute bottom-5 right-5 md:right-12 hidden md:flex flex-col items-end gap-2 text-background/70 text-[10px] tracking-[0.25em] uppercase">
+          <div className="flex items-center gap-3">
+            <span>CABA &amp; GBA</span>
+            <span className="h-px w-6 bg-background/40" />
+            <span>Respuesta en 24 hs</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span>Llave en mano</span>
+            <span className="h-px w-6 bg-background/40" />
+            <span>Presupuesto cerrado</span>
+          </div>
         </div>
       </section>
 
