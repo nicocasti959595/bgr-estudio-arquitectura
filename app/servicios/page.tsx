@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getServicios } from "@/lib/datos";
-import { SelectorServicios } from "@/components/SelectorServicios";
+import { WizardServicios } from "@/components/WizardServicios";
 
 export const metadata: Metadata = {
   title: "Servicios — BGR Arquitectura & Construcción",
   description:
-    "Servicios de BGR: obra nueva, reciclaje, interiorismo, dirección de obra, paisaje y consultoría. Consultá por WhatsApp el servicio que necesitás.",
+    "Guiado paso a paso para tu obra: elegí el tipo, contanos los detalles y te abrimos WhatsApp con tu consulta lista para enviar.",
 };
 
 const proceso = [
@@ -36,36 +35,28 @@ const proceso = [
   },
 ];
 
-export default async function ServiciosPage() {
-  const servicios = await getServicios();
-
+export default function ServiciosPage() {
   return (
     <>
-      <section className="pt-32 md:pt-44 pb-16 border-b hairline">
+      <section className="pt-32 md:pt-44 pb-12 border-b hairline">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12">
           <p className="eyebrow">— Práctica profesional</p>
           <h1 className="display text-5xl md:text-7xl lg:text-8xl mt-6 text-ink max-w-5xl">
             Servicios
           </h1>
-          <p className="mt-8 text-lg md:text-xl text-muted max-w-2xl leading-relaxed">
+          <p className="mt-8 text-lg md:text-xl text-muted max-w-3xl leading-relaxed">
             <strong className="text-ink font-medium">
-              Seleccioná el servicio por el que querés consultar
+              Te guiamos paso a paso.
             </strong>{" "}
-            y completá un formulario breve. Te abrimos WhatsApp con el mensaje
-            listo para enviar.
+            Elegí el tipo de obra, contanos los detalles y al final te abrimos
+            WhatsApp con tu consulta armada lista para enviar.
           </p>
         </div>
       </section>
 
       <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-          <SelectorServicios
-            servicios={servicios.map((s) => ({
-              id: s.id,
-              titulo: s.titulo,
-              descripcion: s.descripcion,
-            }))}
-          />
+        <div className="mx-auto max-w-[1100px] px-6 md:px-12">
+          <WizardServicios />
         </div>
       </section>
 
@@ -108,8 +99,14 @@ export default async function ServiciosPage() {
               <span className="italic text-accent">otro canal</span>?
             </h2>
             <p className="mt-4 text-base text-background/75 max-w-2xl">
-              Escribinos por mail o completá el formulario completo en
-              contacto.
+              Escribinos por mail a{" "}
+              <a
+                href="mailto:info@bgr.com.ar"
+                className="text-accent link-underline"
+              >
+                info@bgr.com.ar
+              </a>{" "}
+              o completá el formulario completo en contacto.
             </p>
           </div>
           <div className="md:col-span-4 md:text-right">

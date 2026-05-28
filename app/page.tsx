@@ -1,7 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
-import { getProyectos } from "@/lib/datos";
 import { FAQ } from "@/components/FAQ";
+import { GarantiasExpandibles } from "@/components/GarantiasExpandibles";
 import { ImagenObelisco } from "@/components/ImagenObelisco";
 
 const datosClave = [
@@ -22,7 +21,7 @@ const datosClave = [
 const equipo = [
   {
     inicial: "J",
-    nombre: "Javi",
+    nombre: "Javier",
     rol: "Construcción · Socio fundador",
     desc: "Más de diez años llevando obras adelante en CABA. Especializado en reformas integrales y dirección de obra. Cada proyecto con seguimiento propio de inicio a fin.",
   },
@@ -34,52 +33,8 @@ const equipo = [
   },
 ];
 
-const garantias = [
-  {
-    titulo: "Matrícula habilitada",
-    desc: "Profesionales con matrícula CPAU activa. Documentación municipal y planos aprobados en cada obra.",
-  },
-  {
-    titulo: "Equipo propio",
-    desc: "Red estable de contratistas verificados. El mismo equipo de inicio a fin en cada proyecto.",
-  },
-  {
-    titulo: "Presupuesto cerrado",
-    desc: "Plazo y precio fijo desde el inicio. Sin sorpresas al final de la obra.",
-  },
-  {
-    titulo: "Seguimiento semanal",
-    desc: "Fotos y reportes de avance todas las semanas. Acceso permanente al estado de la obra.",
-  },
-];
 
-// Datos de "tiempo / ambientes" derivados/simulados para la tabla.
-// El admin puede editar título/tipo/ubicación; estos son aprox.
-function duracionEstimada(tipo: string): string {
-  const t = tipo.toLowerCase();
-  if (t.includes("baño") || t.includes("toilette")) return "3 sem";
-  if (t.includes("cocina")) return "5 sem";
-  if (t.includes("reforma integral")) return "12 sem";
-  if (t.includes("obra nueva")) return "20 sem";
-  if (t.includes("remodelación")) return "4 sem";
-  return "6 sem";
-}
-function ambientesEstimados(tipo: string, titulo: string): string {
-  const txt = (titulo + " " + tipo).toLowerCase();
-  let n = 0;
-  if (txt.includes("cocina")) n++;
-  if (txt.includes("baño")) n++;
-  if (txt.includes("lavadero")) n++;
-  if (txt.includes("comedor")) n++;
-  if (txt.includes("living")) n++;
-  if (txt.includes("departamento") || txt.includes("integral")) return "4+";
-  return n > 0 ? `${n}` : "1";
-}
-
-export default async function Home() {
-  const proyectos = await getProyectos();
-  const recientes = proyectos.slice(0, 8);
-
+export default function Home() {
   return (
     <>
       {/* HERO */}
@@ -258,125 +213,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* OBRA RECIENTE — TABLA */}
-      <section className="bg-paper border-t hairline py-20 md:py-28">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-14">
-            <div>
-              <div className="flex items-center gap-3">
-                <span className="h-px w-10 bg-accent" />
-                <p className="text-[10px] tracking-[0.25em] uppercase text-muted font-medium">
-                  Obra reciente
-                </p>
-              </div>
-              <h2 className="display text-4xl md:text-6xl mt-4 text-ink">
-                Últimos proyectos entregados
-              </h2>
-            </div>
-            <Link
-              href="/proyectos"
-              className="link-underline text-sm tracking-wider uppercase text-ink"
-            >
-              Ver galería completa →
-            </Link>
-          </div>
-
-          {/* DESKTOP TABLE */}
-          <div className="hidden md:block border hairline overflow-hidden">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b hairline bg-background/60">
-                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
-                    /n°
-                  </th>
-                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
-                    Obra
-                  </th>
-                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
-                    Tipo
-                  </th>
-                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
-                    Ubicación
-                  </th>
-                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
-                    Duración
-                  </th>
-                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium">
-                    Ambientes
-                  </th>
-                  <th className="px-5 py-3 text-[10px] tracking-[0.22em] uppercase text-muted font-medium text-right">
-                    Año
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {recientes.map((p, i) => (
-                  <tr
-                    key={p.id}
-                    className="border-t hairline hover:bg-background/40 transition-colors group"
-                  >
-                    <td className="px-5 py-4 text-xs text-muted">
-                      /{String(i + 1).padStart(2, "0")}
-                    </td>
-                    <td className="px-5 py-4">
-                      <Link
-                        href={`/proyectos/${p.slug}`}
-                        className="font-serif text-lg text-ink hover:text-accent transition-colors"
-                      >
-                        {p.titulo}
-                      </Link>
-                    </td>
-                    <td className="px-5 py-4 text-sm text-muted">
-                      {p.tipologia}
-                    </td>
-                    <td className="px-5 py-4 text-sm text-muted">
-                      {p.ubicacion}
-                    </td>
-                    <td className="px-5 py-4 text-sm text-accent">
-                      {duracionEstimada(p.tipologia)}
-                    </td>
-                    <td className="px-5 py-4 text-sm text-muted">
-                      {ambientesEstimados(p.tipologia, p.titulo)}
-                    </td>
-                    <td className="px-5 py-4 text-sm text-muted text-right">
-                      {p.anio}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* MOBILE LIST */}
-          <div className="md:hidden divide-y divide-line border hairline">
-            {recientes.map((p, i) => (
-              <Link
-                key={p.id}
-                href={`/proyectos/${p.slug}`}
-                className="block p-5 hover:bg-background/40 transition-colors"
-              >
-                <div className="flex items-baseline justify-between gap-3 mb-1">
-                  <span className="text-[10px] tracking-[0.22em] uppercase text-muted">
-                    /{String(i + 1).padStart(2, "0")} · {p.tipologia}
-                  </span>
-                  <span className="text-xs text-muted">{p.anio}</span>
-                </div>
-                <h3 className="font-serif text-xl text-ink">{p.titulo}</h3>
-                <p className="text-sm text-muted mt-1">{p.ubicacion}</p>
-                <div className="flex gap-4 mt-3 text-xs">
-                  <span className="text-accent">
-                    {duracionEstimada(p.tipologia)} ·{" "}
-                    {ambientesEstimados(p.tipologia, p.titulo)} amb.
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* GARANTÍAS / POR QUÉ ELEGIRNOS */}
-      <section className="py-20 md:py-28">
+      <section className="bg-paper border-y hairline py-20 md:py-28">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12">
           <div className="grid md:grid-cols-12 gap-10 mb-12 md:mb-16 items-end">
             <div className="md:col-span-6">
@@ -395,27 +233,15 @@ export default async function Home() {
             </div>
             <p className="md:col-span-5 md:col-start-8 text-base text-muted leading-relaxed">
               Procesos claros, equipo propio y compromiso firme en cada etapa.
-              Cuatro razones por las que cientos de propietarios en Buenos
-              Aires nos confían su obra.
+              <strong className="text-ink font-medium">
+                {" "}
+                Tocá cada punto
+              </strong>{" "}
+              para ver el detalle de cómo lo garantizamos.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border hairline">
-            {garantias.map((g, i) => (
-              <div
-                key={g.titulo}
-                className="bg-background p-7 md:p-9 hover:bg-paper transition-colors"
-              >
-                <p className="display text-4xl text-accent">/0{i + 1}</p>
-                <h3 className="font-serif text-xl md:text-2xl mt-4 text-ink">
-                  {g.titulo}
-                </h3>
-                <p className="mt-3 text-sm text-muted leading-relaxed">
-                  {g.desc}
-                </p>
-              </div>
-            ))}
-          </div>
+          <GarantiasExpandibles />
         </div>
       </section>
 

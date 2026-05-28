@@ -28,7 +28,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {[
                 { href: "/proyectos", label: "Proyectos" },
-                { href: "/estudio", label: "Estudio" },
+                { href: "/estudio", label: "Quiénes somos" },
                 { href: "/servicios", label: "Servicios" },
                 { href: "/contacto", label: "Contacto" },
               ].map((l) => (

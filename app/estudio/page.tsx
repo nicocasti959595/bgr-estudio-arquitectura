@@ -16,7 +16,7 @@ const cifras = [
 const equipo = [
   {
     inicial: "J",
-    nombre: "Javi",
+    nombre: "Javier",
     rol: "Construcción · Socio fundador",
     desc: "Más de diez años llevando obras adelante en CABA. Especializado en reformas integrales y dirección de obra. Cada proyecto con seguimiento propio de inicio a fin.",
   },
