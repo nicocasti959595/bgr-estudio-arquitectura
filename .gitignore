@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# Documento interno con credenciales — NUNCA subirlo
+HANDOFF.md
