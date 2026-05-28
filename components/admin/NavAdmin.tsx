@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { cerrarSesionAction } from "@/lib/actions-admin";
 
-export function NavAdmin({ email }: { email: string }) {
+// El email del header es el "público" de la marca, no el usuario real de login.
+const EMAIL_PUBLICO = "info@bgr.com.ar";
+
+export function NavAdmin(_props: { email: string }) {
   return (
     <header className="border-b hairline bg-background/95 backdrop-blur-md sticky top-0 z-30">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-4 md:py-5 flex items-center justify-between gap-6">
@@ -44,7 +47,7 @@ export function NavAdmin({ email }: { email: string }) {
 
         <div className="flex items-center gap-4">
           <span className="hidden sm:inline text-[11px] text-muted tracking-wider">
-            {email}
+            {EMAIL_PUBLICO}
           </span>
           <form action={cerrarSesionAction}>
             <button

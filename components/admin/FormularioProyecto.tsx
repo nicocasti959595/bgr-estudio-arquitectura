@@ -277,7 +277,7 @@ export function FormularioProyecto({ proyecto }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-3 justify-center">
-            <label className="inline-flex items-center justify-center bg-paper border border-line text-background px-5 py-3 text-[10px] tracking-[2px] uppercase hover:bg-paper transition-colors cursor-pointer w-fit">
+            <label className="inline-flex items-center justify-center bg-ink border border-ink text-background px-5 py-3 text-[10px] tracking-[2px] uppercase hover:bg-accent hover:border-accent transition-colors cursor-pointer w-fit">
               <input
                 type="file"
                 accept="image/*"
@@ -328,7 +328,7 @@ export function FormularioProyecto({ proyecto }: Props) {
               </button>
             </div>
           ))}
-          <label className="aspect-square bg-paper border border-dashed border-line flex items-center justify-center text-muted hover:text-background hover:border-accent transition-colors cursor-pointer text-[10px] tracking-[2px] uppercase text-center px-2">
+          <label className="aspect-square bg-paper border-2 border-dashed border-line flex items-center justify-center text-muted hover:text-ink hover:border-accent hover:bg-background transition-colors cursor-pointer text-[10px] tracking-[2px] uppercase text-center px-2">
             <input
               type="file"
               accept="image/*"
