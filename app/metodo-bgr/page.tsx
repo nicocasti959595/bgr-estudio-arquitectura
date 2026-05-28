@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getConfig } from "@/lib/config";
 import { youTubeEmbedUrl } from "@/lib/youtube";
+import { BotonAsesoramiento } from "@/components/BotonAsesoramiento";
 
 export const dynamic = "force-dynamic";
 
@@ -10,29 +10,6 @@ export const metadata: Metadata = {
   description:
     "Conocé el método BGR: nuestro proceso completo desde el primer contacto hasta la entrega de la obra. Mirá el video y descubrí cómo trabajamos.",
 };
-
-const pilares = [
-  {
-    n: "01",
-    titulo: "Diagnóstico",
-    desc: "Visitamos tu obra, escuchamos tu idea y medimos el alcance real del proyecto.",
-  },
-  {
-    n: "02",
-    titulo: "Diseño",
-    desc: "Proyectamos a tu medida. Planos, materiales y cronograma claros antes de empezar.",
-  },
-  {
-    n: "03",
-    titulo: "Ejecución",
-    desc: "Equipo propio en obra, control de calidad semanal y comunicación constante.",
-  },
-  {
-    n: "04",
-    titulo: "Entrega",
-    desc: "Obra limpia, todo funcionando y postventa por escrito. Llave en mano.",
-  },
-];
 
 export default async function MetodoBGRPage() {
   const videoUrl = await getConfig("video_metodo_url");
@@ -93,41 +70,62 @@ export default async function MetodoBGRPage() {
         </div>
       </section>
 
-      {/* 4 PILARES */}
+      {/* DESCRIPCIÓN DEL VIDEO + CTA COTIZAR */}
       <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-          <div className="text-center mb-14 md:mb-16">
-            <p className="eyebrow">— 4 pilares</p>
-            <h2 className="display text-4xl md:text-5xl mt-4 text-ink">
-              Los pilares del{" "}
-              <span className="italic text-accent">método</span>
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border hairline">
-            {pilares.map((p) => (
-              <div
-                key={p.n}
-                className="bg-background p-8 md:p-10 hover:bg-paper transition-colors"
-              >
-                <p className="display text-5xl text-accent">{p.n}</p>
-                <h3 className="font-serif text-2xl mt-4 text-ink">
-                  {p.titulo}
-                </h3>
-                <p className="mt-3 text-sm text-muted leading-relaxed">
-                  {p.desc}
+        <div className="mx-auto max-w-[1100px] px-6 md:px-12">
+          <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-start">
+            <div className="md:col-span-7">
+              <p className="eyebrow">— Sobre el video</p>
+              <h2 className="display text-4xl md:text-5xl mt-4 text-ink leading-[1.1]">
+                Mirá cómo trabajamos,{" "}
+                <span className="italic text-accent">paso a paso</span>.
+              </h2>
+              <div className="mt-7 space-y-4 text-base md:text-lg text-muted leading-relaxed">
+                <p>
+                  En este video repasamos el{" "}
+                  <strong className="text-ink font-medium">
+                    método BGR
+                  </strong>{" "}
+                  completo: desde el primer contacto, la visita técnica y el
+                  diseño, hasta la gestión de permisos municipales, la
+                  ejecución de la obra y la entrega final.
+                </p>
+                <p>
+                  Conocé las dos modalidades de cotización (llave en mano y
+                  mano de obra), cómo es el seguimiento semanal con
+                  fotografías y reportes, y qué incluye nuestra garantía
+                  postventa por escrito.
+                </p>
+                <p className="font-serif text-xl md:text-2xl text-ink italic leading-snug pt-2">
+                  Si lo podés imaginar,{" "}
+                  <span className="text-accent not-italic">
+                    lo podemos construir.
+                  </span>
                 </p>
               </div>
-            ))}
-          </div>
+            </div>
 
-          <div className="mt-12 text-center">
-            <Link
-              href="/servicios"
-              className="inline-flex items-center justify-center px-10 py-5 bg-accent text-background text-sm tracking-wider uppercase hover:bg-ink transition-colors"
-            >
-              Ver el paso a paso completo →
-            </Link>
+            <aside className="md:col-span-5 md:pt-12 border-t md:border-t-0 md:border-l hairline pt-8 md:pt-0 md:pl-12">
+              <p className="text-[10px] tracking-[0.25em] uppercase text-muted font-medium">
+                — Te respondemos en 24 hs
+              </p>
+              <h3 className="font-serif text-2xl md:text-3xl text-ink mt-3 leading-snug">
+                Pedinos un{" "}
+                <span className="italic text-accent">presupuesto</span>{" "}
+                sin compromiso.
+              </h3>
+              <p className="mt-4 text-sm text-muted leading-relaxed">
+                Completá el formulario breve y te abrimos WhatsApp con tu
+                consulta lista para enviar.
+              </p>
+              <div className="mt-6">
+                <BotonAsesoramiento
+                  variant="oscuro"
+                  label="Cotizar ahora →"
+                  className="w-full sm:w-auto"
+                />
+              </div>
+            </aside>
           </div>
         </div>
       </section>
