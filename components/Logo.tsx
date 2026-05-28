@@ -3,47 +3,59 @@ type Props = {
 };
 
 /**
- * Monograma BGR estilizado: cuadrado con techo decorativo + iniciales BGR
- * en serif italic. Hereda color via currentColor.
+ * Logo BGR: anillo circular + dos casas con techos a dos aguas
+ * y un pico central elevado. Color via currentColor (hereda).
+ * Sin fondo propio — se monta sobre el background del header.
  */
 export function Logo({ className = "h-8 w-8" }: Props) {
   return (
     <svg
-      viewBox="0 0 100 100"
+      viewBox="0 0 200 200"
       xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
       className={className}
       aria-label="BGR Logo"
     >
-      <rect
-        x="6"
-        y="6"
-        width="88"
-        height="88"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
+      {/* Anillo circular */}
       <path
-        d="M 28 32 L 50 16 L 72 32"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        fillRule="evenodd"
+        d="M 100 8 A 92 92 0 1 1 99.99 8 Z M 100 30 A 70 70 0 1 0 100.01 30 Z"
       />
-      <text
-        x="50"
-        y="73"
-        textAnchor="middle"
-        fontFamily="Playfair Display, Georgia, serif"
-        fontWeight="500"
-        fontStyle="italic"
-        fontSize="34"
-        fill="currentColor"
-        style={{ letterSpacing: "-0.02em" }}
-      >
-        BGR
-      </text>
+
+      {/* Casas con techos a dos aguas (zigzag + pico central elevado) */}
+      <path d="M 22 152 L 72 100 L 100 130 L 128 100 L 178 152 L 178 165 L 22 165 Z" />
+
+      {/* Pico central elevado (silueta de ave/águila) */}
+      <path d="M 76 118 L 100 82 L 124 118 L 113 124 L 100 104 L 87 124 Z" />
+
+      {/* Ventanas con cuadrícula (izquierda) */}
+      <g>
+        <rect
+          x="40"
+          y="138"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        />
+        <line x1="48" y1="138" x2="48" y2="154" stroke="currentColor" strokeWidth="2" />
+        <line x1="40" y1="146" x2="56" y2="146" stroke="currentColor" strokeWidth="2" />
+      </g>
+      {/* Ventanas con cuadrícula (derecha) */}
+      <g>
+        <rect
+          x="144"
+          y="138"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        />
+        <line x1="152" y1="138" x2="152" y2="154" stroke="currentColor" strokeWidth="2" />
+        <line x1="144" y1="146" x2="160" y2="146" stroke="currentColor" strokeWidth="2" />
+      </g>
     </svg>
   );
 }

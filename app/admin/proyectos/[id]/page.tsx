@@ -26,12 +26,12 @@ export default async function EditarProyectoPage(
       <main className="max-w-[1000px] mx-auto px-6 md:px-12 py-12 md:py-16">
         <Link
           href="/admin"
-          className="text-[10px] tracking-[2px] uppercase text-muted hover:text-white inline-block mb-6"
+          className="text-[10px] tracking-[2px] uppercase text-muted hover:text-ink inline-block mb-6"
         >
           ← Volver
         </Link>
         <div className="eyebrow mb-3">Editar obra</div>
-        <h1 className="font-serif text-4xl md:text-5xl text-white mb-2">
+        <h1 className="font-serif text-4xl md:text-5xl text-ink mb-2">
           {proyecto.titulo}
         </h1>
         <p className="text-[13px] text-muted mb-10">

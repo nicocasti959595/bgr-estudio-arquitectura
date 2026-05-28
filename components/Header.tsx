@@ -38,9 +38,7 @@ export function Header() {
           onClick={() => setOpen(false)}
           aria-label="BGR Arquitectura y Construcción — Inicio"
         >
-          <span className="inline-flex items-center justify-center bg-ink p-2 group-hover:bg-accent transition-colors shrink-0">
-            <Logo className="h-7 w-7 md:h-8 md:w-8 text-background" />
-          </span>
+          <Logo className="h-10 w-10 md:h-11 md:w-11 text-ink group-hover:text-accent transition-colors shrink-0" />
           <span className="font-serif text-xl md:text-2xl tracking-tight leading-none">
             <span className="font-medium tracking-tight">BGR</span>{" "}
             <span className="italic text-accent hidden sm:inline">

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { actualizarStatAction } from "@/lib/actions-admin";
+import { AvisoAccion } from "./AvisoAccion";
 import type { Stat } from "@/lib/stats";
 
 export function FormularioStat({ stat }: { stat: Stat }) {
@@ -9,23 +10,29 @@ export function FormularioStat({ stat }: { stat: Stat }) {
   const [actualizacion, setActualizacion] = useState(
     stat.actualizacion ?? ""
   );
-  const [estado, setEstado] = useState<"idle" | "ok" | "error">("idle");
-  const [error, setError] = useState("");
+  const [aviso, setAviso] = useState<
+    { tipo: "ok" | "error"; mensaje: string } | null
+  >(null);
   const [isPending, startTransition] = useTransition();
 
   function handleSave() {
-    setEstado("idle");
-    setError("");
+    setAviso(null);
     startTransition(async () => {
       const res = await actualizarStatAction(
         stat.clave,
         numero,
         actualizacion || null
       );
-      if (res.ok) setEstado("ok");
-      else {
-        setEstado("error");
-        setError(res.error ?? "Error al guardar");
+      if (res.ok) {
+        setAviso({
+          tipo: "ok",
+          mensaje: `Stat "${stat.rotulo}" guardada correctamente.`,
+        });
+      } else {
+        setAviso({
+          tipo: "error",
+          mensaje: res.error ?? "No se pudo guardar la stat.",
+        });
       }
     });
   }
@@ -76,13 +83,15 @@ export function FormularioStat({ stat }: { stat: Stat }) {
         >
           {isPending ? "Guardando…" : "Guardar"}
         </button>
-        {estado === "ok" && (
-          <p className="text-xs text-accent">✓ Guardado</p>
-        )}
-        {estado === "error" && (
-          <p className="text-xs text-red-700">{error}</p>
-        )}
       </div>
+
+      {aviso && (
+        <AvisoAccion
+          tipo={aviso.tipo}
+          mensaje={aviso.mensaje}
+          onCerrar={() => setAviso(null)}
+        />
+      )}
     </div>
   );
 }

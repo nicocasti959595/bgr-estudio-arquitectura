@@ -75,6 +75,21 @@ export async function cerrarSesionAction() {
   redirect("/admin/login");
 }
 
+export async function actualizarConfigAction(clave: string, valor: string) {
+  const supabase = await requireAdmin();
+  const { error } = await supabase
+    .from("bgr_config")
+    .upsert({
+      clave,
+      valor: valor.trim(),
+      updated_at: new Date().toISOString(),
+    });
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/metodo-bgr");
+  revalidatePath("/admin/metodo");
+  return { ok: true };
+}
+
 export async function actualizarStatAction(
   clave: string,
   numero: string,

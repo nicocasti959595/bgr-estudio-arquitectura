@@ -112,7 +112,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full bg-accent text-white py-3.5 text-[10px] tracking-[2px] uppercase hover:bg-accent2 transition-colors disabled:opacity-50"
+              className="w-full bg-accent text-white py-3.5 text-[10px] tracking-[2px] uppercase hover:bg-ink transition-colors disabled:opacity-50"
             >
               {isPending ? "Ingresando…" : "Entrar →"}
             </button>

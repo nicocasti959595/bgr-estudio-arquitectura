@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getConfig } from "@/lib/config";
+import { youTubeEmbedUrl } from "@/lib/youtube";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Método BGR — Arquitectura & Construcción",
@@ -30,7 +34,10 @@ const pilares = [
   },
 ];
 
-export default function MetodoBGRPage() {
+export default async function MetodoBGRPage() {
+  const videoUrl = await getConfig("video_metodo_url");
+  const embed = youTubeEmbedUrl(videoUrl);
+
   return (
     <>
       <section className="pt-32 md:pt-44 pb-16 border-b hairline">
@@ -52,25 +59,36 @@ export default function MetodoBGRPage() {
       {/* VIDEO PRINCIPAL */}
       <section className="py-16 md:py-20 bg-paper border-b hairline">
         <div className="mx-auto max-w-[1100px] px-6 md:px-12">
-          <div className="aspect-video bg-ink border hairline flex items-center justify-center relative overflow-hidden">
-            {/* Placeholder: cuando tengas el video, reemplazá esto por un <iframe> de YouTube */}
-            <div className="text-center px-6">
-              <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-16 w-16 text-accent mx-auto mb-4"
-                aria-hidden="true"
-              >
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-              </svg>
-              <p className="text-background/90 font-serif text-2xl md:text-3xl">
-                Video del Método BGR
-              </p>
-              <p className="text-background/50 text-sm mt-3 max-w-md mx-auto">
-                Próximamente cargaremos acá el video explicativo del proceso
-                completo.
-              </p>
-            </div>
+          <div className="aspect-video bg-ink border hairline overflow-hidden">
+            {embed ? (
+              <iframe
+                src={embed}
+                title="Método BGR — Arquitectura y Construcción"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-center px-6">
+                <div>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-16 w-16 text-accent mx-auto mb-4"
+                    aria-hidden="true"
+                  >
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  </svg>
+                  <p className="text-background/90 font-serif text-2xl md:text-3xl">
+                    Video del Método BGR
+                  </p>
+                  <p className="text-background/50 text-sm mt-3 max-w-md mx-auto">
+                    Próximamente cargaremos acá el video explicativo del
+                    proceso completo.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

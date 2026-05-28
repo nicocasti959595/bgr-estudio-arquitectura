@@ -28,6 +28,12 @@ export function NavAdmin({ email }: { email: string }) {
             Stats
           </Link>
           <Link
+            href="/admin/metodo"
+            className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-ink transition-colors"
+          >
+            Video Método
+          </Link>
+          <Link
             href="/"
             target="_blank"
             className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-ink transition-colors"
