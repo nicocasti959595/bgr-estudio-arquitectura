@@ -11,9 +11,39 @@ export const metadata: Metadata = {
     "Conocé el método BGR: nuestro proceso completo desde el primer contacto hasta la entrega de la obra. Mirá el video y descubrí cómo trabajamos.",
 };
 
+const descripcionFallback = `En este video repasamos el **método BGR** completo: desde el primer contacto, la visita técnica y el diseño, hasta la gestión de permisos municipales, la ejecución de la obra y la entrega final.
+
+Conocé las dos modalidades de cotización (llave en mano y mano de obra), cómo es el seguimiento semanal con fotografías y reportes, y qué incluye nuestra garantía postventa por escrito.`;
+
+// Convierte texto plano con párrafos separados por línea en blanco a JSX.
+// Soporta **negrita** simple con <strong>.
+function renderParrafos(texto: string) {
+  const parrafos = texto.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+  return parrafos.map((p, i) => {
+    const partes = p.split(/(\*\*[^*]+\*\*)/g);
+    return (
+      <p key={i}>
+        {partes.map((parte, k) =>
+          parte.startsWith("**") && parte.endsWith("**") ? (
+            <strong key={k} className="text-ink font-medium">
+              {parte.slice(2, -2)}
+            </strong>
+          ) : (
+            <span key={k}>{parte}</span>
+          )
+        )}
+      </p>
+    );
+  });
+}
+
 export default async function MetodoBGRPage() {
-  const videoUrl = await getConfig("video_metodo_url");
+  const [videoUrl, descripcion] = await Promise.all([
+    getConfig("video_metodo_url"),
+    getConfig("video_metodo_descripcion"),
+  ]);
   const embed = youTubeEmbedUrl(videoUrl);
+  const textoDesc = (descripcion ?? "").trim() || descripcionFallback;
 
   return (
     <>
@@ -81,21 +111,7 @@ export default async function MetodoBGRPage() {
                 <span className="italic text-accent">paso a paso</span>.
               </h2>
               <div className="mt-7 space-y-4 text-base md:text-lg text-muted leading-relaxed">
-                <p>
-                  En este video repasamos el{" "}
-                  <strong className="text-ink font-medium">
-                    método BGR
-                  </strong>{" "}
-                  completo: desde el primer contacto, la visita técnica y el
-                  diseño, hasta la gestión de permisos municipales, la
-                  ejecución de la obra y la entrega final.
-                </p>
-                <p>
-                  Conocé las dos modalidades de cotización (llave en mano y
-                  mano de obra), cómo es el seguimiento semanal con
-                  fotografías y reportes, y qué incluye nuestra garantía
-                  postventa por escrito.
-                </p>
+                {renderParrafos(textoDesc)}
                 <p className="font-serif text-xl md:text-2xl text-ink italic leading-snug pt-2">
                   Si lo podés imaginar,{" "}
                   <span className="text-accent not-italic">
