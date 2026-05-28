@@ -108,10 +108,20 @@ export default function EstudioPage() {
                 <span className="italic text-accent">visión</span>.
               </h2>
             </div>
-            <p className="md:col-span-6 md:col-start-7 text-base md:text-lg text-muted leading-relaxed">
-              Construcción y arquitectura bajo el mismo techo. Atendemos cada
-              proyecto en persona, sin intermediarios.
-            </p>
+            <div className="md:col-span-6 md:col-start-7 space-y-4">
+              <p className="font-serif text-xl md:text-2xl text-ink leading-snug">
+                Dos socios al frente de cada proyecto:{" "}
+                <span className="italic text-accent">Javier</span> en
+                construcción y{" "}
+                <span className="italic text-accent">Alejandro</span> en
+                arquitectura.
+              </p>
+              <p className="text-base text-muted leading-relaxed">
+                Nuestro nombre va en cada metro construido. Construcción y
+                arquitectura bajo el mismo techo. Atendemos cada proyecto en
+                persona, sin intermediarios.
+              </p>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-px bg-line border hairline">

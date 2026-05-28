@@ -143,36 +143,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA breve para conocer al equipo en /estudio */}
-      <section className="py-16 md:py-20" id="estudio">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-          <div className="grid md:grid-cols-12 gap-8 items-end border-y hairline py-10 md:py-12">
-            <div className="md:col-span-7">
-              <div className="flex items-center gap-3">
-                <span className="h-px w-10 bg-accent" />
-                <p className="text-[10px] tracking-[0.25em] uppercase text-muted font-medium">
-                  Un equipo, una firma
-                </p>
-              </div>
-              <p className="font-serif text-2xl md:text-3xl mt-4 text-ink leading-snug max-w-2xl">
-                Dos socios al frente de cada proyecto:{" "}
-                <span className="italic text-accent">Javier</span> en
-                construcción y{" "}
-                <span className="italic text-accent">Alejandro</span> en
-                arquitectura. Nuestro nombre va en cada metro construido.
-              </p>
-            </div>
-            <div className="md:col-span-5 md:text-right">
-              <Link
-                href="/estudio"
-                className="inline-flex items-center gap-2 text-sm tracking-[0.18em] uppercase text-ink link-underline"
-              >
-                Conocé al equipo →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* GARANTÍAS / POR QUÉ ELEGIRNOS */}
       <section className="bg-paper border-y hairline py-20 md:py-28">
