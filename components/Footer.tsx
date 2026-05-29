@@ -9,7 +9,10 @@ export function Footer() {
         <div className="grid md:grid-cols-12 gap-12 md:gap-8">
           <div className="md:col-span-4">
             <div className="flex items-center gap-4 mb-4">
-              <Logo className="h-14 w-14 text-background shrink-0" />
+              <Logo
+                variant="light"
+                className="h-16 w-16 object-contain shrink-0"
+              />
               <h3 className="font-serif text-3xl md:text-4xl leading-tight">
                 BGR{" "}
                 <span className="italic text-accent">
