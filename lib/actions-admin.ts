@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServer } from "./supabase-server";
+import { heroModoKey } from "./hero-config";
+import type { HeroZona } from "./hero-config";
 
 async function requireAdmin() {
   const supabase = await createSupabaseServer();
@@ -91,50 +93,34 @@ export async function actualizarConfigAction(clave: string, valor: string) {
 }
 
 // ============================================================
-//  HERO (imagen del inicio)
+//  HERO / ZONAS DE IMÁGENES (configurables por zona)
 // ============================================================
 
 const HERO_LIMITE = 7;
 
-export async function agregarHeroImageAction(input: {
-  url: string;
-  label: string;
-}) {
-  const supabase = await requireAdmin();
-
-  // Verificar límite duro
+async function contarZona(
+  supabase: Awaited<ReturnType<typeof requireAdmin>>,
+  zona: HeroZona
+) {
   const { count } = await supabase
     .from("bgr_hero_images")
-    .select("*", { count: "exact", head: true });
-  if ((count ?? 0) >= HERO_LIMITE) {
-    return {
-      ok: false as const,
-      error: `Llegaste al límite de ${HERO_LIMITE} imágenes. Borrá una primero.`,
-    };
-  }
+    .select("*", { count: "exact", head: true })
+    .eq("zona", zona);
+  return count ?? 0;
+}
 
-  // Obtener próximo orden
-  const { data: ult } = await supabase
+async function proximoOrdenZona(
+  supabase: Awaited<ReturnType<typeof requireAdmin>>,
+  zona: HeroZona
+) {
+  const { data } = await supabase
     .from("bgr_hero_images")
     .select("orden")
+    .eq("zona", zona)
     .order("orden", { ascending: false })
     .limit(1)
     .maybeSingle();
-  const proximoOrden = (ult?.orden ?? 0) + 1;
-
-  const { error } = await supabase.from("bgr_hero_images").insert([
-    {
-      url: input.url.trim(),
-      label: input.label.trim() || "Imagen sin nombre",
-      orden: proximoOrden,
-      principal: false,
-      en_rotacion: false,
-    },
-  ]);
-  if (error) return { ok: false as const, error: error.message };
-  revalidatePath("/");
-  revalidatePath("/admin/hero");
-  return { ok: true as const };
+  return (data?.orden ?? 0) + 1;
 }
 
 export async function eliminarHeroImageAction(id: string) {
@@ -142,21 +128,19 @@ export async function eliminarHeroImageAction(id: string) {
 
   const { data: img } = await supabase
     .from("bgr_hero_images")
-    .select("principal")
+    .select("principal, zona")
     .eq("id", id)
     .maybeSingle();
   if (!img) return { ok: false as const, error: "Imagen no encontrada." };
 
-  // No permitir eliminar la única principal: el modo fijo necesita una
+  // No permitir eliminar la única imagen de la zona
   if (img.principal) {
-    const { count: total } = await supabase
-      .from("bgr_hero_images")
-      .select("*", { count: "exact", head: true });
-    if ((total ?? 0) <= 1) {
+    const total = await contarZona(supabase, img.zona as HeroZona);
+    if (total <= 1) {
       return {
         ok: false as const,
         error:
-          "No podés eliminar la única imagen. Subí otra primero para que el hero tenga algo que mostrar.",
+          "No podés eliminar la única imagen de esta sección. Subí otra primero.",
       };
     }
   }
@@ -167,12 +151,13 @@ export async function eliminarHeroImageAction(id: string) {
     .eq("id", id);
   if (error) return { ok: false as const, error: error.message };
 
-  // Si era principal, marcar otra como principal (cualquiera, prefiriendo una de rotación)
+  // Si era principal, promover otra de la MISMA zona (preferir las de rotación)
   if (img.principal) {
     const { data: candidata } = await supabase
       .from("bgr_hero_images")
       .select("id")
-      .order("en_rotacion", { ascending: false }) // las en_rotacion primero
+      .eq("zona", img.zona)
+      .order("en_rotacion", { ascending: false })
       .order("orden", { ascending: true })
       .limit(1)
       .maybeSingle();
@@ -209,19 +194,19 @@ export async function setHeroPrincipalAction(id: string) {
 
   const { data: img } = await supabase
     .from("bgr_hero_images")
-    .select("id")
+    .select("zona")
     .eq("id", id)
     .maybeSingle();
   if (!img) return { ok: false as const, error: "Imagen no encontrada." };
 
-  // Quitar principal a todas (por el unique index parcial)
+  // Quitar principal solo dentro de la misma zona (unique index parcial por zona)
   const { error: e1 } = await supabase
     .from("bgr_hero_images")
     .update({ principal: false, updated_at: new Date().toISOString() })
+    .eq("zona", img.zona)
     .eq("principal", true);
   if (e1) return { ok: false as const, error: e1.message };
 
-  // Marcar la nueva
   const { error: e2 } = await supabase
     .from("bgr_hero_images")
     .update({ principal: true, updated_at: new Date().toISOString() })
@@ -233,48 +218,13 @@ export async function setHeroPrincipalAction(id: string) {
   return { ok: true as const };
 }
 
-export async function actualizarObeliscoConfigAction(input: {
-  activo: boolean;
-  horaNocheInicio: number;
-  horaNocheFin: number;
-}) {
-  const supabase = await requireAdmin();
-
-  // Validación
-  const hi = Math.round(input.horaNocheInicio);
-  const hf = Math.round(input.horaNocheFin);
-  if (hi < 0 || hi > 23 || hf < 0 || hf > 23) {
-    return {
-      ok: false as const,
-      error: "Las horas deben estar entre 0 y 23.",
-    };
-  }
-  if (hi === hf) {
-    return {
-      ok: false as const,
-      error: "La hora de inicio y fin no pueden ser iguales.",
-    };
-  }
-
-  const ahora = new Date().toISOString();
-  const filas = [
-    { clave: "obelisco_activo", valor: input.activo ? "true" : "false", updated_at: ahora },
-    { clave: "obelisco_hora_noche_inicio", valor: String(hi), updated_at: ahora },
-    { clave: "obelisco_hora_noche_fin", valor: String(hf), updated_at: ahora },
-  ];
-
-  const { error } = await supabase.from("bgr_config").upsert(filas);
-  if (error) return { ok: false as const, error: error.message };
-
-  revalidatePath("/");
-  revalidatePath("/admin/hero");
-  return { ok: true as const };
-}
-
-export async function actualizarHeroModoAction(modo: "fija" | "rotacion") {
+export async function actualizarHeroModoAction(
+  zona: HeroZona,
+  modo: "fija" | "rotacion"
+) {
   const supabase = await requireAdmin();
   const { error } = await supabase.from("bgr_config").upsert({
-    clave: "hero_modo",
+    clave: heroModoKey(zona),
     valor: modo,
     updated_at: new Date().toISOString(),
   });
@@ -285,20 +235,18 @@ export async function actualizarHeroModoAction(modo: "fija" | "rotacion") {
 }
 
 /**
- * Sube un archivo al bucket `bgr-proyectos` bajo `hero/`.
- * Recibe el archivo como FormData (porque server actions soportan File).
- * Devuelve la URL pública.
+ * Sube un archivo al bucket `bgr-proyectos` bajo `hero/` y lo asocia a una zona.
  */
 export async function subirHeroImagenAction(formData: FormData) {
   const supabase = await requireAdmin();
   const archivo = formData.get("archivo") as File | null;
   const label = String(formData.get("label") ?? "").trim();
+  const zona = (String(formData.get("zona") ?? "hero") as HeroZona) || "hero";
 
   if (!archivo) {
     return { ok: false as const, error: "No se recibió archivo." };
   }
 
-  // Validación servidor (defensa en profundidad — el cliente ya valida)
   const tiposOk = ["image/jpeg", "image/png", "image/webp"];
   if (!tiposOk.includes(archivo.type)) {
     return {
@@ -313,20 +261,15 @@ export async function subirHeroImagenAction(formData: FormData) {
     };
   }
 
-  // Verificar límite
-  const { count } = await supabase
-    .from("bgr_hero_images")
-    .select("*", { count: "exact", head: true });
-  if ((count ?? 0) >= HERO_LIMITE) {
+  if ((await contarZona(supabase, zona)) >= HERO_LIMITE) {
     return {
       ok: false as const,
-      error: `Llegaste al límite de ${HERO_LIMITE} imágenes. Borrá una primero.`,
+      error: `Llegaste al límite de ${HERO_LIMITE} imágenes en esta sección. Borrá una primero.`,
     };
   }
 
-  // Nombre único
   const ext = archivo.name.split(".").pop()?.toLowerCase() ?? "jpg";
-  const nombre = `hero/${Date.now()}-${Math.random()
+  const nombre = `hero/${zona}-${Date.now()}-${Math.random()
     .toString(36)
     .slice(2, 8)}.${ext}`;
 
@@ -339,21 +282,14 @@ export async function subirHeroImagenAction(formData: FormData) {
     .from("bgr-proyectos")
     .getPublicUrl(nombre);
 
-  // Próximo orden
-  const { data: ult } = await supabase
-    .from("bgr_hero_images")
-    .select("orden")
-    .order("orden", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
   const { error: insErr } = await supabase.from("bgr_hero_images").insert([
     {
       url: publica.publicUrl,
       label: label || "Imagen subida",
-      orden: (ult?.orden ?? 0) + 1,
+      orden: await proximoOrdenZona(supabase, zona),
       principal: false,
       en_rotacion: false,
+      zona,
     },
   ]);
   if (insErr) return { ok: false as const, error: insErr.message };

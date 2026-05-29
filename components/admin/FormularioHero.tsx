@@ -9,16 +9,18 @@ import {
   subirHeroImagenAction,
   toggleHeroRotacionAction,
 } from "@/lib/actions-admin";
-import { HERO_LIMITE_IMAGENES, HERO_VALIDACION } from "@/lib/hero-config";
-import type { HeroImage, HeroModo } from "@/lib/hero-config";
+import { HERO_LIMITE_IMAGENES, HERO_VALIDACION, HERO_ZONAS } from "@/lib/hero-config";
+import type { HeroImage, HeroModo, HeroZona } from "@/lib/hero-config";
 import { AvisoAccion } from "./AvisoAccion";
 
 type Aviso = { tipo: "ok" | "error" | "info"; mensaje: string } | null;
 
 export function FormularioHero({
+  zona,
   imagenes,
   modoInicial,
 }: {
+  zona: HeroZona;
   imagenes: HeroImage[];
   modoInicial: HeroModo;
 }) {
@@ -26,6 +28,7 @@ export function FormularioHero({
   const [aviso, setAviso] = useState<Aviso>(null);
   const [isPending, startTransition] = useTransition();
 
+  const meta = HERO_ZONAS[zona];
   const llegoAlLimite = imagenes.length >= HERO_LIMITE_IMAGENES;
   const cantEnRotacion = imagenes.filter((i) => i.en_rotacion).length;
   const principal = imagenes.find((i) => i.principal);
@@ -39,7 +42,7 @@ export function FormularioHero({
     const previo = modo;
     setModo(nuevo); // optimistic
     startTransition(async () => {
-      const res = await actualizarHeroModoAction(nuevo);
+      const res = await actualizarHeroModoAction(zona, nuevo);
       if (!res.ok) {
         setModo(previo);
         showAviso({ tipo: "error", mensaje: res.error });
@@ -95,9 +98,18 @@ export function FormularioHero({
   }
 
   return (
-    <>
+    <div className="mt-12 border-2 border-ink/15 bg-background/40 p-5 md:p-7 rounded-sm">
+      {/* Encabezado de la zona */}
+      <div className="border-b hairline pb-5 mb-2">
+        <p className="eyebrow mb-2">Zona configurable</p>
+        <h2 className="font-serif text-3xl text-ink">{meta.titulo}</h2>
+        <p className="text-[13px] text-muted mt-2 font-light max-w-2xl leading-relaxed">
+          {meta.descripcion}
+        </p>
+      </div>
+
       {/* Selector de modo */}
-      <section className="mt-10 border hairline bg-paper p-6 md:p-8">
+      <section className="mt-6 border hairline bg-paper p-6 md:p-8">
         <p className="eyebrow mb-3">Modo de visualización</p>
         <h2 className="font-serif text-2xl text-ink">¿Cómo se muestra?</h2>
         <p className="text-[13px] text-muted mt-2 font-light">
@@ -144,6 +156,7 @@ export function FormularioHero({
       {/* Upload */}
       <section className="mt-8">
         <UploadHero
+          zona={zona}
           deshabilitar={llegoAlLimite}
           cantActual={imagenes.length}
           limite={HERO_LIMITE_IMAGENES}
@@ -185,7 +198,7 @@ export function FormularioHero({
           onCerrar={() => setAviso(null)}
         />
       )}
-    </>
+    </div>
   );
 }
 
@@ -283,11 +296,13 @@ function TarjetaHero({
 
 // ---------- UPLOAD ----------
 function UploadHero({
+  zona,
   deshabilitar,
   cantActual,
   limite,
   onAviso,
 }: {
+  zona: HeroZona;
   deshabilitar: boolean;
   cantActual: number;
   limite: number;
@@ -361,6 +376,7 @@ function UploadHero({
     const fd = new FormData();
     fd.append("archivo", archivo);
     fd.append("label", label);
+    fd.append("zona", zona);
     startTransition(async () => {
       const res = await subirHeroImagenAction(fd);
       if (!res.ok) {

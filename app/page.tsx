@@ -1,20 +1,20 @@
 import Link from "next/link";
 import { FAQ } from "@/components/FAQ";
 import { GarantiasExpandibles } from "@/components/GarantiasExpandibles";
-import { ImagenObelisco } from "@/components/ImagenObelisco";
 import { HeroImagen } from "@/components/HeroImagen";
 import { HeroCTA } from "@/components/HeroCTA";
 import { getStats } from "@/lib/stats";
 import { getHeroImagesPublicas, getHeroModo } from "@/lib/hero";
-import { getObeliscoConfig } from "@/lib/obelisco";
 
 export default async function Home() {
-  const [datosClave, heroImagenes, heroModo, obeliscoConfig] = await Promise.all([
-    getStats(),
-    getHeroImagesPublicas(),
-    getHeroModo(),
-    getObeliscoConfig(),
-  ]);
+  const [datosClave, heroImagenes, heroModo, baImagenes, baModo] =
+    await Promise.all([
+      getStats(),
+      getHeroImagesPublicas("hero"),
+      getHeroModo("hero"),
+      getHeroImagesPublicas("buenos_aires"),
+      getHeroModo("buenos_aires"),
+    ]);
 
   return (
     <>
@@ -123,10 +123,10 @@ export default async function Home() {
 
       {/* SECCIÓN BUENOS AIRES — OBELISCO (muestra la imagen opuesta al hero) */}
       <section className="relative h-[55vh] min-h-[420px] overflow-hidden border-b hairline">
-        <ImagenObelisco
-          invertir
+        <HeroImagen
+          imagenes={baImagenes}
+          modo={baModo}
           objectPosition="center 50%"
-          config={obeliscoConfig}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/40 to-transparent" />
         <div className="absolute inset-0 flex items-end">

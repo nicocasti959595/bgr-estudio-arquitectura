@@ -1,11 +1,13 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createSupabaseServer } from "@/lib/supabase-server";
-import { getAllHeroImages, getHeroModo, HERO_LIMITE_IMAGENES } from "@/lib/hero";
-import { getObeliscoConfig } from "@/lib/obelisco";
+import {
+  getAllHeroImages,
+  getHeroModo,
+  HERO_LIMITE_IMAGENES,
+} from "@/lib/hero";
 import { NavAdmin } from "@/components/admin/NavAdmin";
 import { FormularioHero } from "@/components/admin/FormularioHero";
-import { FormularioObelisco } from "@/components/admin/FormularioObelisco";
 
 export const dynamic = "force-dynamic";
 
@@ -16,10 +18,11 @@ export default async function AdminHeroPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login");
 
-  const [imagenes, modo, obeliscoConfig] = await Promise.all([
-    getAllHeroImages(),
-    getHeroModo(),
-    getObeliscoConfig(),
+  const [heroImgs, heroModo, baImgs, baModo] = await Promise.all([
+    getAllHeroImages("hero"),
+    getHeroModo("hero"),
+    getAllHeroImages("buenos_aires"),
+    getHeroModo("buenos_aires"),
   ]);
 
   return (
@@ -35,17 +38,27 @@ export default async function AdminHeroPage() {
         </Link>
         <p className="eyebrow mb-3">Panel privado</p>
         <h1 className="font-serif text-4xl md:text-5xl text-ink">
-          Imagen del inicio
+          Imágenes del sitio
         </h1>
         <p className="text-[14px] text-muted mt-2 font-light max-w-2xl leading-relaxed">
-          Administrá las imágenes que aparecen en el hero de la home. Podés
-          tener una sola imagen fija o que vayan rotando. Máximo{" "}
-          <strong className="text-ink">{HERO_LIMITE_IMAGENES} imágenes</strong>.
+          El sitio tiene dos zonas de imágenes configurables. En cada una podés
+          tener una imagen fija o varias rotando, subir las tuyas y elegir cuál
+          es la principal. Máximo{" "}
+          <strong className="text-ink">{HERO_LIMITE_IMAGENES} imágenes</strong>{" "}
+          por zona.
         </p>
 
-        <FormularioHero imagenes={imagenes} modoInicial={modo} />
+        <FormularioHero
+          zona="hero"
+          imagenes={heroImgs}
+          modoInicial={heroModo}
+        />
 
-        <FormularioObelisco inicial={obeliscoConfig} />
+        <FormularioHero
+          zona="buenos_aires"
+          imagenes={baImgs}
+          modoInicial={baModo}
+        />
       </main>
     </>
   );
