@@ -397,6 +397,8 @@ function UploadHero({
         .
       </p>
 
+      <PromptIA onAviso={onAviso} />
+
       <div className="mt-5 grid md:grid-cols-[1fr_auto] gap-5 items-start">
         <div className="space-y-3">
           <input
@@ -465,6 +467,102 @@ function UploadHero({
       )}
     </div>
   );
+}
+
+// ---------- PROMPT IA ----------
+function PromptIA({ onAviso }: { onAviso: (a: Aviso) => void }) {
+  const [abierto, setAbierto] = useState(false);
+  const promptText = construirPromptIA();
+
+  async function copiar() {
+    try {
+      await navigator.clipboard.writeText(promptText);
+      onAviso({
+        tipo: "ok",
+        mensaje: "Prompt copiado al portapapeles. Pegalo en ChatGPT o Claude.",
+      });
+    } catch {
+      onAviso({
+        tipo: "error",
+        mensaje: "No se pudo copiar. Seleccionalo a mano y copiá con Ctrl+C.",
+      });
+    }
+  }
+
+  return (
+    <div className="mt-4 border hairline bg-background">
+      <button
+        type="button"
+        onClick={() => setAbierto((v) => !v)}
+        className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-paper transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-base">🤖</span>
+          <span className="text-[12px] tracking-[1.5px] uppercase text-ink font-medium">
+            ¿Querés que una IA te encuentre la imagen ideal?
+          </span>
+        </div>
+        <span className="text-muted text-sm">{abierto ? "−" : "+"}</span>
+      </button>
+
+      {abierto && (
+        <div className="px-4 pb-4 border-t hairline">
+          <p className="text-[12px] text-muted mt-3 font-light leading-relaxed">
+            Copiá este prompt y pegalo en ChatGPT, Claude o cualquier IA con
+            búsqueda web. Está calibrado para que te devuelva imágenes que
+            cumplan <strong className="text-ink">exactamente</strong> los
+            requisitos de arriba.
+          </p>
+          <textarea
+            readOnly
+            value={promptText}
+            className="mt-3 w-full h-44 text-[12px] font-mono leading-relaxed bg-paper border hairline p-3 text-ink resize-none focus:outline-none focus:border-accent"
+            onFocus={(e) => e.target.select()}
+          />
+          <div className="mt-3 flex gap-2">
+            <button
+              type="button"
+              onClick={copiar}
+              className="bg-accent text-background px-5 py-2 text-[10px] tracking-[2px] uppercase hover:bg-ink transition-colors"
+            >
+              Copiar prompt
+            </button>
+            <button
+              type="button"
+              onClick={() => setAbierto(false)}
+              className="border hairline px-5 py-2 text-[10px] tracking-[2px] uppercase text-muted hover:text-ink transition-colors"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function construirPromptIA(): string {
+  const v = HERO_VALIDACION;
+  return `Buscame URLs directas a 5 imágenes panorámicas de arquitectura o construcción que cumplan EXACTAMENTE estos requisitos técnicos:
+
+Requisitos obligatorios:
+- Formato: ${v.formatosTexto}
+- Resolución mínima: ${v.anchoMinimo}x${v.altoMinimo} píxeles (ideal 1920x1080 o más)
+- Proporción: exactamente 16:9 (panorámica horizontal — NO cuadrada, NO vertical)
+- Peso máximo del archivo: ${v.pesoMaximoMB} MB
+- Sin texto, logos ni marcas de agua encima
+- Calidad profesional, colores naturales, buena iluminación
+
+Tema:
+- Arquitectura moderna (fachadas, edificios, casas)
+- Obras de construcción en proceso (estructura, trabajadores, sitio activo)
+- Interiores arquitectónicos contemporáneos
+- Detalles constructivos (texturas, materiales, hormigón visto, etc.)
+
+Salida esperada:
+- Devolveme URLs directas al archivo .jpg/.png/.webp (NO links a páginas web).
+- Si las tomás de Unsplash, dame el formato https://images.unsplash.com/photo-XXXX?w=1920&q=80
+- Aclará para cada imagen qué resolución tiene y cuánto pesa, para que pueda confirmar antes de bajarla.`;
 }
 
 async function leerDimensiones(
