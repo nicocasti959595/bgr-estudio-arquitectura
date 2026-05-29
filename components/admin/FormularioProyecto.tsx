@@ -60,13 +60,20 @@ export function FormularioProyecto({ proyecto }: Props) {
     setErrorMsg("");
     try {
       const supabase = createSupabaseBrowser();
-      const ext = file.name.split(".").pop() || "jpg";
+      // Normalizamos: cualquier formato → JPEG consistente, orientación corregida,
+      // tamaño acotado. Así no hay errores al publicar.
+      const fileFinal = await normalizarImagen(file);
+      const ext = (fileFinal.name.split(".").pop() || "jpg").toLowerCase();
       const nombre = `${Date.now()}-${Math.random()
         .toString(36)
         .slice(2, 8)}.${ext}`;
       const { error } = await supabase.storage
         .from("bgr-proyectos")
-        .upload(nombre, file, { cacheControl: "3600", upsert: false });
+        .upload(nombre, fileFinal, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: fileFinal.type || "image/jpeg",
+        });
       if (error) throw error;
       const { data } = supabase.storage
         .from("bgr-proyectos")
@@ -391,6 +398,52 @@ export function FormularioProyecto({ proyecto }: Props) {
       </div>
     </form>
   );
+}
+
+/**
+ * Normaliza una imagen antes de subirla:
+ *  - corrige la orientación EXIF (fotos de celular rotadas)
+ *  - reduce a un máximo de 2000px en el lado más largo
+ *  - reencoda a JPEG calidad 0.85 (formato uniforme, archivo liviano)
+ *  - rellena fondo blanco (evita negro si venía un PNG transparente)
+ * Si el navegador no puede decodificar el archivo (ej: HEIC viejo), devuelve
+ * el original para no romper la subida.
+ */
+async function normalizarImagen(file: File): Promise<File> {
+  if (!file.type.startsWith("image/")) return file;
+  try {
+    const MAX = 2000;
+    const bitmap = await createImageBitmap(file, {
+      imageOrientation: "from-image",
+    } as ImageBitmapOptions);
+
+    const escala = Math.min(1, MAX / Math.max(bitmap.width, bitmap.height));
+    const w = Math.max(1, Math.round(bitmap.width * escala));
+    const h = Math.max(1, Math.round(bitmap.height * escala));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      bitmap.close?.();
+      return file;
+    }
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(bitmap, 0, 0, w, h);
+    bitmap.close?.();
+
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob((b) => resolve(b), "image/jpeg", 0.85)
+    );
+    if (!blob) return file;
+
+    const base = file.name.replace(/\.[^.]+$/, "") || "imagen";
+    return new File([blob], `${base}.jpg`, { type: "image/jpeg" });
+  } catch {
+    return file;
+  }
 }
 
 function Label({

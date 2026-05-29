@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
+import { getStats } from "@/lib/stats";
 
 export const metadata: Metadata = {
   title: "Quiénes somos — BGR Arquitectura & Construcción",
   description:
     "Quiénes somos. Tres socios al frente de cada proyecto: Branca, Gonzales y Rial. BGR Construcciones SRL — más de 10 años de experiencia en CABA y GBA.",
 };
-
-const cifras = [
-  { numero: "10+", rotulo: "Años de experiencia" },
-  { numero: "53", rotulo: "Obras entregadas en CABA" },
-  { numero: "124", rotulo: "Reformas realizadas" },
-  { numero: "100%", rotulo: "Plazos cumplidos" },
-];
 
 const socios = [
   {
@@ -43,7 +37,8 @@ const staff = [
   { rol: "Atención al cliente", desc: "Primer contacto y seguimiento de cada consulta." },
 ];
 
-export default function EstudioPage() {
+export default async function EstudioPage() {
+  const cifras = await getStats();
   return (
     <>
       {/* HERO + 3 SOCIOS */}
@@ -130,7 +125,7 @@ export default function EstudioPage() {
 
       {/* CIFRAS */}
       <section className="bg-paper border-b hairline py-20 md:py-24">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-12 grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-6">
+        <div className="mx-auto max-w-[900px] px-6 md:px-12 grid grid-cols-1 sm:grid-cols-2 gap-12 md:gap-16">
           {cifras.map((c) => (
             <div key={c.rotulo}>
               <p className="display text-5xl md:text-6xl text-ink">

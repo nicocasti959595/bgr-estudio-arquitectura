@@ -31,7 +31,7 @@ export function Header() {
         scrolled ? "border-b hairline shadow-sm" : "border-b border-transparent"
       }`}
     >
-      <div className="mx-auto max-w-[1400px] px-6 md:px-12 flex items-center justify-between h-20 md:h-24">
+      <div className="mx-auto max-w-[1400px] px-6 md:px-12 flex items-center justify-between h-24 md:h-28">
         <Link
           href="/"
           className="flex items-center gap-3 text-ink group"
@@ -40,7 +40,7 @@ export function Header() {
         >
           <Logo
             variant="dark"
-            className="h-14 w-14 md:h-16 md:w-16 object-contain shrink-0 group-hover:opacity-70 transition-opacity"
+            className="h-[72px] w-[72px] md:h-[84px] md:w-[84px] object-contain shrink-0 group-hover:opacity-70 transition-opacity"
           />
           <span className="font-serif text-xl md:text-2xl tracking-tight leading-none">
             <span className="font-medium tracking-tight">BGR</span>{" "}
