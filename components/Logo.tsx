@@ -3,9 +3,9 @@ type Props = {
 };
 
 /**
- * Logo BGR: anillo circular + dos casas con techos a dos aguas
- * y un pico central elevado. Color via currentColor (hereda).
- * Sin fondo propio — se monta sobre el background del header.
+ * Logo BGR: anillo circular + dos casas con techos a dos aguas (con espesor),
+ * pico central con águila estilizada y ventanas con patrón pinwheel.
+ * Color via currentColor (hereda).
  */
 export function Logo({ className = "h-8 w-8" }: Props) {
   return (
@@ -17,45 +17,40 @@ export function Logo({ className = "h-8 w-8" }: Props) {
       aria-label="BGR Logo"
     >
       {/* Anillo circular */}
-      <path
-        fillRule="evenodd"
-        d="M 100 8 A 92 92 0 1 1 99.99 8 Z M 100 30 A 70 70 0 1 0 100.01 30 Z"
+      <circle
+        cx="100"
+        cy="100"
+        r="86"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="11"
       />
 
-      {/* Casas con techos a dos aguas (zigzag + pico central elevado) */}
-      <path d="M 22 152 L 72 100 L 100 130 L 128 100 L 178 152 L 178 165 L 22 165 Z" />
+      {/* Techos M con espesor (cornisa) */}
+      <path
+        d="M 22,128 L 65,72 L 100,108 L 135,72 L 178,128 L 178,140 L 135,86 L 100,124 L 65,86 L 22,140 Z"
+      />
 
-      {/* Pico central elevado (silueta de ave/águila) */}
-      <path d="M 76 118 L 100 82 L 124 118 L 113 124 L 100 104 L 87 124 Z" />
+      {/* V central (valle profundo entre las dos casas) */}
+      <path d="M 86,112 L 100,148 L 114,112 Z" />
 
-      {/* Ventanas con cuadrícula (izquierda) — strokes engrosados
-         para que se distingan en tamaños chicos (header móvil) */}
-      <g>
-        <rect
-          x="38"
-          y="136"
-          width="20"
-          height="20"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="4"
-        />
-        <line x1="48" y1="136" x2="48" y2="156" stroke="currentColor" strokeWidth="3.5" />
-        <line x1="38" y1="146" x2="58" y2="146" stroke="currentColor" strokeWidth="3.5" />
+      {/* Águila estilizada con dos alas y pico */}
+      <path d="M 74,82 L 88,50 L 94,76 L 100,62 L 106,76 L 112,50 L 126,82 Z" />
+
+      {/* Ventana izquierda: pinwheel de 4 triángulos */}
+      <g transform="translate(32,108)">
+        <path d="M 0,0 L 11,0 L 0,11 Z" />
+        <path d="M 24,0 L 13,0 L 24,11 Z" />
+        <path d="M 0,24 L 0,13 L 11,24 Z" />
+        <path d="M 24,24 L 24,13 L 13,24 Z" />
       </g>
-      {/* Ventanas con cuadrícula (derecha) */}
-      <g>
-        <rect
-          x="142"
-          y="136"
-          width="20"
-          height="20"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="4"
-        />
-        <line x1="152" y1="136" x2="152" y2="156" stroke="currentColor" strokeWidth="3.5" />
-        <line x1="142" y1="146" x2="162" y2="146" stroke="currentColor" strokeWidth="3.5" />
+
+      {/* Ventana derecha: pinwheel de 4 triángulos */}
+      <g transform="translate(144,108)">
+        <path d="M 0,0 L 11,0 L 0,11 Z" />
+        <path d="M 24,0 L 13,0 L 24,11 Z" />
+        <path d="M 0,24 L 0,13 L 11,24 Z" />
+        <path d="M 24,24 L 24,13 L 13,24 Z" />
       </g>
     </svg>
   );
