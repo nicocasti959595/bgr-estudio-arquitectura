@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Contacto — BGR Arquitectura & Construcción",
   description:
     "Contactá a BGR Arquitectura & Construcción. info@bgr.com.ar · WhatsApp 11 3691-0077 · Av. Juan de Garay 3547, CABA · Lun a Vie 8 a 17 hs.",
+  alternates: { canonical: "/contacto" },
 };
 
 export default function ContactoPage() {

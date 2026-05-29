@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Servicios — BGR Arquitectura & Construcción",
   description:
     "Guiado paso a paso para tu obra: elegí el tipo, contanos los detalles y te abrimos WhatsApp con tu consulta lista para enviar.",
+  alternates: { canonical: "/servicios" },
 };
 
 const pasos = [

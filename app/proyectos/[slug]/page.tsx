@@ -1,11 +1,41 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProyectoPorSlug, getProyectos } from "@/lib/datos";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const proyectos = await getProyectos();
   return proyectos.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata(
+  props: PageProps<"/proyectos/[slug]">
+): Promise<Metadata> {
+  const { slug } = await props.params;
+  const proyecto = await getProyectoPorSlug(slug);
+  if (!proyecto) {
+    return { title: "Proyecto no encontrado — BGR" };
+  }
+  const ubic = proyecto.ubicacion ? ` en ${proyecto.ubicacion}` : "";
+  const titulo = `${proyecto.titulo} — ${proyecto.tipologia}${ubic} | BGR`;
+  const desc =
+    (proyecto.descripcion || "").slice(0, 155) ||
+    `${proyecto.tipologia}${ubic} realizada por BGR Arquitectura & Construcción.`;
+  return {
+    title: titulo,
+    description: desc,
+    alternates: { canonical: `/proyectos/${proyecto.slug}` },
+    openGraph: {
+      title: titulo,
+      description: desc,
+      type: "article",
+      url: `/proyectos/${proyecto.slug}`,
+      images: proyecto.imagen_portada ? [proyecto.imagen_portada] : undefined,
+    },
+  };
 }
 
 export default async function ProyectoDetalle(
@@ -20,6 +50,13 @@ export default async function ProyectoDetalle(
 
   return (
     <article>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { nombre: "Inicio", url: "/" },
+          { nombre: "Proyectos", url: "/proyectos" },
+          { nombre: proyecto.titulo, url: `/proyectos/${proyecto.slug}` },
+        ])}
+      />
       <section className="relative h-[80vh] min-h-[600px] flex items-end">
         <div className="absolute inset-0">
           <Image

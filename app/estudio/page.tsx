@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Quiénes somos — BGR Arquitectura & Construcción",
   description:
     "Quiénes somos. Tres socios al frente de cada proyecto: Branca, Gonzales y Rial. BGR Construcciones SRL — más de 10 años de experiencia en CABA y GBA.",
+  alternates: { canonical: "/estudio" },
 };
 
 const socios = [

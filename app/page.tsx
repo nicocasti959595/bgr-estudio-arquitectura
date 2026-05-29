@@ -3,8 +3,18 @@ import { FAQ } from "@/components/FAQ";
 import { GarantiasExpandibles } from "@/components/GarantiasExpandibles";
 import { HeroImagen } from "@/components/HeroImagen";
 import { HeroCTA } from "@/components/HeroCTA";
+import { JsonLd } from "@/components/JsonLd";
+import { faqJsonLd } from "@/lib/seo";
 import { getStats } from "@/lib/stats";
 import { getHeroImagesPublicas, getHeroModo } from "@/lib/hero";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "BGR Arquitectura & Construcción — Reformas integrales en CABA y GBA",
+  description:
+    "Reformas integrales de departamentos, PH y casas, y obra nueva en Buenos Aires. Proyecto, dirección y obra llave en mano. Equipo propio y presupuesto cerrado.",
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const [datosClave, heroImagenes, heroModo, baImagenes, baModo] =
@@ -18,6 +28,7 @@ export default async function Home() {
 
   return (
     <>
+      <JsonLd data={faqJsonLd()} />
       {/* HERO */}
       <section className="relative h-[calc(100vh-5rem)] min-h-[560px] max-h-[820px] flex items-end overflow-hidden">
         <div className="absolute inset-0">

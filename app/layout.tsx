@@ -4,6 +4,8 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BotonWhatsApp } from "@/components/BotonWhatsApp";
+import { JsonLd } from "@/components/JsonLd";
+import { localBusinessJsonLd, organizationJsonLd } from "@/lib/seo";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -37,16 +39,20 @@ export const metadata: Metadata = {
     "Argentina",
   ],
   metadataBase: new URL("https://bgr.com.ar"),
-  alternates: {
-    canonical: "https://bgr.com.ar",
-  },
   openGraph: {
     title: "BGR Arquitectura & Construcción",
     description:
       "Si lo podés imaginar, lo podemos construir. Reformas integrales de departamentos en Buenos Aires.",
     url: "https://bgr.com.ar",
+    siteName: "BGR Arquitectura & Construcción",
     type: "website",
     locale: "es_AR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BGR Arquitectura & Construcción",
+    description:
+      "Si lo podés imaginar, lo podemos construir. Reformas integrales de departamentos en Buenos Aires.",
   },
 };
 
@@ -61,6 +67,7 @@ export default function RootLayout({
       className={`${dmSans.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <JsonLd data={[localBusinessJsonLd(), organizationJsonLd()]} />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

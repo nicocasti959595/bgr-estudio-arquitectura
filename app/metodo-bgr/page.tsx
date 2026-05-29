@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Método BGR — Arquitectura & Construcción",
   description:
     "Conocé el método BGR: nuestro proceso completo desde el primer contacto hasta la entrega de la obra. Mirá el video y descubrí cómo trabajamos.",
+  alternates: { canonical: "/metodo-bgr" },
 };
 
 const descripcionFallback = `En este video repasamos el **método BGR** completo: desde el primer contacto, la visita técnica y el diseño, hasta la gestión de permisos municipales, la ejecución de la obra y la entrega final.
