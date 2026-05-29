@@ -127,8 +127,8 @@ export async function agregarHeroImageAction(input: {
       url: input.url.trim(),
       label: input.label.trim() || "Imagen sin nombre",
       orden: proximoOrden,
-      activa: true,
       principal: false,
+      en_rotacion: false,
     },
   ]);
   if (error) return { ok: false as const, error: error.message };
@@ -140,25 +140,25 @@ export async function agregarHeroImageAction(input: {
 export async function eliminarHeroImageAction(id: string) {
   const supabase = await requireAdmin();
 
-  // No permitir eliminar la última imagen activa (rompe el hero)
   const { data: img } = await supabase
     .from("bgr_hero_images")
-    .select("activa, principal")
+    .select("principal")
     .eq("id", id)
     .maybeSingle();
   if (!img) return { ok: false as const, error: "Imagen no encontrada." };
 
-  const { count: totalActivas } = await supabase
-    .from("bgr_hero_images")
-    .select("*", { count: "exact", head: true })
-    .eq("activa", true);
-
-  if (img.activa && (totalActivas ?? 0) <= 1) {
-    return {
-      ok: false as const,
-      error:
-        "No podés eliminar la única imagen activa. Activá otra primero o desactivá ésta.",
-    };
+  // No permitir eliminar la única principal: el modo fijo necesita una
+  if (img.principal) {
+    const { count: total } = await supabase
+      .from("bgr_hero_images")
+      .select("*", { count: "exact", head: true });
+    if ((total ?? 0) <= 1) {
+      return {
+        ok: false as const,
+        error:
+          "No podés eliminar la única imagen. Subí otra primero para que el hero tenga algo que mostrar.",
+      };
+    }
   }
 
   const { error } = await supabase
@@ -167,12 +167,12 @@ export async function eliminarHeroImageAction(id: string) {
     .eq("id", id);
   if (error) return { ok: false as const, error: error.message };
 
-  // Si era principal, marcar la primera activa como principal
+  // Si era principal, marcar otra como principal (cualquiera, prefiriendo una de rotación)
   if (img.principal) {
     const { data: candidata } = await supabase
       .from("bgr_hero_images")
       .select("id")
-      .eq("activa", true)
+      .order("en_rotacion", { ascending: false }) // las en_rotacion primero
       .order("orden", { ascending: true })
       .limit(1)
       .maybeSingle();
@@ -189,57 +189,16 @@ export async function eliminarHeroImageAction(id: string) {
   return { ok: true as const };
 }
 
-export async function toggleHeroActivaAction(id: string, activa: boolean) {
+export async function toggleHeroRotacionAction(
+  id: string,
+  en_rotacion: boolean
+) {
   const supabase = await requireAdmin();
-
-  if (!activa) {
-    // Si la estamos desactivando, validar que no sea la última activa
-    const { count: totalActivas } = await supabase
-      .from("bgr_hero_images")
-      .select("*", { count: "exact", head: true })
-      .eq("activa", true);
-    if ((totalActivas ?? 0) <= 1) {
-      return {
-        ok: false as const,
-        error: "Tiene que quedar al menos una imagen activa.",
-      };
-    }
-
-    // Si era principal, traspasar a otra activa
-    const { data: img } = await supabase
-      .from("bgr_hero_images")
-      .select("principal")
-      .eq("id", id)
-      .maybeSingle();
-    if (img?.principal) {
-      const { data: candidata } = await supabase
-        .from("bgr_hero_images")
-        .select("id")
-        .eq("activa", true)
-        .neq("id", id)
-        .order("orden", { ascending: true })
-        .limit(1)
-        .maybeSingle();
-      if (candidata) {
-        // Primero quitamos la principal de la actual (por el unique index)
-        await supabase
-          .from("bgr_hero_images")
-          .update({ principal: false, updated_at: new Date().toISOString() })
-          .eq("id", id);
-        await supabase
-          .from("bgr_hero_images")
-          .update({ principal: true, updated_at: new Date().toISOString() })
-          .eq("id", candidata.id);
-      }
-    }
-  }
-
   const { error } = await supabase
     .from("bgr_hero_images")
-    .update({ activa, updated_at: new Date().toISOString() })
+    .update({ en_rotacion, updated_at: new Date().toISOString() })
     .eq("id", id);
   if (error) return { ok: false as const, error: error.message };
-
   revalidatePath("/");
   revalidatePath("/admin/hero");
   return { ok: true as const };
@@ -248,19 +207,12 @@ export async function toggleHeroActivaAction(id: string, activa: boolean) {
 export async function setHeroPrincipalAction(id: string) {
   const supabase = await requireAdmin();
 
-  // Verificar que la imagen está activa
   const { data: img } = await supabase
     .from("bgr_hero_images")
-    .select("activa")
+    .select("id")
     .eq("id", id)
     .maybeSingle();
   if (!img) return { ok: false as const, error: "Imagen no encontrada." };
-  if (!img.activa) {
-    return {
-      ok: false as const,
-      error: "Activá la imagen primero antes de marcarla como principal.",
-    };
-  }
 
   // Quitar principal a todas (por el unique index parcial)
   const { error: e1 } = await supabase
@@ -362,8 +314,8 @@ export async function subirHeroImagenAction(formData: FormData) {
       url: publica.publicUrl,
       label: label || "Imagen subida",
       orden: (ult?.orden ?? 0) + 1,
-      activa: true,
       principal: false,
+      en_rotacion: false,
     },
   ]);
   if (insErr) return { ok: false as const, error: insErr.message };

@@ -15,8 +15,8 @@ const FALLBACK_IMAGES: HeroImage[] = [
     url: "https://uzxhloolvpdzfduenkew.supabase.co/storage/v1/object/public/bgr-proyectos/obelisco-dia.jpg?v=3",
     label: "Obelisco de día",
     orden: 1,
-    activa: true,
     principal: true,
+    en_rotacion: true,
   },
 ];
 
@@ -39,18 +39,31 @@ export async function getAllHeroImages(): Promise<HeroImage[]> {
 }
 
 /**
- * Devuelve solo las imágenes activas que el sitio público debe mostrar.
- * Ordena con la principal primero.
+ * Devuelve las imágenes que el sitio público debe mostrar según el modo.
+ * - modo 'fija' → solo la principal
+ * - modo 'rotacion' → solo las marcadas para rotar, ordenadas con principal primero
+ *   Si en rotación no hay ninguna marcada, fallback a la principal.
  */
 export async function getHeroImagesPublicas(): Promise<HeroImage[]> {
-  const all = await getAllHeroImages();
-  const activas = all.filter((i) => i.activa);
-  if (activas.length === 0) return FALLBACK_IMAGES;
-  return activas.sort((a, b) => {
-    if (a.principal && !b.principal) return -1;
-    if (!a.principal && b.principal) return 1;
-    return a.orden - b.orden;
-  });
+  const [all, modo] = await Promise.all([getAllHeroImages(), getHeroModo()]);
+
+  if (modo === "rotacion") {
+    const enRotacion = all.filter((i) => i.en_rotacion);
+    if (enRotacion.length > 0) {
+      return enRotacion.sort((a, b) => {
+        if (a.principal && !b.principal) return -1;
+        if (!a.principal && b.principal) return 1;
+        return a.orden - b.orden;
+      });
+    }
+    // Sin imágenes en rotación → caemos a principal
+  }
+
+  // Modo fija o fallback: solo la principal
+  const principal = all.find((i) => i.principal);
+  if (principal) return [principal];
+  // Último fallback: primera imagen disponible
+  return all.length > 0 ? [all[0]] : FALLBACK_IMAGES;
 }
 
 export async function getHeroModo(): Promise<HeroModo> {

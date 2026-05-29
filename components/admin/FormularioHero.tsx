@@ -7,7 +7,7 @@ import {
   eliminarHeroImageAction,
   setHeroPrincipalAction,
   subirHeroImagenAction,
-  toggleHeroActivaAction,
+  toggleHeroRotacionAction,
 } from "@/lib/actions-admin";
 import { HERO_LIMITE_IMAGENES, HERO_VALIDACION } from "@/lib/hero-config";
 import type { HeroImage, HeroModo } from "@/lib/hero-config";
@@ -27,7 +27,8 @@ export function FormularioHero({
   const [isPending, startTransition] = useTransition();
 
   const llegoAlLimite = imagenes.length >= HERO_LIMITE_IMAGENES;
-  const cantActivas = imagenes.filter((i) => i.activa).length;
+  const cantEnRotacion = imagenes.filter((i) => i.en_rotacion).length;
+  const principal = imagenes.find((i) => i.principal);
 
   function showAviso(a: Aviso) {
     setAviso(a);
@@ -54,16 +55,16 @@ export function FormularioHero({
     });
   }
 
-  function handleToggleActiva(img: HeroImage) {
+  function handleToggleRotacion(img: HeroImage) {
     startTransition(async () => {
-      const res = await toggleHeroActivaAction(img.id, !img.activa);
+      const res = await toggleHeroRotacionAction(img.id, !img.en_rotacion);
       if (!res.ok) showAviso({ tipo: "error", mensaje: res.error });
       else
         showAviso({
           tipo: "ok",
-          mensaje: !img.activa
-            ? `"${img.label}" activada.`
-            : `"${img.label}" desactivada.`,
+          mensaje: !img.en_rotacion
+            ? `"${img.label}" agregada a la rotación.`
+            : `"${img.label}" quitada de la rotación.`,
         });
     });
   }
@@ -116,7 +117,9 @@ export function FormularioHero({
           >
             <p className="font-serif text-lg text-ink">Imagen fija</p>
             <p className="text-[12px] text-muted mt-1 font-light">
-              Se ve siempre la marcada como principal.
+              Se ve siempre la marcada como{" "}
+              <strong className="text-ink">principal</strong>
+              {principal ? ` (${principal.label})` : ""}.
             </p>
           </button>
           <button
@@ -131,7 +134,8 @@ export function FormularioHero({
           >
             <p className="font-serif text-lg text-ink">Rotación automática</p>
             <p className="text-[12px] text-muted mt-1 font-light">
-              Cicla entre todas las imágenes activas ({cantActivas}).
+              Cicla solo entre las marcadas{" "}
+              <strong className="text-ink">para rotar</strong> ({cantEnRotacion}).
             </p>
           </button>
         </div>
@@ -154,8 +158,10 @@ export function FormularioHero({
           Imágenes cargadas ({imagenes.length} / {HERO_LIMITE_IMAGENES})
         </h2>
         <p className="text-[13px] text-muted mt-2 font-light">
-          Activá las que quieras mostrar. La que tenga la estrella es la
-          principal en modo "imagen fija".
+          Cada imagen tiene dos flags independientes:{" "}
+          <strong className="text-ink">★ Principal</strong> (la única en modo
+          fija) y <strong className="text-ink">🔁 En rotación</strong> (las del
+          carrusel en modo rotación). Pueden tener ambas, una, o ninguna.
         </p>
 
         <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -164,7 +170,7 @@ export function FormularioHero({
               key={img.id}
               imagen={img}
               disabled={isPending}
-              onToggleActiva={() => handleToggleActiva(img)}
+              onToggleRotacion={() => handleToggleRotacion(img)}
               onMarcarPrincipal={() => handleMarcarPrincipal(img)}
               onEliminar={() => handleEliminar(img)}
             />
@@ -187,24 +193,25 @@ export function FormularioHero({
 function TarjetaHero({
   imagen,
   disabled,
-  onToggleActiva,
+  onToggleRotacion,
   onMarcarPrincipal,
   onEliminar,
 }: {
   imagen: HeroImage;
   disabled: boolean;
-  onToggleActiva: () => void;
+  onToggleRotacion: () => void;
   onMarcarPrincipal: () => void;
   onEliminar: () => void;
 }) {
+  const enUso = imagen.principal || imagen.en_rotacion;
   return (
     <div
       className={`border-2 bg-paper transition-colors ${
         imagen.principal
           ? "border-accent"
-          : imagen.activa
-          ? "border-line"
-          : "border-line opacity-60"
+          : imagen.en_rotacion
+          ? "border-ink/60"
+          : "border-line opacity-70"
       }`}
     >
       <div className="relative aspect-[16/9] bg-surface overflow-hidden">
@@ -215,45 +222,60 @@ function TarjetaHero({
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover"
         />
-        {imagen.principal && (
-          <span className="absolute top-2 left-2 bg-accent text-background px-2 py-1 text-[9px] tracking-[1.5px] uppercase flex items-center gap-1">
-            ★ Principal
-          </span>
-        )}
-        {!imagen.activa && (
-          <span className="absolute top-2 right-2 bg-ink/80 text-background px-2 py-1 text-[9px] tracking-[1.5px] uppercase">
-            Inactiva
+        <div className="absolute top-2 left-2 flex flex-col gap-1">
+          {imagen.principal && (
+            <span className="bg-accent text-background px-2 py-1 text-[9px] tracking-[1.5px] uppercase">
+              ★ Principal
+            </span>
+          )}
+          {imagen.en_rotacion && (
+            <span className="bg-ink/85 text-background px-2 py-1 text-[9px] tracking-[1.5px] uppercase">
+              🔁 En rotación
+            </span>
+          )}
+        </div>
+        {!enUso && (
+          <span className="absolute top-2 right-2 bg-muted/80 text-background px-2 py-1 text-[9px] tracking-[1.5px] uppercase">
+            Sin uso
           </span>
         )}
       </div>
       <div className="p-4">
         <p className="font-serif text-base text-ink truncate">{imagen.label}</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={onToggleActiva}
-            disabled={disabled}
-            className="text-[10px] tracking-[1.5px] uppercase border hairline px-3 py-1.5 hover:bg-ink hover:text-background hover:border-ink transition-colors disabled:opacity-40"
-          >
-            {imagen.activa ? "Desactivar" : "Activar"}
-          </button>
+        <div className="mt-3 grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={onMarcarPrincipal}
-            disabled={disabled || imagen.principal || !imagen.activa}
-            className="text-[10px] tracking-[1.5px] uppercase border border-accent text-accent px-3 py-1.5 hover:bg-accent hover:text-background transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            disabled={disabled || imagen.principal}
+            className={`text-[10px] tracking-[1.5px] uppercase px-3 py-1.5 transition-colors disabled:cursor-not-allowed ${
+              imagen.principal
+                ? "bg-accent text-background border border-accent"
+                : "border border-accent text-accent hover:bg-accent hover:text-background disabled:opacity-30"
+            }`}
           >
-            {imagen.principal ? "★ Principal" : "Hacer principal"}
+            {imagen.principal ? "★ Es la principal" : "★ Hacer principal"}
           </button>
           <button
             type="button"
-            onClick={onEliminar}
+            onClick={onToggleRotacion}
             disabled={disabled}
-            className="text-[10px] tracking-[1.5px] uppercase text-red-700 hover:underline ml-auto disabled:opacity-40"
+            className={`text-[10px] tracking-[1.5px] uppercase px-3 py-1.5 transition-colors disabled:opacity-40 ${
+              imagen.en_rotacion
+                ? "bg-ink text-background border border-ink"
+                : "border hairline text-ink hover:bg-ink hover:text-background hover:border-ink"
+            }`}
           >
-            Eliminar
+            {imagen.en_rotacion ? "🔁 En rotación" : "🔁 Sumar a rotación"}
           </button>
         </div>
+        <button
+          type="button"
+          onClick={onEliminar}
+          disabled={disabled}
+          className="mt-3 text-[10px] tracking-[1.5px] uppercase text-red-700 hover:underline disabled:opacity-40"
+        >
+          Eliminar
+        </button>
       </div>
     </div>
   );

@@ -6,8 +6,8 @@ export type HeroImage = {
   url: string;
   label: string;
   orden: number;
-  activa: boolean;
   principal: boolean;
+  en_rotacion: boolean;
 };
 
 export type HeroModo = "fija" | "rotacion";
