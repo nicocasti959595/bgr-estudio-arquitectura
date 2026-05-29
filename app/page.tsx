@@ -131,7 +131,7 @@ export default async function Home() {
           modo={baModo}
           objectPosition="center 50%"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/60 to-ink/15" />
         <div className="absolute inset-0 flex items-end">
           <div className="w-full mx-auto max-w-[1400px] px-6 md:px-12 pb-12 md:pb-16 text-background">
             <div className="flex items-center gap-3">
@@ -140,9 +140,18 @@ export default async function Home() {
                 Buenos Aires
               </p>
             </div>
-            <h2 className="display text-4xl md:text-5xl lg:text-6xl mt-4 max-w-3xl leading-[1.05]">
+            <h2
+              className="display text-4xl md:text-5xl lg:text-6xl mt-4 max-w-3xl leading-[1.05]"
+              style={{ textShadow: "0 2px 18px rgba(10,10,10,0.55), 0 1px 4px rgba(10,10,10,0.5)" }}
+            >
               Construimos en la ciudad que{" "}
-              <span className="italic text-accent">conocemos como nadie</span>.
+              <span
+                className="italic text-[#e3c89c]"
+                style={{ textShadow: "0 2px 16px rgba(10,10,10,0.7), 0 1px 4px rgba(10,10,10,0.6)" }}
+              >
+                conocemos como nadie
+              </span>
+              .
             </h2>
             <p className="mt-4 max-w-xl text-base text-background/80 leading-relaxed">
               Operamos en toda CABA y GBA. Conocemos los reglamentos de cada
