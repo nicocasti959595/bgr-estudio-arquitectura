@@ -3,22 +3,30 @@ import { FAQ } from "@/components/FAQ";
 import { GarantiasExpandibles } from "@/components/GarantiasExpandibles";
 import { HeroImagen } from "@/components/HeroImagen";
 import { HeroCTA } from "@/components/HeroCTA";
+import { PromoCarrusel } from "@/components/PromoCarrusel";
 import { getStats } from "@/lib/stats";
 import { getHeroImagesPublicas, getHeroModo } from "@/lib/hero";
+import { getBannersActivos } from "@/lib/banners";
 
 export default async function Home() {
-  const [datosClave, heroImagenes, heroModo, baImagenes, baModo] =
+  const [datosClave, heroImagenes, heroModo, baImagenes, baModo, banners] =
     await Promise.all([
       getStats(),
       getHeroImagesPublicas("hero"),
       getHeroModo("hero"),
       getHeroImagesPublicas("buenos_aires"),
       getHeroModo("buenos_aires"),
+      getBannersActivos(),
     ]);
+
+  const usarCarrusel = banners.length > 0;
 
   return (
     <>
-      {/* HERO */}
+      {/* PORTADA: carrusel de promos si hay banners activos; si no, hero clásico */}
+      {usarCarrusel ? (
+        <PromoCarrusel banners={banners} />
+      ) : (
       <section className="relative h-[calc(100vh-5rem)] min-h-[560px] max-h-[820px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           <HeroImagen
@@ -102,6 +110,7 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* STRIP DE DATOS CLAVE con fecha de actualización */}
       <section className="bg-ink text-background border-y border-background/10">
