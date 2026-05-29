@@ -2,8 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { enviarMensajeAction } from "@/app/contacto/actions";
-
-const NUMERO_WA = "5491136910077";
+import { useWhatsappNumero } from "./WhatsappProvider";
 
 type Estado = "idle" | "enviando" | "ok" | "error";
 
@@ -17,6 +16,7 @@ function sanitizar(s: string): string {
 }
 
 export function FormularioContacto() {
+  const NUMERO_WA = useWhatsappNumero();
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [telefono, setTelefono] = useState("");

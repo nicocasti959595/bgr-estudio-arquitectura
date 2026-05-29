@@ -77,6 +77,63 @@ export async function cerrarSesionAction() {
   redirect("/admin/login");
 }
 
+export async function cambiarEstadoMensajeAction(
+  id: string,
+  estado: "nuevo" | "contactado" | "archivado"
+) {
+  const supabase = await requireAdmin();
+  const { error } = await supabase
+    .from("bgr_mensajes")
+    .update({ estado, leido: estado !== "nuevo" })
+    .eq("id", id);
+  if (error) return { ok: false as const, error: error.message };
+  revalidatePath("/admin/mensajes");
+  return { ok: true as const };
+}
+
+export async function marcarLeidoMensajeAction(id: string, leido: boolean) {
+  const supabase = await requireAdmin();
+  const { error } = await supabase
+    .from("bgr_mensajes")
+    .update({ leido })
+    .eq("id", id);
+  if (error) return { ok: false as const, error: error.message };
+  revalidatePath("/admin/mensajes");
+  return { ok: true as const };
+}
+
+export async function eliminarMensajeAction(id: string) {
+  const supabase = await requireAdmin();
+  const { error } = await supabase
+    .from("bgr_mensajes")
+    .delete()
+    .eq("id", id);
+  if (error) return { ok: false as const, error: error.message };
+  revalidatePath("/admin/mensajes");
+  return { ok: true as const };
+}
+
+export async function actualizarWhatsappAction(numeroRaw: string) {
+  const supabase = await requireAdmin();
+  const numero = numeroRaw.replace(/\D/g, "");
+  if (numero.length < 10 || numero.length > 15) {
+    return {
+      ok: false as const,
+      error:
+        "Número inválido. Tiene que incluir código de país y área, solo dígitos (ej: 5491136910077).",
+    };
+  }
+  const { error } = await supabase.from("bgr_config").upsert({
+    clave: "whatsapp_numero",
+    valor: numero,
+    updated_at: new Date().toISOString(),
+  });
+  if (error) return { ok: false as const, error: error.message };
+  revalidatePath("/", "layout");
+  revalidatePath("/admin/mensajes");
+  return { ok: true as const, numero };
+}
+
 export async function actualizarConfigAction(clave: string, valor: string) {
   const supabase = await requireAdmin();
   const { error } = await supabase

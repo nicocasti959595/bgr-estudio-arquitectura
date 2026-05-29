@@ -5,7 +5,9 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BotonWhatsApp } from "@/components/BotonWhatsApp";
 import { JsonLd } from "@/components/JsonLd";
+import { WhatsappProvider } from "@/components/WhatsappProvider";
 import { localBusinessJsonLd, organizationJsonLd } from "@/lib/seo";
+import { getWhatsappNumero } from "@/lib/contacto";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -56,11 +58,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const whatsapp = await getWhatsappNumero();
   return (
     <html
       lang="es-AR"
@@ -68,10 +71,12 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <JsonLd data={[localBusinessJsonLd(), organizationJsonLd()]} />
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <BotonWhatsApp />
+        <WhatsappProvider numero={whatsapp}>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer whatsapp={whatsapp} />
+          <BotonWhatsApp />
+        </WhatsappProvider>
       </body>
     </html>
   );

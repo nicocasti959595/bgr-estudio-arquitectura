@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const NUMERO_WA = "5491136910077";
+import { useWhatsappNumero } from "./WhatsappProvider";
 
 type Props = {
   servicio: string;
@@ -11,6 +10,7 @@ type Props = {
 };
 
 export function ModalConsultaServicio({ servicio, abierto, onCerrar }: Props) {
+  const NUMERO_WA = useWhatsappNumero();
   const [nombre, setNombre] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [zona, setZona] = useState("");

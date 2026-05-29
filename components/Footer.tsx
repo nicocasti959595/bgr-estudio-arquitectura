@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 
-export function Footer() {
+export function Footer({ whatsapp = "5491136910077" }: { whatsapp?: string }) {
   const year = new Date().getFullYear();
   return (
     <footer className="bg-ink text-background mt-32">
@@ -61,7 +61,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/5491136910077"
+                  href={`https://wa.me/${whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link-underline"
@@ -70,7 +70,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="tel:+5491136910077" className="link-underline">
+                <a href={`tel:+${whatsapp}`} className="link-underline">
                   Tel. 11 3691-0077
                 </a>
               </li>

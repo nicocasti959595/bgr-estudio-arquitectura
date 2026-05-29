@@ -25,6 +25,12 @@ export function NavAdmin(_props: { email: string }) {
             Proyectos
           </Link>
           <Link
+            href="/admin/mensajes"
+            className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-ink transition-colors"
+          >
+            Consultas
+          </Link>
+          <Link
             href="/admin/stats"
             className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-ink transition-colors"
           >

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const NUMERO = "5491136910077";
+import { useWhatsappNumero } from "./WhatsappProvider";
 
 export function BotonWhatsApp() {
+  const NUMERO = useWhatsappNumero();
   const [open, setOpen] = useState(false);
   const [nombre, setNombre] = useState("");
   const [tipo, setTipo] = useState("");
