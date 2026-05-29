@@ -21,9 +21,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "BGR Arquitectura &amp; Construcción",
+  title: "BGR Arquitectura & Construcción",
   description:
-    "BGR Arquitectura &amp; Construcción. Reformas integrales de departamentos en Buenos Aires. Proyecto, dirección y obra llave en mano.",
+    "BGR Arquitectura & Construcción. Reformas integrales de departamentos en Buenos Aires. Proyecto, dirección y obra llave en mano.",
   keywords: [
     "BGR",
     "BGR arquitectura",
@@ -36,11 +36,15 @@ export const metadata: Metadata = {
     "Buenos Aires",
     "Argentina",
   ],
-  metadataBase: new URL("https://bgr-estudio-arquitectura.vercel.app"),
+  metadataBase: new URL("https://bgr.com.ar"),
+  alternates: {
+    canonical: "https://bgr.com.ar",
+  },
   openGraph: {
-    title: "BGR Arquitectura &amp; Construcción",
+    title: "BGR Arquitectura & Construcción",
     description:
       "Si lo podés imaginar, lo podemos construir. Reformas integrales de departamentos en Buenos Aires.",
+    url: "https://bgr.com.ar",
     type: "website",
     locale: "es_AR",
   },
