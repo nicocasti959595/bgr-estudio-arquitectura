@@ -2,18 +2,29 @@ import Link from "next/link";
 import { FAQ } from "@/components/FAQ";
 import { GarantiasExpandibles } from "@/components/GarantiasExpandibles";
 import { ImagenObelisco } from "@/components/ImagenObelisco";
+import { HeroImagen } from "@/components/HeroImagen";
 import { HeroCTA } from "@/components/HeroCTA";
 import { getStats } from "@/lib/stats";
+import { getHeroImagesPublicas, getHeroModo } from "@/lib/hero";
 
 export default async function Home() {
-  const datosClave = await getStats();
+  const [datosClave, heroImagenes, heroModo] = await Promise.all([
+    getStats(),
+    getHeroImagesPublicas(),
+    getHeroModo(),
+  ]);
 
   return (
     <>
       {/* HERO */}
       <section className="relative h-[calc(100vh-5rem)] min-h-[560px] max-h-[820px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <ImagenObelisco priority objectPosition="center 60%" />
+          <HeroImagen
+            imagenes={heroImagenes}
+            modo={heroModo}
+            priority
+            objectPosition="center 60%"
+          />
           {/* Gradient sutil: solo oscurece la mitad inferior para los CTAs */}
           <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-ink/5" />
         </div>
@@ -89,14 +100,9 @@ export default async function Home() {
 
       {/* STRIP DE DATOS CLAVE con fecha de actualización */}
       <section className="bg-ink text-background border-y border-background/10">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-12 grid grid-cols-2 md:grid-cols-4 divide-x divide-background/10">
-          {datosClave.map((d, i) => (
-            <div
-              key={d.rotulo}
-              className={`py-10 md:py-12 px-4 ${
-                i >= 2 ? "border-t md:border-t-0 border-background/10" : ""
-              }`}
-            >
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-background/10">
+          {datosClave.map((d) => (
+            <div key={d.rotulo} className="py-10 md:py-14 px-4 md:px-10">
               <p className="display text-5xl md:text-6xl text-background">
                 {d.numero}
               </p>

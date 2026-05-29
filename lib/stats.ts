@@ -9,10 +9,8 @@ export type Stat = {
 };
 
 const fallback: Stat[] = [
-  { clave: "anos", numero: "10+", rotulo: "Años de experiencia", actualizacion: null, orden: 1 },
-  { clave: "obras", numero: "53", rotulo: "Obras entregadas en CABA", actualizacion: "13/04/2026", orden: 2 },
-  { clave: "reformas", numero: "124", rotulo: "Reformas realizadas", actualizacion: "15/05/2026", orden: 3 },
-  { clave: "plazos", numero: "100%", rotulo: "Plazos cumplidos", actualizacion: null, orden: 4 },
+  { clave: "anos", numero: "10", rotulo: "Años de experiencia", actualizacion: null, orden: 1 },
+  { clave: "reformas", numero: "384", rotulo: "Reformas realizadas hasta el momento", actualizacion: null, orden: 2 },
 ];
 
 export async function getStats(): Promise<Stat[]> {
