@@ -31,12 +31,6 @@ export function NavAdmin(_props: { email: string }) {
             Stats
           </Link>
           <Link
-            href="/admin/promos"
-            className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-ink transition-colors"
-          >
-            Promos
-          </Link>
-          <Link
             href="/admin/hero"
             className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-ink transition-colors"
           >
