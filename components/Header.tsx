@@ -31,14 +31,14 @@ export function Header() {
         scrolled ? "border-b hairline shadow-sm" : "border-b border-transparent"
       }`}
     >
-      <div className="mx-auto max-w-[1400px] px-6 md:px-12 flex items-center justify-between h-16 md:h-20">
+      <div className="mx-auto max-w-[1400px] px-6 md:px-12 flex items-center justify-between h-20 md:h-24">
         <Link
           href="/"
           className="flex items-center gap-3 text-ink group"
           onClick={() => setOpen(false)}
           aria-label="BGR Arquitectura y Construcción — Inicio"
         >
-          <Logo className="h-10 w-10 md:h-11 md:w-11 text-ink group-hover:text-accent transition-colors shrink-0" />
+          <Logo className="h-14 w-14 md:h-16 md:w-16 text-ink group-hover:text-accent transition-colors shrink-0" />
           <span className="font-serif text-xl md:text-2xl tracking-tight leading-none">
             <span className="font-medium tracking-tight">BGR</span>{" "}
             <span className="italic text-accent hidden sm:inline">

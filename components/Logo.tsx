@@ -28,33 +28,34 @@ export function Logo({ className = "h-8 w-8" }: Props) {
       {/* Pico central elevado (silueta de ave/águila) */}
       <path d="M 76 118 L 100 82 L 124 118 L 113 124 L 100 104 L 87 124 Z" />
 
-      {/* Ventanas con cuadrícula (izquierda) */}
+      {/* Ventanas con cuadrícula (izquierda) — strokes engrosados
+         para que se distingan en tamaños chicos (header móvil) */}
       <g>
         <rect
-          x="40"
-          y="138"
-          width="16"
-          height="16"
+          x="38"
+          y="136"
+          width="20"
+          height="20"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2.5"
+          strokeWidth="4"
         />
-        <line x1="48" y1="138" x2="48" y2="154" stroke="currentColor" strokeWidth="2" />
-        <line x1="40" y1="146" x2="56" y2="146" stroke="currentColor" strokeWidth="2" />
+        <line x1="48" y1="136" x2="48" y2="156" stroke="currentColor" strokeWidth="3.5" />
+        <line x1="38" y1="146" x2="58" y2="146" stroke="currentColor" strokeWidth="3.5" />
       </g>
       {/* Ventanas con cuadrícula (derecha) */}
       <g>
         <rect
-          x="144"
-          y="138"
-          width="16"
-          height="16"
+          x="142"
+          y="136"
+          width="20"
+          height="20"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2.5"
+          strokeWidth="4"
         />
-        <line x1="152" y1="138" x2="152" y2="154" stroke="currentColor" strokeWidth="2" />
-        <line x1="144" y1="146" x2="160" y2="146" stroke="currentColor" strokeWidth="2" />
+        <line x1="152" y1="136" x2="152" y2="156" stroke="currentColor" strokeWidth="3.5" />
+        <line x1="142" y1="146" x2="162" y2="146" stroke="currentColor" strokeWidth="3.5" />
       </g>
     </svg>
   );
