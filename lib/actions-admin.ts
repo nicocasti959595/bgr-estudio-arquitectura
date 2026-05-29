@@ -233,6 +233,44 @@ export async function setHeroPrincipalAction(id: string) {
   return { ok: true as const };
 }
 
+export async function actualizarObeliscoConfigAction(input: {
+  activo: boolean;
+  horaNocheInicio: number;
+  horaNocheFin: number;
+}) {
+  const supabase = await requireAdmin();
+
+  // Validación
+  const hi = Math.round(input.horaNocheInicio);
+  const hf = Math.round(input.horaNocheFin);
+  if (hi < 0 || hi > 23 || hf < 0 || hf > 23) {
+    return {
+      ok: false as const,
+      error: "Las horas deben estar entre 0 y 23.",
+    };
+  }
+  if (hi === hf) {
+    return {
+      ok: false as const,
+      error: "La hora de inicio y fin no pueden ser iguales.",
+    };
+  }
+
+  const ahora = new Date().toISOString();
+  const filas = [
+    { clave: "obelisco_activo", valor: input.activo ? "true" : "false", updated_at: ahora },
+    { clave: "obelisco_hora_noche_inicio", valor: String(hi), updated_at: ahora },
+    { clave: "obelisco_hora_noche_fin", valor: String(hf), updated_at: ahora },
+  ];
+
+  const { error } = await supabase.from("bgr_config").upsert(filas);
+  if (error) return { ok: false as const, error: error.message };
+
+  revalidatePath("/");
+  revalidatePath("/admin/hero");
+  return { ok: true as const };
+}
+
 export async function actualizarHeroModoAction(modo: "fija" | "rotacion") {
   const supabase = await requireAdmin();
   const { error } = await supabase.from("bgr_config").upsert({

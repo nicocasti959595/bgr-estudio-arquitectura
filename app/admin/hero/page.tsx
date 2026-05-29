@@ -2,8 +2,10 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createSupabaseServer } from "@/lib/supabase-server";
 import { getAllHeroImages, getHeroModo, HERO_LIMITE_IMAGENES } from "@/lib/hero";
+import { getObeliscoConfig } from "@/lib/obelisco";
 import { NavAdmin } from "@/components/admin/NavAdmin";
 import { FormularioHero } from "@/components/admin/FormularioHero";
+import { FormularioObelisco } from "@/components/admin/FormularioObelisco";
 
 export const dynamic = "force-dynamic";
 
@@ -14,9 +16,10 @@ export default async function AdminHeroPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login");
 
-  const [imagenes, modo] = await Promise.all([
+  const [imagenes, modo, obeliscoConfig] = await Promise.all([
     getAllHeroImages(),
     getHeroModo(),
+    getObeliscoConfig(),
   ]);
 
   return (
@@ -41,6 +44,8 @@ export default async function AdminHeroPage() {
         </p>
 
         <FormularioHero imagenes={imagenes} modoInicial={modo} />
+
+        <FormularioObelisco inicial={obeliscoConfig} />
       </main>
     </>
   );

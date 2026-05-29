@@ -5,28 +5,45 @@ import { useEffect, useState } from "react";
 
 /**
  * Imagen del Obelisco que cambia según el horario local del visitante.
- * - 7:00 a 18:59 → imagen de día
- * - 19:00 a 6:59 → imagen de noche
+ * Las horas del día/noche son configurables desde /admin/hero.
  *
- * Si querés usar TUS imágenes propias:
- *   1) Guardalas en /public como obelisco-dia.jpg y obelisco-noche.jpg
- *   2) Cambiá las URLs de abajo por "/obelisco-dia.jpg" y "/obelisco-noche.jpg"
+ * Si `config.activo` es false → muestra siempre la imagen de día.
  */
 const IMAGEN_DIA =
   "https://uzxhloolvpdzfduenkew.supabase.co/storage/v1/object/public/bgr-proyectos/obelisco-dia.jpg?v=3";
 const IMAGEN_NOCHE =
   "https://uzxhloolvpdzfduenkew.supabase.co/storage/v1/object/public/bgr-proyectos/obelisco-noche.jpg?v=3";
 
+type ConfigHorario = {
+  activo: boolean;
+  horaNocheInicio: number; // 0-23
+  horaNocheFin: number; // 0-23
+};
+
 type Props = {
   alt?: string;
   invertir?: boolean; // si true, muestra la opuesta a la hora actual
   priority?: boolean;
   objectPosition?: string;
+  config?: ConfigHorario;
 };
 
-function calcularEsNoche(): boolean {
+const CONFIG_DEFAULT: ConfigHorario = {
+  activo: true,
+  horaNocheInicio: 19,
+  horaNocheFin: 7,
+};
+
+function calcularEsNoche(cfg: ConfigHorario): boolean {
+  if (!cfg.activo) return false; // si está desactivado → siempre día
   const h = new Date().getHours();
-  return h < 7 || h >= 19;
+  const { horaNocheInicio: ini, horaNocheFin: fin } = cfg;
+  // Rango "normal" (ej: 19 a 7) → cruza medianoche
+  if (ini > fin) {
+    return h >= ini || h < fin;
+  }
+  // Rango "diurno-invertido" (ej: 7 a 19) → noche dentro del rango
+  return h >= ini && h < fin;
 }
 
 export function ImagenObelisco({
@@ -34,18 +51,18 @@ export function ImagenObelisco({
   invertir = false,
   priority = false,
   objectPosition = "center 40%",
+  config = CONFIG_DEFAULT,
 }: Props) {
-  // SSR default → asume día (la mayoría de visitas serán diurnas).
-  // Al hidratar, se ajusta a la hora real del cliente.
+  // SSR default → asume día. Al hidratar se ajusta a la hora real.
   const [esNoche, setEsNoche] = useState(false);
   const [montado, setMontado] = useState(false);
 
   useEffect(() => {
     setMontado(true);
-    setEsNoche(calcularEsNoche());
-    const id = setInterval(() => setEsNoche(calcularEsNoche()), 60_000);
+    setEsNoche(calcularEsNoche(config));
+    const id = setInterval(() => setEsNoche(calcularEsNoche(config)), 60_000);
     return () => clearInterval(id);
-  }, []);
+  }, [config]);
 
   const mostrarNoche = montado ? (invertir ? !esNoche : esNoche) : invertir;
   const src = mostrarNoche ? IMAGEN_NOCHE : IMAGEN_DIA;
