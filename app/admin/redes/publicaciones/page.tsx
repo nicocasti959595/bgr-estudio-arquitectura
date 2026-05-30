@@ -4,6 +4,7 @@ import { createSupabaseServer } from "@/lib/supabase-server";
 import { getConfigRedes, getCuentas, getPostsProgramados } from "@/lib/saas-client";
 import { NavAdmin } from "@/components/admin/NavAdmin";
 import { ProgramadorPublicaciones } from "@/components/admin/ProgramadorPublicaciones";
+import { RedesProximamente, redesActivo } from "@/components/admin/RedesProximamente";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,15 @@ export default async function AdminRedesPubsPage() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login");
+
+  if (!redesActivo()) {
+    return (
+      <>
+        <NavAdmin email={user.email ?? ""} />
+        <RedesProximamente />
+      </>
+    );
+  }
 
   const [cfg, cuentas, programados] = await Promise.all([
     getConfigRedes(),

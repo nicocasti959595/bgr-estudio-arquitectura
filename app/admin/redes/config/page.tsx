@@ -4,6 +4,7 @@ import { createSupabaseServer } from "@/lib/supabase-server";
 import { getConfigRedes, getCuentas } from "@/lib/saas-client";
 import { NavAdmin } from "@/components/admin/NavAdmin";
 import { ConfigRedes } from "@/components/admin/ConfigRedes";
+import { RedesProximamente, redesActivo } from "@/components/admin/RedesProximamente";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,15 @@ export default async function AdminRedesConfigPage() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login");
+
+  if (!redesActivo()) {
+    return (
+      <>
+        <NavAdmin email={user.email ?? ""} />
+        <RedesProximamente />
+      </>
+    );
+  }
 
   const [configRes, cuentasRes] = await Promise.all([
     getConfigRedes(),

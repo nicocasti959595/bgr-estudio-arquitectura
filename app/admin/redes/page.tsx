@@ -4,6 +4,7 @@ import Image from "next/image";
 import { createSupabaseServer } from "@/lib/supabase-server";
 import { getCuentas, getMetricas } from "@/lib/saas-client";
 import { NavAdmin } from "@/components/admin/NavAdmin";
+import { RedesProximamente, redesActivo } from "@/components/admin/RedesProximamente";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,16 @@ export default async function AdminRedesPage() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login");
+
+  // Mientras el SaaS no esté operativo, mostrar cartel "Próximamente".
+  if (!redesActivo()) {
+    return (
+      <>
+        <NavAdmin email={user.email ?? ""} />
+        <RedesProximamente />
+      </>
+    );
+  }
 
   const [cuentasRes, metricasRes] = await Promise.all([
     getCuentas(),
