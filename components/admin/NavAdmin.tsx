@@ -31,6 +31,12 @@ export function NavAdmin(_props: { email: string }) {
             CRM
           </Link>
           <Link
+            href="/admin/redes"
+            className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-ink transition-colors"
+          >
+            Redes
+          </Link>
+          <Link
             href="/admin/stats"
             className="text-[12px] tracking-[1.5px] uppercase text-muted hover:text-ink transition-colors"
           >
