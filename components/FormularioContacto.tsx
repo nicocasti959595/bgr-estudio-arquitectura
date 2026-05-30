@@ -22,6 +22,7 @@ export function FormularioContacto() {
   const [telefono, setTelefono] = useState("");
   const [asunto, setAsunto] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [hp, setHp] = useState(""); // honeypot anti-bot
   const [estado, setEstado] = useState<Estado>("idle");
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [, startTransition] = useTransition();
@@ -43,6 +44,11 @@ export function FormularioContacto() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // Honeypot: si está completo, es un bot. Fingimos éxito y no enviamos nada.
+    if (hp.trim() !== "") {
+      setEstado("ok");
+      return;
+    }
     if (!nombre.trim() || !email.trim() || !mensaje.trim()) {
       setEstado("error");
       setErrorMsg("Completá nombre, email y mensaje.");
@@ -80,6 +86,17 @@ export function FormularioContacto() {
 
   return (
     <form className="space-y-8" onSubmit={handleSubmit}>
+      {/* Honeypot anti-bot: invisible para humanos */}
+      <input
+        type="text"
+        name="empresa_web"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={hp}
+        onChange={(e) => setHp(e.target.value)}
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+      />
       <div className="grid md:grid-cols-2 gap-6">
         <Campo
           id="nombre"

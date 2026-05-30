@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useWhatsappNumero } from "./WhatsappProvider";
+import { guardarLeadAction } from "@/lib/actions-lead";
 
 function sanitizar(s: string): string {
   let out = "";
@@ -23,6 +24,7 @@ export function ModalAsesoramiento({ abierto, onCerrar }: Props) {
   const [whatsapp, setWhatsapp] = useState("");
   const [tipo, setTipo] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [hp, setHp] = useState(""); // honeypot anti-bot
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -49,6 +51,16 @@ export function ModalAsesoramiento({ abierto, onCerrar }: Props) {
     }
     setError(null);
 
+    // Guardar el lead en el CRM ANTES de abrir WhatsApp (best-effort, no bloquea).
+    guardarLeadAction({
+      nombre: n,
+      telefono: w,
+      asunto: tipo ? `Asesoramiento — ${tipo}` : "Asesoramiento sin compromiso",
+      mensaje: mensaje ? sanitizar(mensaje) : null,
+      tipo_form: "asesoramiento",
+      hp,
+    }).catch(() => {});
+
     const partes = [
       `Hola BGR, soy ${n}.`,
       "Quiero un asesoramiento sin compromiso.",
@@ -69,6 +81,7 @@ export function ModalAsesoramiento({ abierto, onCerrar }: Props) {
     setWhatsapp("");
     setTipo("");
     setMensaje("");
+    setHp("");
     onCerrar();
   }
 
@@ -117,6 +130,17 @@ export function ModalAsesoramiento({ abierto, onCerrar }: Props) {
           </p>
 
           <form onSubmit={enviar} className="mt-6 space-y-5">
+            {/* Honeypot anti-bot: invisible para humanos */}
+            <input
+              type="text"
+              name="empresa_web"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={hp}
+              onChange={(e) => setHp(e.target.value)}
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+            />
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label

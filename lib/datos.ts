@@ -99,12 +99,15 @@ export async function guardarMensaje(payload: {
   telefono?: string | null;
   asunto?: string | null;
   mensaje: string;
+  tipo_form?: string;
 }): Promise<{ ok: boolean; error?: string }> {
   if (!tieneSupabase()) {
     console.log("[contacto · sin supabase configurado]", payload);
     return { ok: true };
   }
-  const { error } = await supabase.from("bgr_mensajes").insert([payload]);
+  const { error } = await supabase
+    .from("bgr_mensajes")
+    .insert([{ ...payload, tipo_form: payload.tipo_form ?? "contacto" }]);
   if (error) return { ok: false, error: error.message };
   return { ok: true };
 }

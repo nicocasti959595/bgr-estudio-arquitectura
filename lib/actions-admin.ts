@@ -392,11 +392,13 @@ export async function loginAction(
     return out.trim();
   };
 
-  const usuarioRaw = sanitizar(String(formData.get("usuario") ?? ""));
+  // Usuario fijo: el login solo pide contraseña. Si llega 'usuario' en el form
+  // (compat), se respeta; si no, default a 'adminbgr'.
+  const usuarioRaw = sanitizar(String(formData.get("usuario") ?? "")) || "adminbgr";
   const password = sanitizar(String(formData.get("password") ?? ""));
 
-  if (!usuarioRaw || !password) {
-    return { error: "Completá usuario y contraseña." };
+  if (!password) {
+    return { error: "Ingresá la contraseña." };
   }
 
   // Permitir "adminbgr" sin @ — autocompletamos al dominio interno.

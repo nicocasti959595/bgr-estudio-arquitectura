@@ -21,7 +21,6 @@ export default function LoginPage() {
     loginAction,
     INITIAL_STATE
   );
-  const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
 
   return (
@@ -50,34 +49,7 @@ export default function LoginPage() {
           </p>
 
           <form action={formAction} className="space-y-6">
-            <div>
-              <label
-                htmlFor="usuario"
-                className="block text-[9px] tracking-[2px] uppercase text-muted mb-2"
-              >
-                Usuario
-              </label>
-              <input
-                id="usuario"
-                name="usuario"
-                type="text"
-                required
-                placeholder="adminbgr"
-                className="bgr-input"
-                autoFocus
-                autoComplete="username"
-                autoCapitalize="off"
-                autoCorrect="off"
-                spellCheck={false}
-                value={usuario}
-                onChange={(e) => setUsuario(sanitizarCliente(e.target.value))}
-                onPaste={(e) => {
-                  e.preventDefault();
-                  const texto = e.clipboardData.getData("text");
-                  setUsuario(sanitizarCliente(texto));
-                }}
-              />
-            </div>
+            {/* Usuario fijo (adminbgr) — no se muestra; lo resuelve el server */}
             <div>
               <label
                 htmlFor="password"
@@ -92,6 +64,7 @@ export default function LoginPage() {
                 required
                 placeholder="••••••••"
                 className="bgr-input"
+                autoFocus
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(sanitizarCliente(e.target.value))}

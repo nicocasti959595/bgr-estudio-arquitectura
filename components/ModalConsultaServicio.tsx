@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useWhatsappNumero } from "./WhatsappProvider";
+import { guardarLeadAction } from "@/lib/actions-lead";
 
 type Props = {
   servicio: string;
@@ -15,6 +16,7 @@ export function ModalConsultaServicio({ servicio, abierto, onCerrar }: Props) {
   const [whatsapp, setWhatsapp] = useState("");
   const [zona, setZona] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [hp, setHp] = useState(""); // honeypot anti-bot
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -50,6 +52,16 @@ export function ModalConsultaServicio({ servicio, abierto, onCerrar }: Props) {
     }
     setError(null);
 
+    // Guardar el lead en el CRM antes de abrir WhatsApp (best-effort).
+    guardarLeadAction({
+      nombre: n,
+      telefono: w,
+      asunto: `Servicio — ${servicio}`,
+      mensaje: [zona ? `Zona: ${zona}.` : "", mensaje].filter(Boolean).join(" ") || null,
+      tipo_form: "servicio",
+      hp,
+    }).catch(() => {});
+
     const partes = [
       `Hola BGR, soy ${n}.`,
       `Consulta por el servicio: ${servicio}.`,
@@ -59,7 +71,7 @@ export function ModalConsultaServicio({ servicio, abierto, onCerrar }: Props) {
       "",
       `Mi WhatsApp: ${w}`,
       "",
-      "— Enviado desde bgr-estudio-arquitectura.vercel.app",
+      "— Enviado desde bgr.com.ar",
     ].filter(Boolean);
     const url = `https://wa.me/${NUMERO_WA}?text=${encodeURIComponent(
       partes.join("\n")
@@ -70,6 +82,7 @@ export function ModalConsultaServicio({ servicio, abierto, onCerrar }: Props) {
     setWhatsapp("");
     setZona("");
     setMensaje("");
+    setHp("");
     onCerrar();
   }
 
@@ -126,6 +139,17 @@ export function ModalConsultaServicio({ servicio, abierto, onCerrar }: Props) {
           </p>
 
           <form onSubmit={enviar} className="mt-6 space-y-5">
+            {/* Honeypot anti-bot */}
+            <input
+              type="text"
+              name="empresa_web"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={hp}
+              onChange={(e) => setHp(e.target.value)}
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+            />
             <Campo
               id="mc-nombre"
               label="Nombre *"

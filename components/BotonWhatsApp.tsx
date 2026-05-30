@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useWhatsappNumero } from "./WhatsappProvider";
+import { guardarLeadAction } from "@/lib/actions-lead";
 
 export function BotonWhatsApp() {
   const NUMERO = useWhatsappNumero();
@@ -9,6 +10,7 @@ export function BotonWhatsApp() {
   const [nombre, setNombre] = useState("");
   const [tipo, setTipo] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const [hp, setHp] = useState(""); // honeypot anti-bot
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -34,13 +36,23 @@ export function BotonWhatsApp() {
       return;
     }
     setError(null);
+
+    // Guardar el lead en el CRM antes de abrir WhatsApp (best-effort).
+    guardarLeadAction({
+      nombre: n,
+      asunto: tipo ? `WhatsApp — ${tipo}` : "Consulta por WhatsApp",
+      mensaje: d,
+      tipo_form: "whatsapp_flotante",
+      hp,
+    }).catch(() => {});
+
     const partes = [
       `Hola, soy ${n}.`,
       tipo ? `Tipo de consulta: ${tipo}.` : "",
       "",
       d,
       "",
-      "— Enviado desde bgr-estudio-arquitectura.vercel.app",
+      "— Enviado desde bgr.com.ar",
     ].filter(Boolean);
     const mensaje = partes.join("\n");
     const url = `https://wa.me/${NUMERO}?text=${encodeURIComponent(mensaje)}`;
@@ -49,6 +61,7 @@ export function BotonWhatsApp() {
     setNombre("");
     setTipo("");
     setDescripcion("");
+    setHp("");
   }
 
   return (
@@ -124,6 +137,17 @@ export function BotonWhatsApp() {
               </p>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+                {/* Honeypot anti-bot */}
+                <input
+                  type="text"
+                  name="empresa_web"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={hp}
+                  onChange={(e) => setHp(e.target.value)}
+                  style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                />
                 <div>
                   <label
                     htmlFor="wa-nombre"

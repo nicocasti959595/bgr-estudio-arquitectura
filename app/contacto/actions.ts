@@ -13,5 +13,12 @@ export async function enviarMensajeAction(formData: FormData) {
     return { ok: false, error: "Faltan datos obligatorios." };
   }
 
-  return await guardarMensaje({ nombre, email, telefono, asunto, mensaje });
+  return await guardarMensaje({
+    nombre,
+    email,
+    telefono,
+    asunto,
+    mensaje,
+    tipo_form: "contacto",
+  });
 }

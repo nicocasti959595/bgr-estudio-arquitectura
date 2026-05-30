@@ -13,6 +13,10 @@ type Props = {
 
 const INTERVALO_MS = 6000;
 
+// Placeholder difuminado con el tono de la marca (evita el "salto" al cargar).
+const BLUR =
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxNicgaGVpZ2h0PSc5Jz48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWxsPScjZDZjOGIwJy8+PC9zdmc+";
+
 export function HeroImagen({
   imagenes,
   modo,
@@ -43,6 +47,9 @@ export function HeroImagen({
         alt={img.label}
         fill
         priority={priority}
+        quality={72}
+        placeholder="blur"
+        blurDataURL={BLUR}
         sizes="100vw"
         className="object-cover"
         style={{ objectPosition }}
@@ -60,6 +67,9 @@ export function HeroImagen({
           alt={img.label}
           fill
           priority={priority && i === 0}
+          quality={72}
+          placeholder="blur"
+          blurDataURL={BLUR}
           sizes="100vw"
           className="object-cover transition-opacity duration-[1500ms] ease-in-out"
           style={{
