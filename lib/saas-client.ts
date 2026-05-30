@@ -1,4 +1,4 @@
-// Cliente del SaaS IdeaWebX — SERVER ONLY.
+// Cliente del SaaS redesauto — SERVER ONLY.
 // La API key vive en process.env (nunca NEXT_PUBLIC) y todas las llamadas
 // salen del backend de esta web, jamás del navegador.
 

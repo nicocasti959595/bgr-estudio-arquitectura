@@ -39,7 +39,7 @@ export default async function AdminRedesPage() {
         <p className="text-[14px] text-muted mt-2 font-light max-w-2xl leading-relaxed">
           Cargá tus publicaciones e historias, programá los horarios y dejá que
           se publiquen solas en Instagram y Facebook. Conectado con la
-          plataforma IdeaWebX.
+          plataforma redesauto.
         </p>
 
         {saasCaido && (
@@ -117,7 +117,7 @@ export default async function AdminRedesPage() {
           ) : (
             <p className="text-[13px] text-muted font-light">
               {cuentasRes.ok
-                ? "Todavía no hay cuentas conectadas. Se conectan desde la plataforma IdeaWebX."
+                ? "Todavía no hay cuentas conectadas. Se conectan desde la plataforma redesauto."
                 : "No se pudieron cargar las cuentas en este momento."}
             </p>
           )}

@@ -133,7 +133,7 @@ export function ConfigRedes({
         </select>
         {cuentas.length === 0 && (
           <p className="text-[12px] text-muted mt-2">
-            No hay cuentas conectadas todavía (se conectan desde IdeaWebX).
+            No hay cuentas conectadas todavía (se conectan desde redesauto).
           </p>
         )}
       </section>
@@ -161,7 +161,7 @@ export function ConfigRedes({
             </h2>
             <p className="text-[13px] text-muted mt-1 font-light">
               {autoReply
-                ? "Activada: a quien escriba por DM se le responde con la plantilla configurada en IdeaWebX."
+                ? "Activada: a quien escriba por DM se le responde con la plantilla configurada en redesauto."
                 : "Desactivada: los mensajes no reciben respuesta automática."}
             </p>
           </div>
