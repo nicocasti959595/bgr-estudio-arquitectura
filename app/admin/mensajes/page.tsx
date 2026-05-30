@@ -34,7 +34,7 @@ export default async function AdminMensajesPage() {
           ← Volver
         </Link>
         <p className="eyebrow mb-3">Panel privado</p>
-        <h1 className="font-serif text-4xl md:text-5xl text-ink">Consultas</h1>
+        <h1 className="font-serif text-4xl md:text-5xl text-ink">CRM</h1>
         <p className="text-[14px] text-muted mt-2 font-light max-w-2xl leading-relaxed">
           Mensajes recibidos desde el formulario de contacto del sitio.
           {nuevos > 0 ? (
